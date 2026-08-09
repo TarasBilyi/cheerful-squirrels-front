@@ -1,3 +1,5 @@
+// app/layout.tsx
+
 import type { Metadata } from "next";
 import { Manrope, Merienda } from "next/font/google";
 import "modern-normalize/modern-normalize.css";
