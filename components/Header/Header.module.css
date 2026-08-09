@@ -1,0 +1,139 @@
+.header {
+  position: relative;
+  background-color: #d1e0d8;
+  z-index: 100;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 14px;
+}
+
+.logoLink {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border-radius: 64px;
+  background-color: #649179;
+  color: #f7fffb;
+  font-weight: 700;
+  font-size: 16px;
+  white-space: nowrap;
+  border: none;
+  transition: opacity 0.2s ease;
+}
+
+.ctaButton:hover {
+  opacity: 0.85;
+}
+
+.navLink {
+  font-weight: 700;
+  font-size: 16px;
+  color: #374f42;
+  padding-bottom: 4px;
+}
+
+.tabletOnly {
+  display: none;
+}
+
+.desktopNav {
+  display: none;
+}
+
+.desktopNavList {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.desktopAuth {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.userBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background-color: #9fb8ac; /* TODO: реальне фото користувача */
+  flex-shrink: 0;
+}
+
+.userName {
+  font-weight: 700;
+  font-size: 12px;
+  color: #374f42;
+}
+
+.divider {
+  width: 1px;
+  height: 39px;
+  background-color: #374f42;
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: #374f42;
+  padding: 4px;
+}
+
+.burgerButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  color: #374f42;
+  padding: 0;
+}
+
+@media (min-width: 768px) {
+  .tabletOnly {
+    display: inline-flex;
+  }
+}
+
+@media (min-width: 1440px) {
+  .tabletOnly {
+    display: none;
+  }
+
+  .burgerButton {
+    display: none;
+  }
+
+  .desktopNav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+}
