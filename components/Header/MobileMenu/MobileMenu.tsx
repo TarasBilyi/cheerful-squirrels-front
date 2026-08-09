@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Container from '../../Container/Container';
-import Logo from '../../Logo/Logo';
 import type { User } from '@/types/user';
 import { NAV_LINKS } from '../Header.constants';
-import LogoutButton from './LogoutButton';
-import headerCss from '../Header.module.css';
+import BurgerButton from '../BurgerButton/BurgerButton';
+import NavLink from '../NavLink/NavLink';
+import navLinkCss from '../NavLink/NavLink.module.css';
+import CtaLink from '../CtaLink/CtaLink';
+import UserBar from '../UserBar/UserBar';
 import css from './MobileMenu.module.css';
 
 interface MobileMenuProps {
@@ -38,85 +39,64 @@ const MobileMenu = ({ isAuthenticated, user }: MobileMenuProps) => {
   }, [isOpen]);
 
   return (
-    <>
-      <button
-        type="button"
-        className={headerCss.burgerButton}
-        onClick={toggle}
-        aria-label="Open menu"
-        aria-expanded={isOpen}
-      >
-        бургер
-      </button>
+    <div className={css.wrapper}>
+      <BurgerButton isOpen={isOpen} onClick={toggle} />
 
-      <div className={`${css.menu} ${isOpen ? css.menuOpen : ''}`} aria-hidden={!isOpen}>
-        <Container className={css.topBar}>
-          <Link href="/" className={headerCss.logoLink} onClick={close}>
-            <Logo />
-          </Link>
-          <button type="button" className={css.closeButton} onClick={close} aria-label="Close menu">
-            закрити
-          </button>
-        </Container>
-
+      <div className={`${css.panel} ${isOpen ? css.panelOpen : ''}`} aria-hidden={!isOpen}>
         <nav className={css.nav} aria-label="Mobile">
           <ul className={css.navList}>
             {NAV_LINKS.map(({ href, label }) => (
               <li key={href}>
-                <Link href={href} prefetch={false} className={headerCss.navLink} onClick={close}>
+                <NavLink href={href} onClick={close} tabIndex={isOpen ? undefined : -1}>
                   {label}
-                </Link>
+                </NavLink>
               </li>
             ))}
             {isAuthenticated && (
               <li>
-                <Link
-                  href="/profile"
-                  prefetch={false}
-                  className={headerCss.navLink}
-                  onClick={close}
-                >
+                <NavLink href="/profile" onClick={close} tabIndex={isOpen ? undefined : -1}>
                   My Profile
-                </Link>
+                </NavLink>
               </li>
             )}
           </ul>
 
           {isAuthenticated && user ? (
             <>
-              <Link
+              <CtaLink
                 href="/articles/new"
-                prefetch={false}
-                className={headerCss.ctaButton}
+                className={css.mobileOnly}
                 onClick={close}
+                tabIndex={isOpen ? undefined : -1}
               >
                 Create an article
-              </Link>
-              <div className={headerCss.userBar}>
-                <span className={headerCss.avatar} aria-hidden />
-                <span className={headerCss.userName}>{user.name}</span>
-                <span className={headerCss.divider} aria-hidden />
-                <LogoutButton className={headerCss.iconButton} onAfterLogout={close} />
-              </div>
+              </CtaLink>
+              <UserBar user={user} onBeforeLogoutClick={close} />
             </>
           ) : (
             <>
-              <Link href="/login" prefetch={false} className={headerCss.navLink} onClick={close}>
+              <Link
+                href="/login"
+                prefetch={false}
+                className={`${navLinkCss.navLink} ${css.mobileOnly}`}
+                onClick={close}
+                tabIndex={isOpen ? undefined : -1}
+              >
                 Log in
               </Link>
-              <Link
+              <CtaLink
                 href="/register"
-                prefetch={false}
-                className={headerCss.ctaButton}
+                className={css.mobileOnly}
                 onClick={close}
+                tabIndex={isOpen ? undefined : -1}
               >
                 Join now
-              </Link>
+              </CtaLink>
             </>
           )}
         </nav>
       </div>
-    </>
+    </div>
   );
 };
 

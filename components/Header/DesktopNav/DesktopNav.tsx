@@ -1,8 +1,11 @@
 import Link from 'next/link';
 import type { User } from '@/types/user';
 import { NAV_LINKS } from '../Header.constants';
-import LogoutButton from '../MobileMenu/LogoutButton';
-import css from '../Header.module.css';
+import NavLink from '../NavLink/NavLink';
+import navLinkCss from '../NavLink/NavLink.module.css';
+import CtaLink from '../CtaLink/CtaLink';
+import UserBar from '../UserBar/UserBar';
+import css from './DesktopNav.module.css';
 
 interface DesktopNavProps {
   isAuthenticated: boolean;
@@ -15,40 +18,27 @@ const DesktopNav = ({ isAuthenticated, user }: DesktopNavProps) => {
       <ul className={css.desktopNavList}>
         {NAV_LINKS.map(({ href, label }) => (
           <li key={href}>
-            <Link href={href} prefetch={false} className={css.navLink}>
-              {label}
-            </Link>
+            <NavLink href={href}>{label}</NavLink>
           </li>
         ))}
         {isAuthenticated && (
           <li>
-            <Link href="/profile" prefetch={false} className={css.navLink}>
-              My Profile
-            </Link>
+            <NavLink href="/profile">My Profile</NavLink>
           </li>
         )}
       </ul>
 
       {isAuthenticated && user ? (
-        <div className={css.desktopAuth}>
-          <Link href="/articles/new" prefetch={false} className={css.ctaButton}>
-            Create an article
-          </Link>
-          <div className={css.userBar}>
-            <span className={css.avatar} aria-hidden />
-            <span className={css.userName}>{user.name}</span>
-            <span className={css.divider} aria-hidden />
-            <LogoutButton className={css.iconButton} />
-          </div>
+        <div className={`${css.desktopAuth} ${css.desktopAuthAuthenticated}`}>
+          <CtaLink href="/articles/new">Create an article</CtaLink>
+          <UserBar user={user} />
         </div>
       ) : (
         <div className={css.desktopAuth}>
-          <Link href="/login" prefetch={false} className={css.navLink}>
+          <Link href="/login" prefetch={false} className={navLinkCss.navLink}>
             Log in
           </Link>
-          <Link href="/register" prefetch={false} className={css.ctaButton}>
-            Join now
-          </Link>
+          <CtaLink href="/register">Join now</CtaLink>
         </div>
       )}
     </nav>

@@ -16,6 +16,6 @@ interface CurrentUser {
 export const getCurrentUser = async (): Promise<CurrentUser> => {
   return {
     isAuthenticated: true,
-    user: { name: 'olex', email: 'olex@meta.ua', avatarUrl: 'askdjaksdjnajksd' },
+    user: { name: 'Taras', email: 'olex@meta.ua', avatarUrl: 'askdjaksdjnajksd' },
   };
 };

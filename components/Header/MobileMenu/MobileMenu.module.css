@@ -1,52 +1,35 @@
-.menu {
-  position: fixed;
-  inset: 0;
+.wrapper {
+  position: static;
+}
+
+.panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: calc(100vh - 100%);
   background-color: var(--color-light-green);
-  display: flex;
-  flex-direction: column;
   overflow-y: auto;
-  visibility: hidden;
-  opacity: 0;
-  transform: translateY(-8px);
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease,
-    visibility 0.2s;
-  z-index: 200;
+  z-index: 1;
+  clip-path: inset(0 0 100% 0);
+  pointer-events: none;
+  transition: clip-path 0.35s ease;
 }
 
-.menuOpen {
-  visibility: visible;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.topBar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-block: 14px;
-}
-
-.closeButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: none;
-  border: none;
-  color: var(--color-green-darker);
-  padding: 0;
+.panelOpen {
+  clip-path: inset(0 0 0% 0);
+  pointer-events: auto;
 }
 
 .nav {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 32px;
-  padding: 24px 16px 40px;
-  margin: auto 0;
+  min-height: 100%;
+  padding: 32px 16px;
 }
 
 .navList {
@@ -56,14 +39,22 @@
   gap: 32px;
 }
 
+.mobileOnly {
+  display: inline-flex;
+}
+
 @media (min-width: 768px) {
   .nav {
     padding-inline: 32px;
   }
+
+  .mobileOnly {
+    display: none;
+  }
 }
 
 @media (min-width: 1440px) {
-  .menu {
+  .wrapper {
     display: none;
   }
 }
