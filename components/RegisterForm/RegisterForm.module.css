@@ -1,0 +1,155 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 360px;
+  margin-inline: auto;
+  padding: 48px 32px;
+  border-radius: 32px;
+  background-color: #d1e0d8;
+}
+
+@media (min-width: 768px) {
+  .card {
+    max-width: 522px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .card {
+    max-width: 392px;
+  }
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-manrope);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: normal;
+  text-align: center;
+  color: #070721;
+}
+
+.description {
+  margin: 0;
+  max-width: 278px;
+  font-size: 16px;
+  line-height: 1.55;
+  text-align: center;
+  color: #070721;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 27px;
+  width: 100%;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.label {
+  font-size: 12px;
+  color: #070721;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #9f9f9f;
+  border-radius: 8px;
+  background-color: #f7fffb;
+}
+
+.input {
+  flex: 1 0 0;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-manrope);
+  font-size: 16px;
+  color: #070721;
+}
+
+.input::placeholder {
+  color: #595d62;
+}
+
+.toggleVisibility {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.error {
+  min-height: 15px;
+  font-size: 12px;
+  color: #ad6a6c;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 64px;
+  background-color: #649179;
+  color: #f7fffb;
+  font-family: var(--font-manrope);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.submitButton:hover,
+.submitButton:focus-visible {
+  background-color: #374f42;
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.prompt {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.55;
+  text-align: center;
+  color: #070721;
+}
+
+.loginLink {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.loginLink:hover,
+.loginLink:focus-visible {
+  color: #374f42;
+}
