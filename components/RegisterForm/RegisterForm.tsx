@@ -39,7 +39,11 @@ const RegisterForm = () => {
       <h1 className={css.title}>Register</h1>
       <p className={css.description}>Join our community of mindfulness and wellbeing!</p>
 
-      <Formik initialValues={initialValues} validationSchema={RegisterSchema} onSubmit={handleSubmit}>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={RegisterSchema}
+        onSubmit={handleSubmit}
+      >
         {({ isSubmitting }) => (
           <Form className={css.form} noValidate>
             <div className={css.fields}>
@@ -48,7 +52,13 @@ const RegisterForm = () => {
                   Enter your name
                 </label>
                 <div className={css.inputWrapper}>
-                  <Field id="name" name="name" type="text" placeholder="Name" className={css.input} />
+                  <Field
+                    id="name"
+                    name="name"
+                    type="text"
+                    placeholder="Name"
+                    className={css.input}
+                  />
                 </div>
                 <ErrorMessage name="name" component="span" className={css.error} />
               </div>
@@ -86,6 +96,11 @@ const RegisterForm = () => {
                     onClick={() => setIsPasswordVisible(prev => !prev)}
                     aria-label={isPasswordVisible ? 'Hide password' : 'Show password'}
                   >
+                    <svg width={24} height={24}>
+                      <use
+                        href={`/icons/sprite.svg#${isPasswordVisible ? 'eye' : 'eye-crossed'}`}
+                      />
+                    </svg>
                   </button>
                 </div>
                 <ErrorMessage name="password" component="span" className={css.error} />
@@ -108,6 +123,11 @@ const RegisterForm = () => {
                     onClick={() => setIsRepeatPasswordVisible(prev => !prev)}
                     aria-label={isRepeatPasswordVisible ? 'Hide password' : 'Show password'}
                   >
+                    <svg width={24} height={24}>
+                      <use
+                        href={`/icons/sprite.svg#${isRepeatPasswordVisible ? 'eye' : 'eye-crossed'}`}
+                      />
+                    </svg>
                   </button>
                 </div>
                 <ErrorMessage name="repeatPassword" component="span" className={css.error} />
