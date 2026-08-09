@@ -44,14 +44,18 @@ const RegisterForm = () => {
         validationSchema={RegisterSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting }) => (
+        {({ isSubmitting, errors, touched }) => (
           <Form className={css.form} noValidate>
             <div className={css.fields}>
               <div className={css.formGroup}>
                 <label htmlFor="name" className={css.label}>
                   Enter your name
                 </label>
-                <div className={css.inputWrapper}>
+                <div
+                  className={`${css.inputWrapper} ${
+                    errors.name && touched.name ? css.inputWrapperInvalid : ''
+                  }`}
+                >
                   <Field
                     id="name"
                     name="name"
@@ -67,7 +71,11 @@ const RegisterForm = () => {
                 <label htmlFor="email" className={css.label}>
                   Enter your email address
                 </label>
-                <div className={css.inputWrapper}>
+                <div
+                  className={`${css.inputWrapper} ${
+                    errors.email && touched.email ? css.inputWrapperInvalid : ''
+                  }`}
+                >
                   <Field
                     id="email"
                     name="email"
@@ -83,7 +91,11 @@ const RegisterForm = () => {
                 <label htmlFor="password" className={css.label}>
                   Create a strong password
                 </label>
-                <div className={css.inputWrapper}>
+                <div
+                  className={`${css.inputWrapper} ${
+                    errors.password && touched.password ? css.inputWrapperInvalid : ''
+                  }`}
+                >
                   <Field
                     id="password"
                     name="password"
@@ -110,7 +122,13 @@ const RegisterForm = () => {
                 <label htmlFor="repeatPassword" className={css.label}>
                   Repeat your password
                 </label>
-                <div className={css.inputWrapper}>
+                <div
+                  className={`${css.inputWrapper} ${
+                    errors.repeatPassword && touched.repeatPassword
+                      ? css.inputWrapperInvalid
+                      : ''
+                  }`}
+                >
                   <Field
                     id="repeatPassword"
                     name="repeatPassword"
