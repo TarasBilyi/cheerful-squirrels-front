@@ -1,0 +1,23 @@
+.container {
+  width: 100%;
+  min-width: 320px;
+  max-width: 393px;
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+
+/* tablet 768px */
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+    padding-inline: 32px;
+  }
+}
+
+/* desktop 1440px */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1440px;
+    padding-inline: 108px;
+  }
+}
