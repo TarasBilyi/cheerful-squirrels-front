@@ -1,10 +1,12 @@
 import Link from 'next/link';
+import type { User } from '@/types/user';
 import { NAV_LINKS } from '../Header.constants';
+import LogoutButton from '../MobileMenu/LogoutButton';
 import css from '../Header.module.css';
 
 interface DesktopNavProps {
   isAuthenticated: boolean;
-  user: { name: string };
+  user: User | null;
 }
 
 const DesktopNav = ({ isAuthenticated, user }: DesktopNavProps) => {
@@ -27,7 +29,7 @@ const DesktopNav = ({ isAuthenticated, user }: DesktopNavProps) => {
         )}
       </ul>
 
-      {isAuthenticated ? (
+      {isAuthenticated && user ? (
         <div className={css.desktopAuth}>
           <Link href="/articles/new" prefetch={false} className={css.ctaButton}>
             Create an article
@@ -36,13 +38,7 @@ const DesktopNav = ({ isAuthenticated, user }: DesktopNavProps) => {
             <span className={css.avatar} aria-hidden />
             <span className={css.userName}>{user.name}</span>
             <span className={css.divider} aria-hidden />
-            {/* TODO: логаут потребує клієнтської дії (стору) —
-                винести в маленький client-компонент LogoutButton, коли буде готовий auth-store */}
-            <button type="button" className={css.iconButton} aria-label="Log out">
-              <svg width="32" height="32" className={css.burgerIcon} aria-hidden="true" role="img">
-                <use href="/icons/sprite.svg#icon-logout"></use>
-              </svg>
-            </button>
+            <LogoutButton className={css.iconButton} />
           </div>
         </div>
       ) : (
