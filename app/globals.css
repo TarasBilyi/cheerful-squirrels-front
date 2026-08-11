@@ -1,9 +1,14 @@
-/* app/globals.css */
+:root {
+  --color-green: #649179;
+  --color-green-darker: #374f42;
+  --color-light-green: #d1e0d8;
+  --color-white: #f7fffb;
+  --color-black: #070721;
+  --color-gray: #595d62;
+  --color-light-gray: #9f9f9f;
+  --color-error: #ad6a6c;
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+  --transition-hover: 0.3s ease-in-out;
 }
 
 html {
@@ -22,8 +27,8 @@ body {
   flex-direction: column;
   line-height: 1.55;
   font-size: 16px;
-  color: #070721;
-  background-color: #f7fffb;
+  color: var(--color-black);
+  background-color: var(--color-white);
   font-family: var(--font-manrope);
 }
 
