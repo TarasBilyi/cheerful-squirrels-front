@@ -1,0 +1,139 @@
+.mainContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.form {
+  border-radius: 32px;
+  padding: 48px 32px;
+  background-color: var(--color-light-green);
+  width: 266px;
+}
+
+@media screen and (min-width: 768px) {
+  .form {
+    width: 458px;
+  }
+}
+
+.formTitle {
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 700;
+  font-size: 32px;
+  text-align: center;
+  color: var(--color-black);
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--color-black);
+}
+
+.formEmail {
+  margin-bottom: 16px;
+}
+
+.formPassword {
+  position: relative;
+  margin-bottom: 27px;
+}
+
+.input {
+  border: 1px solid var(--color-light-gray);
+  border-radius: 8px;
+  padding: 8px;
+  background-color: var(--color-white);
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--color-black);
+}
+
+.input::placeholder {
+  color: var(--color-gray);
+  opacity: 0.4;
+}
+
+.submitButton {
+  border-radius: 64px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background: var(--color-green);
+  width: 100%;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--color-white);
+  margin-bottom: 20px;
+}
+
+.submitButton:hover {
+  background: var(--color-green-darker);
+}
+
+.submitButton:focus {
+  box-shadow:
+    0 0 0 6px rgba(78, 70, 180, 0.12),
+    0 0 0 2px #fff;
+  background: var(--color-green);
+}
+
+.haveAccount {
+  display: flex;
+  justify-content: space-between;
+  justify-content: center;
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  text-align: center;
+  color: var(--color-black);
+}
+
+.haveAccount > p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.haveAccount > p > a {
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+  color: var(--color-black);
+}
+
+.eyeButton {
+  stroke: var(--color-black);
+  stroke-width: 0.75;
+  stroke-linecap: round;
+}
+
+.formPassword button {
+  position: absolute;
+  right: 8px;
+  top: 30px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.error {
+  font-family: var(--font-manrope), sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--color-error);
+}
