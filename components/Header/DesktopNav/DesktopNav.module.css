@@ -1,0 +1,27 @@
+.desktopNav {
+  display: none;
+}
+
+.desktopNavList {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.desktopAuth {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.desktopAuthAuthenticated {
+  gap: 32px;
+}
+
+@media (min-width: 1440px) {
+  .desktopNav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+}

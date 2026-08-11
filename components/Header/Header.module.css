@@ -1,0 +1,43 @@
+.header {
+  position: relative;
+  background-color: var(--color-light-green);
+  z-index: 100;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 14px;
+}
+
+.logoLink {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.tabletOnly {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .tabletOnly {
+    display: inline-flex;
+  }
+
+  .actionsAuthenticated {
+    gap: 32px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .tabletOnly {
+    display: none;
+  }
+}
