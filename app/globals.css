@@ -7,6 +7,8 @@
   --color-gray: #595d62;
   --color-light-gray: #9f9f9f;
   --color-error: #ad6a6c;
+
+  --transition-hover: 0.3s ease-in-out;
 }
 
 html {
