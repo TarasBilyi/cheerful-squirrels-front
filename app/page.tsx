@@ -1,5 +1,3 @@
-// app/page.tsx
-
 import styles from "./page.module.css";
 import About from "@/components/About/About";
 
