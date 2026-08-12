@@ -1,5 +1,3 @@
-// components/About/About.tsx
-
 import Image from "next/image";
 import styles from "./About.module.css";
 import Container from "@/components/Container/Container";

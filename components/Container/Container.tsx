@@ -1,5 +1,3 @@
-// components/Container/Container.tsx
-
 import css from "./Container.module.css";
 
 interface ContainerProps {

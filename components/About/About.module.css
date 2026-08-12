@@ -15,14 +15,14 @@
   padding: 32px;
   max-width: 361px;
   height: auto;
-  background-color: #d1e0d8;
+  background-color: var(--color-light-green);
 }
 
 .title {
   font-family: var(--font-manrope);
   font-weight: 700;
   font-size: 32px;
-  color: #070721;
+  color: var(--color-black);
   margin-bottom: 32px;
 }
 
@@ -31,7 +31,7 @@
   font-weight: 400;
   font-size: 16px;
   line-height: 1.55;
-  color: #070721;
+  color: var(--color-black);
 }
 
 .imageLotus {
