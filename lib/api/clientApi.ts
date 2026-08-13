@@ -1,5 +1,3 @@
-// lib/api/clientApi.ts
-
 import { nextServer } from './api';
 import { User } from '@/types/user';
 
@@ -30,4 +28,20 @@ export const removeSavedArticle = async (articleId: string) => {
     data: { articleId },
   });
   return data.data;
+};
+export type RegisterRequest = { name: string; email: string; password: string };
+
+export const register = async (user: RegisterRequest) => {
+  const { data } = await nextServer.post<User>('/auth/register', user);
+  return data;
+};
+
+export const updateAvatar = async (avatar: File) => {
+  const formData = new FormData();
+  formData.append('avatar', avatar);
+
+  const { data } = await nextServer.patch<User>('/users/me/avatar', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+  return data;
 };
