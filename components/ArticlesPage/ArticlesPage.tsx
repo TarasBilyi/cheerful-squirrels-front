@@ -28,7 +28,7 @@ const ArticlesPage = () => {
   const [category, setCategory] = useState<Category>('general');
   const [page, setPage] = useState(1);
 
-  const [hasNextPage, setHasNextPage] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -39,16 +39,11 @@ const ArticlesPage = () => {
 
         const data = await getArticles(category, page, 12);
 
-        if (page === 1) {
-          setArticles(data.articles);
-        } else {
-          setArticles(prev => [...prev, ...data.articles]);
-        }
-
-        setHasNextPage(data.pagination.hasNextPage);
+        setArticles(data.articles);
         setTotalItems(data.pagination.totalItems);
+        setTotalPages(data.pagination.totalPages);
       } catch (error) {
-        console.error(error);
+        console.error('Failed to fetch articles:', error);
       } finally {
         setLoading(false);
       }
@@ -64,10 +59,12 @@ const ArticlesPage = () => {
     setPage(1);
   };
 
-  const handleLoadMore = () => {
-    if (!loading && hasNextPage) {
-      setPage(prev => prev + 1);
-    }
+  const handlePageChange = (selectedPage: number) => {
+    setPage(selectedPage);
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
   };
 
   return (
@@ -85,8 +82,8 @@ const ArticlesPage = () => {
                 className={css.select}
                 classNamePrefix="reactSelect"
                 options={options}
-                isSearchable={false}
                 value={options.find(option => option.value === category)}
+                isSearchable={false}
                 onChange={option => {
                   if (option) {
                     handleCategoryChange(option.value);
@@ -96,16 +93,16 @@ const ArticlesPage = () => {
             </div>
           </div>
 
-          {loading && page === 1 ? (
+          {loading ? (
             <p className={css.loading}>Loading...</p>
           ) : (
             <ArticlesList articles={articles} />
           )}
 
           <Pagination
-            onLoadMore={handleLoadMore}
-            hasNextPage={hasNextPage}
-            isLoading={loading}
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
           />
         </Container>
       </section>

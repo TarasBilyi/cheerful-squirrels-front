@@ -1,26 +1,43 @@
+'use client';
+
+import ReactPaginate from 'react-paginate';
+import { HiOutlineArrowLongLeft, HiOutlineArrowLongRight } from "react-icons/hi2";
+
 import css from './Pagination.module.css';
 
 interface PaginationProps {
-  onLoadMore: () => void;
-  hasNextPage: boolean;
-  isLoading: boolean;
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
 }
 
 const Pagination = ({
-  onLoadMore,
-  hasNextPage,
-  isLoading,
+  currentPage,
+  totalPages,
+  onPageChange,
 }: PaginationProps) => {
   return (
     <div className={css.wrapper}>
-      <button
-        type="button"
-        className={css.button}
-        onClick={onLoadMore}
-        disabled={isLoading || !hasNextPage}
-      >
-        {isLoading ? 'Loading...' : 'Load More'}
-      </button>
+      <ReactPaginate
+        breakLabel="..."
+        previousLabel={<HiOutlineArrowLongLeft size={28} />}
+        nextLabel={<HiOutlineArrowLongRight size={28} />}
+        onPageChange={({ selected }) => onPageChange(selected + 1)}
+        pageRangeDisplayed={4}
+        marginPagesDisplayed={0}
+        pageCount={totalPages}
+        forcePage={currentPage - 1}
+        renderOnZeroPageCount={null}
+        containerClassName={css.pagination}
+        pageClassName={css.page}
+        pageLinkClassName={css.pageLink}
+        previousClassName={css.arrow}
+        previousLinkClassName={css.arrowLink}
+        nextClassName={css.arrow}
+        nextLinkClassName={css.arrowLink}
+        activeClassName={css.active}
+        disabledClassName={css.disabled}
+      />
     </div>
   );
 };
