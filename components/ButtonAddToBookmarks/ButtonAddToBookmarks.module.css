@@ -1,0 +1,44 @@
+/* components/ButtonAddToBookmarks/ButtonAddToBookmarks.module.css */
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-green-darker);
+  border-radius: 64px;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  background-color: transparent;
+  color: var(--color-green-darker);
+  transition:
+    background-color var(--transition-hover),
+    border-color var(--transition-hover),
+    color var(--transition-hover),
+    opacity var(--transition-hover);
+}
+
+.button:hover:not(:disabled) {
+  background-color: rgba(30, 47, 40, 0.06);
+}
+
+.button:disabled {
+  cursor: default;
+}
+
+.button[aria-busy='true'] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.button[aria-pressed='true'] {
+  color: var(--color-white);
+  border-color: var(--color-green);
+  background-color: var(--color-green);
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+}

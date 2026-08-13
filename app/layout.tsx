@@ -4,6 +4,7 @@ import 'modern-normalize/modern-normalize.css';
 import './globals.css';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import ModalRoot from '@/components/ModalRoot';
 import { Toaster } from 'react-hot-toast';
 
 const manrope = Manrope({
@@ -27,19 +28,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  modal,
 }: Readonly<{
   children: React.ReactNode;
-  modal: React.ReactNode;
 }>) {
   return (
     <html lang="en" className={`${manrope.variable} ${merienda.variable}`}>
       <body>
         <Header />
         {children}
-        {modal}
         <Footer />
         <div id="modal-root"></div>
+        <ModalRoot />
         <Toaster
           position="top-right"
           toastOptions={{

@@ -1,3 +1,5 @@
+// lib/auth/getCurrentUser.ts
+
 import 'server-only';
 import type { User } from '@/types/user';
 
@@ -16,6 +18,12 @@ interface CurrentUser {
 export const getCurrentUser = async (): Promise<CurrentUser> => {
   return {
     isAuthenticated: true,
-    user: { name: 'Taras', email: 'olex@meta.ua', avatarUrl: 'askdjaksdjnajksd' },
+    user: {
+      _id: 'dev-user-id',
+      name: 'Taras',
+      email: 'olex@meta.ua',
+      avatarUrl: 'askdjaksdjnajksd',
+      savedArticles: [],
+    },
   };
 };
