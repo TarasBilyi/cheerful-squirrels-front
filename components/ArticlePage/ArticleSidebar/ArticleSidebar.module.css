@@ -1,0 +1,21 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: var(--color-light-green);
+}
+
+@media (min-width: 1440px) {
+  .sidebar {
+    width: 320px;
+    flex-shrink: 0;
+  }
+}
