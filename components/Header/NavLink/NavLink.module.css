@@ -1,11 +1,32 @@
 .navLink {
+  display: flex;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 12px;
   color: var(--color-green-darker);
   padding-bottom: 4px;
-  border-bottom: 2px solid transparent;
+  border-bottom: 1px solid transparent;
 }
 
 .navLinkActive {
   border-bottom-color: var(--color-green-darker);
+}
+
+@media (min-width: 768px) {
+  .navLink {
+    transition: color var(--transition-hover);
+  }
+
+  .navLink:hover {
+    color: var(--color-green);
+  }
+}
+
+@media (min-width: 1440px) {
+  .navLink {
+    transition: transform var(--transition-hover);
+  }
+
+  .navLink:hover {
+    transform: translateY(-2px);
+  }
 }
