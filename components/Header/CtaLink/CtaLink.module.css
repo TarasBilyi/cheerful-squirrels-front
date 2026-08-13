@@ -10,9 +10,21 @@
   font-size: 16px;
   white-space: nowrap;
   border: none;
-  transition: opacity 0.2s ease;
 }
 
-.cta:hover {
-  opacity: 0.85;
+@media (min-width: 768px) {
+  .cta {
+    transition:
+      background-color var(--transition-hover),
+      box-shadow var(--transition-hover),
+      transform var(--transition-hover);
+  }
+
+  .cta:hover {
+    background-color: var(--color-green-darker);
+    transform: scale(0.98);
+    box-shadow:
+      0 0 0 6px rgba(78, 70, 180, 0.12),
+      0 0 0 2px #fff;
+  }
 }

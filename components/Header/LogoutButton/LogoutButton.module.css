@@ -15,3 +15,13 @@
   width: 32px;
   height: 32px;
 }
+
+@media (min-width: 768px) {
+  .button {
+    transition: transform var(--transition-hover);
+  }
+
+  .button:hover {
+    transform: scale(0.9);
+  }
+}

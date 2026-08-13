@@ -1,0 +1,129 @@
+.about {
+  padding: 36px 0;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+}
+
+.textCard {
+  border-radius: 32px;
+  padding: 32px;
+  max-width: 361px;
+  height: auto;
+  background-color: var(--color-light-green);
+}
+
+.title {
+  font-family: var(--font-manrope);
+  font-weight: 700;
+  font-size: 32px;
+  color: var(--color-black);
+  margin-bottom: 32px;
+}
+
+.text {
+  font-family: var(--font-manrope);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--color-black);
+}
+
+.imageLotus {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 361px;
+  height: 365px;
+  border-radius: 32px;
+  margin: 0 auto;
+}
+
+.imageFriends {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 361px;
+  height: 365px;
+  border-radius: 32px;
+  margin: 0 auto;
+}
+
+.imageMeditation {
+  display: none;
+}
+
+/* tablet 768px */
+@media screen and (min-width: 768px) {
+  .wrapper {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .textCard {
+    max-width: 431px;
+  }
+  .imageLotus {
+    max-width: 249px;
+    height: 326px;
+  }
+  .imageFriends {
+    max-width: 704px;
+    height: 398px;
+  }
+}
+
+/* desktop 1440px */
+@media screen and (min-width: 1440px) {
+  .textCard {
+    max-width: 496px;
+  }
+  .title {
+    font-size: 40px;
+  }
+  .imageLotus {
+    max-width: 704px;
+    height: 326px;
+  }
+  .imageFriends {
+    max-width: 808px;
+  }
+  .imageMeditation {
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 392px;
+    height: 398px;
+    border-radius: 32px;
+  }
+}
+
+.imgTablet,
+.imgDesktop {
+  display: none;
+}
+
+/* tablet 768px */
+@media screen and (min-width: 768px) {
+  .imgMobile {
+    display: none;
+  }
+  .imgTablet {
+    display: block;
+  }
+}
+
+/* desktop 1440px */
+@media screen and (min-width: 1440px) {
+  .imgTablet {
+    display: none;
+  }
+  .imgDesktop {
+    display: block;
+  }
+}
