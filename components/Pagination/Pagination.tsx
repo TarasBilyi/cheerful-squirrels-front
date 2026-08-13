@@ -1,7 +1,6 @@
 'use client';
 
 import ReactPaginate from 'react-paginate';
-import { HiOutlineArrowLongLeft, HiOutlineArrowLongRight } from "react-icons/hi2";
 
 import css from './Pagination.module.css';
 
@@ -20,8 +19,16 @@ const Pagination = ({
     <div className={css.wrapper}>
       <ReactPaginate
         breakLabel="..."
-        previousLabel={<HiOutlineArrowLongLeft size={28} />}
-        nextLabel={<HiOutlineArrowLongRight size={28} />}
+        previousLabel={
+          <svg width="20" height="20">
+            <use href="/icons/sprite.svg#arrow-left" />
+          </svg>
+        }
+        nextLabel={
+          <svg width="20" height="20">
+            <use href="/icons/sprite.svg#arrow-right" />
+          </svg>
+        }
         onPageChange={({ selected }) => onPageChange(selected + 1)}
         pageRangeDisplayed={4}
         marginPagesDisplayed={0}

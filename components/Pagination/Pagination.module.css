@@ -111,3 +111,16 @@
         height: 48px;
     }
 }
+
+.arrowLink svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.arrowLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f5f7f4;
+}

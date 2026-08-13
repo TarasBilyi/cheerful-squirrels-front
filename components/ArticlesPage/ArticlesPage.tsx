@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Select from 'react-select';
+import Select, { components, DropdownIndicatorProps } from 'react-select';
 
 import Container from '@/components/Container/Container';
 import ArticlesList from '@/components/ArticlesList/ArticlesList';
@@ -22,6 +22,18 @@ const options: Option[] = [
   { value: 'general', label: 'All' },
   { value: 'popular', label: 'Popular' },
 ];
+
+const DropdownIndicator = (props: DropdownIndicatorProps<Option>) => (
+  <components.DropdownIndicator {...props}>
+    <svg width="16" height="16">
+      <use
+        href={`/icons/sprite.svg#${
+          props.selectProps.menuIsOpen ? 'chevron-up' : 'chevron-down'
+        }`}
+      />
+    </svg>
+  </components.DropdownIndicator>
+);
 
 const ArticlesPage = () => {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -84,6 +96,9 @@ const ArticlesPage = () => {
                 options={options}
                 value={options.find(option => option.value === category)}
                 isSearchable={false}
+                components={{
+                  DropdownIndicator,
+                }}
                 onChange={option => {
                   if (option) {
                     handleCategoryChange(option.value);
