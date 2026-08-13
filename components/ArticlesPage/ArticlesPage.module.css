@@ -1,0 +1,62 @@
+.main {
+  width: 100%;
+  min-height: 100vh;
+  background: #f7fbf9;
+}
+
+.section {
+  width: 100%;
+  max-width: 393px;
+  margin: 0 auto;
+  padding: 32px 16px;
+  box-sizing: border-box;
+}
+
+.title {
+  margin: 0 0 8px;
+
+  font-size: 32px;
+  line-height: 1.1;
+  font-weight: 600;
+
+  color: #111827;
+}
+
+.count {
+  margin: 0;
+
+  font-size: 14px;
+  line-height: 1.4;
+
+  color: #111827;
+}
+
+.header {
+  margin-bottom: 16px;
+}
+
+.filter {
+  display: flex;
+  justify-content: flex-end;
+
+  margin-bottom: 16px;
+}
+
+.filter select {
+  width: 129px;
+  height: 40px;
+
+  padding: 0 12px;
+
+  border: 1px solid #9cafaa;
+  border-radius: 4px;
+
+  background: #ffffff;
+
+  font-size: 14px;
+  color: #53635b;
+}
+
+.loading {
+  text-align: center;
+}
