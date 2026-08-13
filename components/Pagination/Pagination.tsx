@@ -11,17 +11,13 @@ const Pagination = ({
   hasNextPage,
   isLoading,
 }: PaginationProps) => {
-  if (!hasNextPage) {
-    return null;
-  }
-
   return (
     <div className={css.wrapper}>
       <button
         type="button"
         className={css.button}
         onClick={onLoadMore}
-        disabled={isLoading}
+        disabled={isLoading || !hasNextPage}
       >
         {isLoading ? 'Loading...' : 'Load More'}
       </button>

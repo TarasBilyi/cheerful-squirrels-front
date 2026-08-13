@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Select from 'react-select';
 
+import Container from '@/components/Container/Container';
 import ArticlesList from '@/components/ArticlesList/ArticlesList';
 import Pagination from '@/components/Pagination/Pagination';
 
@@ -10,6 +12,16 @@ import { getArticles, type Article } from '@/lib/api/articles';
 import css from './ArticlesPage.module.css';
 
 type Category = 'general' | 'popular';
+
+type Option = {
+  value: Category;
+  label: string;
+};
+
+const options: Option[] = [
+  { value: 'general', label: 'All' },
+  { value: 'popular', label: 'Popular' },
+];
 
 const ArticlesPage = () => {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -30,16 +42,13 @@ const ArticlesPage = () => {
         if (page === 1) {
           setArticles(data.articles);
         } else {
-          setArticles(prevArticles => [
-            ...prevArticles,
-            ...data.articles,
-          ]);
+          setArticles(prev => [...prev, ...data.articles]);
         }
 
         setHasNextPage(data.pagination.hasNextPage);
         setTotalItems(data.pagination.totalItems);
       } catch (error) {
-        console.error('Failed to fetch articles:', error);
+        console.error(error);
       } finally {
         setLoading(false);
       }
@@ -49,9 +58,7 @@ const ArticlesPage = () => {
   }, [category, page]);
 
   const handleCategoryChange = (newCategory: Category) => {
-    if (newCategory === category) {
-      return;
-    }
+    if (newCategory === category) return;
 
     setCategory(newCategory);
     setPage(1);
@@ -59,44 +66,48 @@ const ArticlesPage = () => {
 
   const handleLoadMore = () => {
     if (!loading && hasNextPage) {
-      setPage(prevPage => prevPage + 1);
+      setPage(prev => prev + 1);
     }
   };
 
   return (
     <main className={css.main}>
       <section className={css.section}>
-        <div className={css.header}>
-          <h1 className={css.title}>Articles</h1>
+        <Container>
+          <div className={css.header}>
+            <h1 className={css.title}>Articles</h1>
 
-          <p className={css.count}>
-            {totalItems} articles
-          </p>
-        </div>
+            <div className={css.controls}>
+              <p className={css.count}>{totalItems} articles</p>
 
-        <div className={css.filter}>
-          <select
-            value={category}
-            onChange={e =>
-              handleCategoryChange(e.target.value as Category)
-            }
-          >
-            <option value="general">All</option>
-            <option value="popular">Popular</option>
-          </select>
-        </div>
+              <Select<Option, false>
+                instanceId="articles-category"
+                className={css.select}
+                classNamePrefix="reactSelect"
+                options={options}
+                isSearchable={false}
+                value={options.find(option => option.value === category)}
+                onChange={option => {
+                  if (option) {
+                    handleCategoryChange(option.value);
+                  }
+                }}
+              />
+            </div>
+          </div>
 
-        {loading && page === 1 ? (
-          <p className={css.loading}>Loading...</p>
-        ) : (
-          <ArticlesList articles={articles} />
-        )}
+          {loading && page === 1 ? (
+            <p className={css.loading}>Loading...</p>
+          ) : (
+            <ArticlesList articles={articles} />
+          )}
 
-        <Pagination
-          onLoadMore={handleLoadMore}
-          hasNextPage={hasNextPage}
-          isLoading={loading}
-        />
+          <Pagination
+            onLoadMore={handleLoadMore}
+            hasNextPage={hasNextPage}
+            isLoading={loading}
+          />
+        </Container>
       </section>
     </main>
   );

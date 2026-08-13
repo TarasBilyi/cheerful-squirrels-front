@@ -1,3 +1,5 @@
+//for testing purposes only, will be deleted in the future
+
 import type { Article } from '@/lib/api/articles';
 import Image from 'next/image';
 

@@ -1,42 +1,52 @@
 .wrapper {
     display: flex;
     justify-content: center;
-    margin-top: 24px;
-    padding-bottom: 64px;
+    margin: 24px 0 48px;
 }
 
 .button {
     width: 100%;
     height: 57px;
+    padding: 16px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    padding: 0;
-
     border: none;
-    border-radius: 999px;
+    border-radius: 64px;
 
-    background-color: #66887a;
-    color: #ffffff;
+    background:#649179;
+    color: #f7fffb;
 
+    font-family: "Manrope", sans-serif;
     font-size: 18px;
-    font-weight: 600;
-    line-height: 1;
+    font-weight: 700;
+    line-height: 1.33;
 
     cursor: pointer;
-
-    transition:
-        background-color 250ms ease,
-        opacity 250ms ease;
+    transition: background-color 250ms ease;
 }
 
-.button:hover:not(:disabled) {
-    background-color: #567568;
+.button:hover:not(:disabled),
+.button:focus-visible:not(:disabled) {
+    background: #374f42;
+}
+
+.button:active:not(:disabled) {
+    box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px #fff;
+        background: #649179;
 }
 
 .button:disabled {
+    background-color: #649179;
+    color: #f7f7f7;
     cursor: not-allowed;
-    opacity: 0.6;
+    opacity: 0.3;
+}
+
+@media screen and (min-width: 768px) {
+.button {
+        width: 390px;
+}
 }
