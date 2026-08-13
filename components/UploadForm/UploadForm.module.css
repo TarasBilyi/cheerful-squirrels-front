@@ -1,3 +1,9 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  min-height: 100dvh;
+}
+
 .card {
   position: relative;
   display: flex;
@@ -36,6 +42,17 @@
   padding: 4px;
   color: var(--color-black);
   cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.closeButton:hover,
+.closeButton:focus-visible {
+  opacity: 0.5;
+}
+
+.closeButton:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
 }
 
 .title {
@@ -104,12 +121,23 @@
   cursor: pointer;
   transition:
     background-color 0.2s ease,
+    box-shadow 0.2s ease,
     opacity 0.2s ease;
 }
 
-.submitButton:hover,
-.submitButton:focus-visible {
+.submitButton:hover {
   background-color: var(--color-green-darker);
+}
+
+.submitButton:focus-visible,
+.submitButton:disabled {
+  box-shadow:
+    0 0 0 2px var(--color-white),
+    0 0 0 6px rgba(78, 70, 180, 0.12);
+}
+
+.submitButton:focus-visible {
+  outline: none;
 }
 
 .submitButton:disabled {
