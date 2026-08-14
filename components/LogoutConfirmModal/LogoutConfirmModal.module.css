@@ -63,6 +63,10 @@
 }
 
 .confirm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   border: none;
   background-color: var(--color-green);
   color: var(--color-white);
@@ -82,5 +86,20 @@
 
   .confirm:hover {
     background-color: var(--color-green-darker);
+  }
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: var(--color-white);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }
