@@ -1,6 +1,6 @@
 'use client';
 
-import { useLogoutModalStore } from '@/lib/store/logoutModal.store';
+import { useModalStore } from '@/store/useModalStore';
 import css from './LogoutButton.module.css';
 
 interface LogoutButtonProps {
@@ -8,11 +8,11 @@ interface LogoutButtonProps {
 }
 
 const LogoutButton = ({ onBeforeOpen }: LogoutButtonProps) => {
-  const openLogoutModal = useLogoutModalStore(state => state.openLogoutModal);
+  const openModal = useModalStore(state => state.openModal);
 
   const handleClick = () => {
     onBeforeOpen?.();
-    openLogoutModal();
+    openModal('confirm-logout');
   };
 
   return (

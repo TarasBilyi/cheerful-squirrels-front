@@ -1,6 +1,10 @@
 export interface User {
+  _id: string;
   name: string;
   email: string;
-  password: string;
-  avatarUrl: string;
+  avatarUrl?: string;
+  articlesAmount?: number;
+  savedArticles: string[];
+  createdAt?: string;
+  updatedAt?: string;
 }
