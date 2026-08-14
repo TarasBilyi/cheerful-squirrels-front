@@ -16,3 +16,8 @@ export interface Article {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export type NewArticle = Omit<
+  Article,
+  '_id' | 'desc' | 'rate' | 'ownerId' | 'date' | 'createdAt' | 'updatedAt'
+>;

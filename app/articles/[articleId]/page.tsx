@@ -8,9 +8,7 @@ interface ArticleRouteProps {
   params: Promise<{ articleId: string }>;
 }
 
-export const generateMetadata = async ({
-  params,
-}: ArticleRouteProps): Promise<Metadata> => {
+export const generateMetadata = async ({ params }: ArticleRouteProps): Promise<Metadata> => {
   const { articleId } = await params;
 
   try {
