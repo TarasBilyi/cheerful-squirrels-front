@@ -21,10 +21,6 @@ const LogoutConfirmModalContent = () => {
     try {
       await logout();
     } catch (error) {
-      // Client-side logout below still happens regardless of the
-      // response (see clearUser/close/push in finally) — this toast is
-      // purely informational, letting the user know the server-side
-      // session cleanup may not have succeeded.
       toast.error(
         (error as ApiError).response?.data?.error ??
           (error as ApiError).message ??
