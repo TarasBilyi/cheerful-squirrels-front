@@ -3,8 +3,6 @@ import type { Metadata } from 'next';
 import { AxiosError } from 'axios';
 import ArticlePage from '@/components/ArticlePage/ArticlePage';
 import { getArticleById, getRecommendedArticles } from '@/lib/api/articlesApi';
-import { getSavedArticleIds } from '@/lib/api/meApi';
-import { getCurrentUser } from '@/lib/auth/getCurrentUser';
 
 interface ArticleRouteProps {
   params: Promise<{ articleId: string }>;
@@ -36,21 +34,12 @@ const ArticleRoute = async ({ params }: ArticleRouteProps) => {
     throw error;
   }
 
-  const { isAuthenticated } = await getCurrentUser();
+  const recommended = await getRecommendedArticles({
+    excludeId: article._id,
+    limit: 3,
+  });
 
-  const [recommended, savedIds] = await Promise.all([
-    getRecommendedArticles({ excludeId: article._id, limit: 3 }),
-    isAuthenticated ? getSavedArticleIds() : Promise.resolve<string[]>([]),
-  ]);
-
-  return (
-    <ArticlePage
-      article={article}
-      recommended={recommended}
-      isAuthenticated={isAuthenticated}
-      isSaved={savedIds.includes(article._id)}
-    />
-  );
+  return <ArticlePage article={article} recommended={recommended} />;
 };
 
 export default ArticleRoute;

@@ -2,22 +2,15 @@ import Container from '../Container/Container';
 import ArticleHeader from './ArticleHeader/ArticleHeader';
 import ArticleContent from './ArticleContent/ArticleContent';
 import ArticleSidebar from './ArticleSidebar/ArticleSidebar';
-import type { Article, ArticleListItem } from '@/types/article';
+import type { Article } from '@/types/article';
 import css from './ArticlePage.module.css';
 
 interface ArticlePageProps {
   article: Article;
-  recommended: ArticleListItem[];
-  isAuthenticated: boolean;
-  isSaved: boolean;
+  recommended: Article[];
 }
 
-const ArticlePage = ({
-  article,
-  recommended,
-  isAuthenticated,
-  isSaved,
-}: ArticlePageProps) => {
+const ArticlePage = ({ article, recommended }: ArticlePageProps) => {
   return (
     <main className={css.page}>
       <Container className={css.layout}>
@@ -26,12 +19,7 @@ const ArticlePage = ({
           <ArticleContent text={article.article} />
         </div>
 
-        <ArticleSidebar
-          article={article}
-          recommended={recommended}
-          isAuthenticated={isAuthenticated}
-          isSaved={isSaved}
-        />
+        <ArticleSidebar article={article} recommended={recommended} />
       </Container>
     </main>
   );

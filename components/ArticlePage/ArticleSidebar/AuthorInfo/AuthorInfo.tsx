@@ -1,26 +1,36 @@
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils/formatDate';
-import type { ArticleAuthor } from '@/types/article';
+import type { ArticleOwner } from '@/types/article';
 import css from './AuthorInfo.module.css';
 
 interface AuthorInfoProps {
-  author: ArticleAuthor;
+  owner: string | ArticleOwner;
   date: string;
 }
 
-const AuthorInfo = ({ author, date }: AuthorInfoProps) => {
+const AuthorInfo = ({ owner, date }: AuthorInfoProps) => {
+  // GET /articles/:articleId populates ownerId into a full ArticleOwner
+  // object; some other endpoints only return the raw id string.
+  const isPopulated = typeof owner !== 'string';
+  const authorName = isPopulated ? owner.name : null;
+  const authorId = isPopulated ? owner._id : owner;
+
   return (
     <div className={css.wrapper}>
       <p className={css.row}>
         <span className={css.label}>Author:</span>{' '}
-        {/* TODO: /authors/[id] page doesn't exist yet, only the nav link does */}
-        <Link
-          href={`/authors/${author._id}`}
-          prefetch={false}
-          className={css.authorLink}
-        >
-          {author.name}
-        </Link>
+        {authorName ? (
+          // TODO: /authors/[id] page doesn't exist yet, only the nav link does
+          <Link
+            href={`/authors/${authorId}`}
+            prefetch={false}
+            className={css.authorLink}
+          >
+            {authorName}
+          </Link>
+        ) : (
+          '—'
+        )}
       </p>
 
       <p className={css.row}>

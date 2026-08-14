@@ -1,9 +1,9 @@
-import type { ArticleListItem } from '@/types/article';
+import type { Article } from '@/types/article';
 import RecommendedCard from './RecommendedCard/RecommendedCard';
 import css from './RecommendedList.module.css';
 
 interface RecommendedListProps {
-  articles: ArticleListItem[];
+  articles: Article[];
 }
 
 const RecommendedList = ({ articles }: RecommendedListProps) => {
