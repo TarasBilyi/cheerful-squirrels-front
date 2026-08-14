@@ -8,9 +8,19 @@ interface UserBarProps {
 }
 
 const UserBar = ({ user, onBeforeLogoutClick }: UserBarProps) => {
+  const initial = user.name?.trim().charAt(0).toUpperCase() || '?';
+
   return (
     <div className={css.userBar}>
-      <span className={css.avatar} aria-hidden />
+      {user.avatarUrl ? (
+        // eslint-disable-next-line @next/next/no-img-element -- домен аватара динамічний (бек),
+        // next/image вимагав би заздалегідь прописувати remotePatterns у next.config
+        <img src={user.avatarUrl} alt={user.name} className={css.avatar} />
+      ) : (
+        <span className={css.avatar} aria-hidden>
+          {initial}
+        </span>
+      )}
       <span className={css.userName}>{user.name}</span>
       <span className={css.divider} aria-hidden />
       <LogoutButton onBeforeOpen={onBeforeLogoutClick} />

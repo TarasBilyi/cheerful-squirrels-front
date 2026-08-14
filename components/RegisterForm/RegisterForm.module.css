@@ -1,3 +1,9 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  min-height: 100dvh;
+}
+
 .card {
   display: flex;
   flex-direction: column;
@@ -140,16 +146,28 @@
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.submitButton:hover,
-.submitButton:focus-visible {
+.submitButton:hover {
   background-color: var(--color-green-darker);
 }
 
+.submitButton:focus-visible,
 .submitButton:disabled {
-  opacity: 0.6;
+  box-shadow:
+    0 0 0 2px var(--color-white),
+    0 0 0 6px rgba(78, 70, 180, 0.12);
+}
+
+.submitButton:focus-visible {
+  outline: none;
+}
+
+.submitButton:disabled {
+  opacity: 0.3;
   cursor: not-allowed;
 }
 

@@ -5,11 +5,18 @@
 }
 
 .avatar {
-  width: 32px;
-  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 39px;
+  height: 39px;
   border-radius: 50%;
-  background-color: var(--color-light-gray); /* TODO: реальне фото користувача */
+  background-color: var(--color-light-gray);
+  color: var(--color-white);
+  font-weight: 700;
+  font-size: 14px;
   flex-shrink: 0;
+  object-fit: cover;
 }
 
 .userName {

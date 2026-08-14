@@ -59,10 +59,20 @@ ul {
 
 button {
   cursor: pointer;
+  border: none;
+  padding: 0;
+  outline: none;
 }
 
 img {
   display: block;
   max-width: 100%;
   height: auto;
+}
+
+input,
+textarea,
+select,
+button {
+  font: inherit;
 }
