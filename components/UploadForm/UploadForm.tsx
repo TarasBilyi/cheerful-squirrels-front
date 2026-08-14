@@ -53,7 +53,8 @@ const UploadForm = () => {
 
       if (file) {
         try {
-          user = await updateAvatar(file);
+          const { avatarUrl } = await updateAvatar(file);
+          user = { ...user, avatarUrl };
         } catch {
           toast.error('Registered, but avatar upload failed. You can add it later.');
         }

@@ -22,7 +22,7 @@ const ButtonAddToBookmarks = ({ articleId }: ButtonAddToBookmarksProps) => {
 
   const isSaved = user?.savedArticles?.includes(articleId) ?? false;
 
-  const { mutate, isPending } = useMutation({
+  const mutation = useMutation({
     mutationFn: () => (isSaved ? removeSavedArticle(articleId) : addSavedArticle(articleId)),
     onSuccess: ({ savedArticles }) => {
       if (user) {
@@ -43,17 +43,19 @@ const ButtonAddToBookmarks = ({ articleId }: ButtonAddToBookmarksProps) => {
       openModal('error-save');
       return;
     }
-    mutate();
+    mutation.mutate();
   };
+
+  const isBusy = (mutation as any).isPending ?? (mutation as any).isLoading;
 
   return (
     <button
       type="button"
       className={styles.button}
       onClick={handleClick}
-      disabled={isPending}
+      disabled={isBusy}
       aria-pressed={isSaved}
-      aria-busy={isPending}
+      aria-busy={isBusy}
       aria-label={isSaved ? 'Remove article from bookmarks' : 'Add article to bookmarks'}
     >
       <svg className={styles.icon} width="18" height="18" viewBox="0 0 16 16" aria-hidden="true">

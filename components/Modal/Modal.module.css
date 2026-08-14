@@ -7,6 +7,11 @@
   padding: 16px;
   background-color: rgba(0, 0, 0, 0.45);
   z-index: 1000;
+  animation: backdropFadeIn 0.25s ease;
+}
+
+.backdropClosing {
+  animation: backdropFadeOut 0.2s ease forwards;
 }
 
 .content {
@@ -16,4 +21,58 @@
   padding: 40px;
   border-radius: 24px;
   background-color: var(--color-white);
+  animation: contentFadeIn 0.25s ease;
+}
+
+.contentClosing {
+  animation: contentFadeOut 0.2s ease forwards;
+}
+
+@keyframes backdropFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes backdropFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes contentFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes contentFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop,
+  .content,
+  .backdropClosing,
+  .contentClosing {
+    animation: none;
+  }
 }
