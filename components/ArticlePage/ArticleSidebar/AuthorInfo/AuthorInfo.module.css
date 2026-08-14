@@ -1,0 +1,24 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.row {
+  font-size: 14px;
+  color: var(--color-black);
+}
+
+.label {
+  font-weight: 700;
+}
+
+.authorLink {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color var(--transition-hover);
+}
+
+.authorLink:hover {
+  color: var(--color-green-darker);
+}

@@ -1,0 +1,39 @@
+.button {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 64px;
+  background-color: var(--color-green);
+  color: var(--color-white);
+  font-weight: 700;
+  font-size: 16px;
+  font-family: inherit;
+  transition:
+    background-color var(--transition-hover),
+    opacity var(--transition-hover);
+}
+
+.button:hover:not(:disabled) {
+  background-color: var(--color-green-darker);
+}
+
+.button:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+.buttonSaved {
+  background-color: var(--color-green-darker);
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  stroke: var(--color-white);
+  fill: none;
+  flex-shrink: 0;
+}
