@@ -23,6 +23,9 @@
   .cta:hover {
     background-color: var(--color-green-darker);
     transform: scale(0.98);
+  }
+
+  .cta:active {
     box-shadow:
       0 0 0 6px rgba(78, 70, 180, 0.12),
       0 0 0 2px #fff;

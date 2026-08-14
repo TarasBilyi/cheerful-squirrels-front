@@ -43,7 +43,7 @@ const LoginPage = () => {
   };
 
   return (
-    <main className={css.mainContent}>
+    <div className={css.mainContent}>
       <Formik initialValues={initialValues} validationSchema={LoginSchema} onSubmit={handleSubmit}>
         <Form className={css.form}>
           <legend className={css.formTitle}>Login</legend>
@@ -98,7 +98,7 @@ const LoginPage = () => {
           </div>
         </Form>
       </Formik>
-    </main>
+    </div>
   );
 };
 
