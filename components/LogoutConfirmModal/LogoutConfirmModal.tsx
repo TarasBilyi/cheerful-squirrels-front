@@ -2,9 +2,11 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 import { useModalStore } from '@/store/useModalStore';
 import { useAuthStore } from '@/lib/store/authStore';
 import { logout } from '@/lib/api/clientApi';
+import type { ApiError } from '@/app/api/api';
 import Modal, { useModalClose } from '@/components/Modal/Modal';
 import styles from './LogoutConfirmModal.module.css';
 
@@ -19,7 +21,15 @@ const LogoutConfirmModalContent = () => {
     try {
       await logout();
     } catch (error) {
-      console.error(error);
+      // Client-side logout below still happens regardless of the
+      // response (see clearUser/close/push in finally) — this toast is
+      // purely informational, letting the user know the server-side
+      // session cleanup may not have succeeded.
+      toast.error(
+        (error as ApiError).response?.data?.error ??
+          (error as ApiError).message ??
+          'Failed to log out. Please try again.'
+      );
     } finally {
       clearUser();
       setIsLoading(false);
@@ -45,10 +55,12 @@ const LogoutConfirmModalContent = () => {
           className={styles.confirm}
           onClick={handleConfirm}
           disabled={isLoading}
+          aria-busy={isLoading}
         >
+          {isLoading && <span className={styles.spinner} aria-hidden />}
           {isLoading ? 'Logging out…' : 'Log out'}
         </button>
-        <button type="button" className={styles.cancel} onClick={close}>
+        <button type="button" className={styles.cancel} onClick={close} disabled={isLoading}>
           Cancel
         </button>
       </div>
