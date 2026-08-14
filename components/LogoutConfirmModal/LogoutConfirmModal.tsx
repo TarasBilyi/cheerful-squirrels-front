@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import { useModalStore } from '@/store/useModalStore';
+import { useModalStore } from '@/lib/store/useModalStore';
 import { useAuthStore } from '@/lib/store/authStore';
 import { logout } from '@/lib/api/clientApi';
 import type { ApiError } from '@/app/api/api';

@@ -2,10 +2,12 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import { getCurrentUser, refreshSession } from '@/lib/api/clientApi';
+import { setAuthHintCookie, clearAuthHintCookie } from '@/lib/utils/authHint';
 import type { User } from '@/types/user';
 
 interface AuthStore {
   isAuthenticated: boolean;
+  isInitializing: boolean;
   user: User | null;
 
   setUser: (user: User) => void;
@@ -19,21 +21,19 @@ export const useAuthStore = create<AuthStore>()(
     set => ({
       user: null,
       isAuthenticated: false,
+      isInitializing: true,
 
-      setUser: user =>
-        set({
-          user,
-          isAuthenticated: true,
-        }),
+      setUser: user => {
+        setAuthHintCookie();
+        set({ user, isAuthenticated: true });
+      },
 
-      clearUser: () =>
-        set({
-          user: null,
-          isAuthenticated: false, // ← виправлено
-        }),
+      clearUser: () => {
+        clearAuthHintCookie();
+        set({ user: null, isAuthenticated: false });
+      },
 
       setAuthAuthenticated: isAuthenticated =>
-        // ← правильна назва
         set({
           isAuthenticated,
         }),
@@ -43,27 +43,20 @@ export const useAuthStore = create<AuthStore>()(
 
         try {
           const user = await getCurrentUser();
-
-          set({
-            user,
-            isAuthenticated: true,
-          });
+          setAuthHintCookie();
+          set({ user, isAuthenticated: true });
         } catch {
           try {
             await refreshSession();
-
             const user = await getCurrentUser();
-
-            set({
-              user,
-              isAuthenticated: true,
-            });
+            setAuthHintCookie();
+            set({ user, isAuthenticated: true });
           } catch {
-            set({
-              user: null,
-              isAuthenticated: false,
-            });
+            clearAuthHintCookie();
+            set({ user: null, isAuthenticated: false });
           }
+        } finally {
+          set({ isInitializing: false });
         }
       },
     }),

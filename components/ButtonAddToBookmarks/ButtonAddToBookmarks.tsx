@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import { addSavedArticle, removeSavedArticle } from '@/lib/api/clientApi';
 import { ApiError } from '@/app/api/api';
 import { useAuthStore } from '@/lib/store/authStore';
-import { useModalStore } from '@/store/useModalStore';
+import { useModalStore } from '@/store/useModaцlStore';
 import styles from './ButtonAddToBookmarks.module.css';
 
 interface ButtonAddToBookmarksProps {

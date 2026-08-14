@@ -1,22 +1,21 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import type { User } from '@/types/user';
 import { NAV_LINKS } from '../Header.constants';
 import BurgerButton from '../BurgerButton/BurgerButton';
 import NavLink from '../NavLink/NavLink';
-import navLinkCss from '../NavLink/NavLink.module.css';
 import CtaLink from '../CtaLink/CtaLink';
 import UserBar from '../UserBar/UserBar';
 import css from './MobileMenu.module.css';
 
 interface MobileMenuProps {
   isAuthenticated: boolean;
+  isLoadingUser: boolean;
   user: User | null;
 }
 
-const MobileMenu = ({ isAuthenticated, user }: MobileMenuProps) => {
+const MobileMenu = ({ isAuthenticated, isLoadingUser, user }: MobileMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const close = () => setIsOpen(false);
@@ -61,7 +60,7 @@ const MobileMenu = ({ isAuthenticated, user }: MobileMenuProps) => {
             )}
           </ul>
 
-          {isAuthenticated && user ? (
+          {isAuthenticated ? (
             <>
               <CtaLink
                 href="/articles/new"
@@ -71,19 +70,18 @@ const MobileMenu = ({ isAuthenticated, user }: MobileMenuProps) => {
               >
                 Create an article
               </CtaLink>
-              <UserBar user={user} onBeforeLogoutClick={close} />
+              <UserBar user={user} isLoading={isLoadingUser} onBeforeLogoutClick={close} />
             </>
           ) : (
             <>
-              <Link
+              <NavLink
                 href="/login"
-                prefetch={false}
-                className={`${navLinkCss.navLink} ${css.mobileOnly}`}
+                className={css.mobileOnly}
                 onClick={close}
                 tabIndex={isOpen ? undefined : -1}
               >
                 Log in
-              </Link>
+              </NavLink>
               <CtaLink
                 href="/register"
                 className={css.mobileOnly}

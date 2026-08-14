@@ -77,7 +77,7 @@ const LoginPage = () => {
               onClick={() => setShowPassword(prev => !prev)}
             >
               <svg width="24" height="24">
-                <use href={`/icons/sprite.svg#${showPassword ? 'eye-crossed' : 'eye'}`} />
+                <use href={`/icons/sprite.svg#${showPassword ? 'eye' : 'eye-crossed'}`} />
               </svg>
             </button>
           </div>

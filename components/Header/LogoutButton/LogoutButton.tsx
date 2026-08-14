@@ -1,6 +1,6 @@
 'use client';
 
-import { useModalStore } from '@/store/useModalStore';
+import { useModalStore } from '@/lib/store/useModalStore';
 import css from './LogoutButton.module.css';
 
 interface LogoutButtonProps {

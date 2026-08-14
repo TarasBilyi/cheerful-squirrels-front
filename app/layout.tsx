@@ -49,7 +49,7 @@ export default function RootLayout({
               toastOptions={{
                 duration: 3000,
                 style: {
-                  background: '#111',
+                  background: '#374f42',
                   color: '#fff',
                 },
               }}
