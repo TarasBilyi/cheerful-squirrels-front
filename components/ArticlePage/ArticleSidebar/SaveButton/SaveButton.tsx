@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
 import { saveArticle, unsaveArticle } from '@/lib/api/articlesApi';
 import css from './SaveButton.module.css';
@@ -37,8 +38,20 @@ const SaveButton = ({
       } else {
         await unsaveArticle(articleId);
       }
-    } catch {
+    } catch (error) {
       setIsSaved(!nextIsSaved);
+
+      // `isAuthenticated` currently comes from a hardcoded stub (always
+      // true) in lib/auth/getCurrentUser.ts, so a stale/expired/missing
+      // session only surfaces here, as a 401 from the API. Redirect to
+      // login instead of showing a generic error in that case; once the
+      // real auth check lands this branch becomes a rare edge case
+      // (e.g. session expired mid-visit) rather than the common path.
+      if (error instanceof AxiosError && error.response?.status === 401) {
+        router.push('/login');
+        return;
+      }
+
       toast.error('Something went wrong. Please try again.');
     } finally {
       setIsPending(false);
