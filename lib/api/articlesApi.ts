@@ -26,14 +26,6 @@ interface GetRecommendedArticlesOptions {
   limit?: number;
 }
 
-/**
- * "You can also interested" block — backend picks random articles via
- * ?category=recommended (Mongo $sample), so we just ask for a couple extra
- * and filter out the current article client-side in case it gets sampled.
- *
- * NOTE: this list endpoint doesn't populate `ownerId` (stays a plain string
- * id) — see the `getAuthorName`-style guard used wherever we render it.
- */
 export const getRecommendedArticles = async ({
   excludeId,
   limit = 3,
