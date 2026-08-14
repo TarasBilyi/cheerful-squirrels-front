@@ -57,7 +57,9 @@
   font-size: 16px;
   white-space: nowrap;
   cursor: pointer;
-  transition: opacity var(--transition-hover);
+  transition:
+    background-color var(--transition-hover),
+    border-color var(--transition-hover);
 }
 
 .confirm {
@@ -66,21 +68,19 @@
   color: var(--color-white);
 }
 
-.confirm:hover {
-  opacity: 0.85;
-}
-
-.confirm:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
 .cancel {
   border: 1px solid var(--color-black);
   background-color: transparent;
   color: var(--color-black);
 }
 
-.cancel:hover {
-  background-color: rgba(7, 7, 33, 0.05);
+@media (min-width: 768px) {
+  .cancel:hover {
+    background-color: var(--color-white);
+    border-color: var(--color-white);
+  }
+
+  .confirm:hover {
+    background-color: var(--color-green-darker);
+  }
 }

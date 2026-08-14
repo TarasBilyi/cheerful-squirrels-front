@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Manrope, Merienda } from 'next/font/google';
 import 'modern-normalize/modern-normalize.css';
 import './globals.css';
+import css from './page.module.css';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import ModalRoot from '@/components/ModalRoot/ModalRoot';
@@ -39,7 +40,7 @@ export default function RootLayout({
         <TanStackProvider>
           <AuthProvider>
             <Header />
-            {children}
+            <main className={css.main}>{children}</main>
             <Footer />
             <div id="modal-root"></div>
             <ModalRoot />
