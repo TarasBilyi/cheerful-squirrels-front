@@ -45,3 +45,18 @@ export const getRecommendedArticles = async ({
     .filter(article => article._id !== excludeId)
     .slice(0, limit);
 };
+
+export const getPopularArticles = async (limit = 4) => {
+  const { data } = await api.get<ApiResponse<GetArticlesResponseData>>(
+    '/articles',
+    {
+      params: {
+        category: 'popular',
+        page: 1,
+        perPage: limit,
+      },
+    },
+  );
+
+  return data.data.articles;
+};

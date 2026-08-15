@@ -137,8 +137,14 @@ const UploadForm = () => {
           onChange={handleFileChange}
         />
 
-        <button type="submit" className={css.submitButton} disabled={!file || isSubmitting}>
-          Save
+        <button
+          type="submit"
+          className={css.submitButton}
+          disabled={!file || isSubmitting}
+          aria-busy={isSubmitting}
+        >
+          {isSubmitting && <span className={css.spinner} aria-hidden />}
+          {isSubmitting ? 'Saving…' : 'Save'}
         </button>
       </form>
     </div>

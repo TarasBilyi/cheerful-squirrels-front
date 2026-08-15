@@ -152,8 +152,14 @@ const RegisterForm = () => {
                 </div>
               </div>
 
-              <button type="submit" className={css.submitButton} disabled={isSubmitting}>
-                Create account
+              <button
+                type="submit"
+                className={css.submitButton}
+                disabled={isSubmitting}
+                aria-busy={isSubmitting}
+              >
+                {isSubmitting && <span className={css.spinner} aria-hidden />}
+                {isSubmitting ? 'Creating account…' : 'Create account'}
               </button>
             </Form>
           )}

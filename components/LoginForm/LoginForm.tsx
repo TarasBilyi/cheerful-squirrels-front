@@ -45,6 +45,7 @@ const LoginPage = () => {
   return (
     <div className={css.mainContent}>
       <Formik initialValues={initialValues} validationSchema={LoginSchema} onSubmit={handleSubmit}>
+        {({ isSubmitting }) => (
         <Form className={css.form}>
           <legend className={css.formTitle}>Login</legend>
 
@@ -83,8 +84,14 @@ const LoginPage = () => {
           </div>
 
           <div className={css.loginBtn}>
-            <button type="submit" className={css.submitButton}>
-              Login
+            <button
+              type="submit"
+              className={css.submitButton}
+              disabled={isSubmitting}
+              aria-busy={isSubmitting}
+            >
+              {isSubmitting && <span className={css.spinner} aria-hidden />}
+              {isSubmitting ? 'Logging in…' : 'Login'}
             </button>
           </div>
 
@@ -97,6 +104,7 @@ const LoginPage = () => {
             </p>
           </div>
         </Form>
+        )}
       </Formik>
     </div>
   );
