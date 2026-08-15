@@ -1,0 +1,132 @@
+.createArticleSection {
+    padding-top: 48px;
+    padding-bottom: 48px;
+
+    display: flex;
+    gap: 16px;
+    flex-direction: column;
+}
+
+.header {
+    font-weight: 700;
+    font-size: 40px;
+}
+
+.imgAdd {
+    width: 100%;
+    height: 223px;
+    background-color: #9f9f9f;
+    border-radius: 16px;
+}
+
+.articleForm {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.titleFieldContainer>label {
+    display: block;
+    font-weight: 400;
+    font-size: 18px;
+    color: #070721;
+    margin-bottom: 8px;
+}
+
+.articleField::placeholder {
+    font-weight: 400;
+    font-size: 18px;
+    color: var(--gray);
+}
+
+.articleField {
+    border: 1px solid #9f9f9f;
+    display: block;
+    width: 100%;
+    border-radius: 8px;
+    padding: 12px;
+    height: 48px;
+    background: none;
+    resize: none;
+}
+
+.articleTextArea {
+    min-height: 393px;
+    overflow: hidden;
+}
+
+.submitButton {
+    border-radius: 64px;
+    padding: 12px 16px;
+    width: 361px;
+    height: 46px;
+    background-color: #649179;
+
+    font-weight: 700;
+    font-size: 16px;
+    color: #f7fffb;
+}
+
+.articleField + span {
+    color: #AD6A6C;
+    font-size: 12px;
+}
+
+@media screen and (min-width:768px) {
+    .articleForm {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "image title"
+            "text text"
+            "button button";
+        gap: 16px;
+    }
+
+    .imgAdd {
+        grid-area: image;
+        width: 100%;
+        height: 223px;
+    }
+
+    .titleField {
+        grid-area: title;
+    }
+
+    .articleFieldContainer {
+        grid-area: text;
+    }
+
+    .submitButton {
+        grid-area: button;
+    }
+}
+
+@media (min-width: 1440px) {
+    .articleForm {
+        grid-template-columns: 1fr 300px;
+        grid-template-areas:
+            "title image"
+            "text image"
+            "button image";
+    }
+
+    .imgAdd {
+        margin-top: 36px;
+
+        grid-area: image;
+        height: 223px;
+    }
+
+    .titleField {
+        grid-area: title;
+    }
+
+    .articleFieldContainer {
+        grid-area: text;
+    }
+
+    .submitButton {
+        grid-area: button;
+    }
+}
