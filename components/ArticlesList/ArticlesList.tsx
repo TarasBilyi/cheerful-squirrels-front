@@ -1,7 +1,8 @@
-import ArticlesItem from '@/components/ArticlesItem/ArticlesItem';
+
 import type { Article } from '@/lib/api/articles';
 
 import css from './ArticlesList.module.css';
+import ArticleItem from '@/components/ArticleItem/ArticleItem';
 
 interface ArticlesListProps {
   articles: Article[];
@@ -15,7 +16,7 @@ const ArticlesList = ({ articles }: ArticlesListProps) => {
   return (
     <ul className={css.list}>
       {articles.map(article => (
-        <ArticlesItem
+        <ArticleItem
           key={article._id}
           article={article}
         />

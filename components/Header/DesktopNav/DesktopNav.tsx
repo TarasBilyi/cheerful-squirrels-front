@@ -1,18 +1,17 @@
-import Link from 'next/link';
 import type { User } from '@/types/user';
 import { NAV_LINKS } from '../Header.constants';
 import NavLink from '../NavLink/NavLink';
-import navLinkCss from '../NavLink/NavLink.module.css';
 import CtaLink from '../CtaLink/CtaLink';
 import UserBar from '../UserBar/UserBar';
 import css from './DesktopNav.module.css';
 
 interface DesktopNavProps {
   isAuthenticated: boolean;
+  isLoadingUser: boolean;
   user: User | null;
 }
 
-const DesktopNav = ({ isAuthenticated, user }: DesktopNavProps) => {
+const DesktopNav = ({ isAuthenticated, isLoadingUser, user }: DesktopNavProps) => {
   return (
     <nav className={css.desktopNav} aria-label="Primary">
       <ul className={css.desktopNavList}>
@@ -28,16 +27,14 @@ const DesktopNav = ({ isAuthenticated, user }: DesktopNavProps) => {
         )}
       </ul>
 
-      {isAuthenticated && user ? (
+      {isAuthenticated ? (
         <div className={`${css.desktopAuth} ${css.desktopAuthAuthenticated}`}>
           <CtaLink href="/articles/new">Create an article</CtaLink>
-          <UserBar user={user} />
+          <UserBar user={user} isLoading={isLoadingUser} />
         </div>
       ) : (
         <div className={css.desktopAuth}>
-          <Link href="/login" prefetch={false} className={navLinkCss.navLink}>
-            Log in
-          </Link>
+          <NavLink href="/login">Log in</NavLink>
           <CtaLink href="/register">Join now</CtaLink>
         </div>
       )}

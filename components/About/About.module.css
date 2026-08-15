@@ -14,7 +14,7 @@
   border-radius: 32px;
   padding: 32px;
   max-width: 361px;
-  height: auto;
+  height: 365px;
   background-color: var(--color-light-green);
 }
 
@@ -58,6 +58,18 @@
   display: none;
 }
 
+.imageLotus,
+.imageFriends,
+.imageMeditation {
+  transition: transform var(--transition-hover);
+}
+
+.imageLotus:hover,
+.imageFriends:hover,
+.imageMeditation:hover {
+  transform: scale(1.02);
+}
+
 /* tablet 768px */
 @media screen and (min-width: 768px) {
   .wrapper {
@@ -66,6 +78,7 @@
   }
   .textCard {
     max-width: 431px;
+    height: 326px;
   }
   .imageLotus {
     max-width: 249px;

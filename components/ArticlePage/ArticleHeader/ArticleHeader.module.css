@@ -1,0 +1,52 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.title {
+  font-family: var(--font-merienda);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1.25;
+  color: var(--color-black);
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 361 / 190;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.image {
+  object-fit: cover;
+}
+
+@media (min-width: 768px) {
+  .wrapper {
+    gap: 24px;
+  }
+
+  .title {
+    font-size: 32px;
+  }
+
+  .imageWrapper {
+    aspect-ratio: 704 / 320;
+    border-radius: 20px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .title {
+    font-size: 40px;
+    max-width: 900px;
+  }
+
+  .imageWrapper {
+    aspect-ratio: 1224 / 460;
+    border-radius: 24px;
+  }
+}

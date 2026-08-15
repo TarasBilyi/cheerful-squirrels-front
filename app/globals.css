@@ -13,18 +13,15 @@
 
 html {
   height: 100%;
+  scrollbar-gutter: stable;
 }
 
-html,
 body {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   max-width: 100vw;
   overflow-x: hidden;
-}
-
-body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
   line-height: 1.55;
   font-size: 16px;
   color: var(--color-black);
@@ -75,4 +72,14 @@ textarea,
 select,
 button {
   font: inherit;
+}
+
+@keyframes skeletonPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }

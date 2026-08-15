@@ -1,0 +1,18 @@
+.content {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-black);
+  white-space: pre-line;
+}
+
+@media (min-width: 768px) {
+  .content {
+    font-size: 17px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .content {
+    font-size: 18px;
+  }
+}
