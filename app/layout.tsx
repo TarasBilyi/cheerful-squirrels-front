@@ -9,6 +9,7 @@ import ModalRoot from '@/components/ModalRoot/ModalRoot';
 import { Toaster } from 'react-hot-toast';
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 import AuthProvider from '@/components/AuthProvider/AuthProvider';
+import Loader from '@/components/Loader/Loader';
 
 const manrope = Manrope({
   subsets: ['latin'],
@@ -54,6 +55,7 @@ export default function RootLayout({
                 },
               }}
             />
+            <Loader />
           </AuthProvider>
         </TanStackProvider>
       </body>
