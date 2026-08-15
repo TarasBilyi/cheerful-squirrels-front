@@ -1,5 +1,5 @@
-import { api } from "@/lib/api/api";
-
+import { api } from '@/lib/api/api';
+import type { ApiResponse } from '@/types/api';
 
 export interface Article {
   _id: string;
@@ -7,12 +7,12 @@ export interface Article {
   article: string;
   img: string;
   date: string;
-  ownerId: string
+  ownerId: string;
   createdAt: string;
   updatedAt: string;
 }
 
 export async function createArticle(formData: FormData): Promise<Article> {
-  const response = await api.post<Article>('/articles', formData);
-  return response.data;
+  const { data } = await api.post<ApiResponse<{ article: Article }>>('/articles', formData);
+  return data.data.article;
 }
