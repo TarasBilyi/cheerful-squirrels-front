@@ -4,6 +4,23 @@
   gap: 8px;
 }
 
+.avatarSkeleton {
+  width: 39px;
+  height: 39px;
+  border-radius: 50%;
+  background-color: rgba(55, 79, 66, 0.12);
+  animation: skeletonPulse 1.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.nameSkeleton {
+  width: 64px;
+  height: 14px;
+  border-radius: 4px;
+  background-color: rgba(55, 79, 66, 0.12);
+  animation: skeletonPulse 1.4s ease-in-out infinite;
+}
+
 .avatar {
   display: flex;
   align-items: center;

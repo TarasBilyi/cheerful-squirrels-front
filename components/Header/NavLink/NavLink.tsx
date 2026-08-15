@@ -9,9 +9,10 @@ interface NavLinkProps {
   children: React.ReactNode;
   onClick?: () => void;
   tabIndex?: number;
+  className?: string;
 }
 
-const NavLink = ({ href, children, onClick, tabIndex }: NavLinkProps) => {
+const NavLink = ({ href, children, onClick, tabIndex, className }: NavLinkProps) => {
   const pathname = usePathname();
   const isActive = pathname === href;
 
@@ -22,7 +23,7 @@ const NavLink = ({ href, children, onClick, tabIndex }: NavLinkProps) => {
       onClick={onClick}
       tabIndex={tabIndex}
       aria-current={isActive ? 'page' : undefined}
-      className={`${css.navLink} ${isActive ? css.navLinkActive : ''}`}
+      className={`${css.navLink} ${isActive ? css.navLinkActive : ''} ${className ?? ''}`}
     >
       {children}
     </Link>

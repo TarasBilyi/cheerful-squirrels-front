@@ -145,21 +145,6 @@
   font-family: var(--font-manrope);
   font-size: 16px;
   font-weight: 700;
-  cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.submitButton:hover {
-  background-color: var(--color-green-darker);
-}
-
-.submitButton:focus-visible,
-.submitButton:disabled {
-  box-shadow:
-    0 0 0 2px var(--color-white),
-    0 0 0 6px rgba(78, 70, 180, 0.12);
 }
 
 .submitButton:focus-visible {
@@ -187,4 +172,32 @@
 .loginLink:hover,
 .loginLink:focus-visible {
   color: var(--color-green-darker);
+}
+
+@media screen and (min-width: 768px) {
+  .submitButton {
+    transition:
+      background-color var(--transition-hover),
+      box-shadow var(--transition-hover),
+      transform var(--transition-hover);
+  }
+
+  .submitButton:hover {
+    background-color: var(--color-green-darker);
+  }
+
+  .submitButton:active {
+    box-shadow:
+      0 0 0 6px rgba(78, 70, 180, 0.12),
+      0 0 0 2px #fff;
+    transform: scale(0.98);
+  }
+  .loginLink {
+    transition: color var(--transition-hover);
+  }
+
+  .loginLink:hover,
+  .loginLink:focus-visible {
+    color: var(--color-green-darker);
+  }
 }
