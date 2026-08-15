@@ -1,0 +1,122 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 32px 0;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.page,
+.arrow,
+.break {
+    list-style: none;
+}
+
+.pageLink,
+.arrowLink,
+.breakLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: "Manrope", sans-serif;
+    font-weight: 700;
+    text-decoration: none;
+
+    transition: all 250ms ease;
+    cursor: pointer;
+}
+
+.pageLink {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+
+    color: #070721;
+    font-size: 18px;
+}
+
+.pageLink:hover {
+    color: #649179;
+}
+
+.active .pageLink {
+    background: #649179;
+    color: #f7fffb;
+}
+
+.arrowLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 48px;
+    height: 48px;
+
+    border-radius: 50%;
+
+    background: #649179;
+    color: #f7fffb;
+}
+
+.arrowLink svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.arrowLink:hover {
+    background: #374f42;
+}
+
+.arrowLink:active {
+    background: #649179;
+    box-shadow:
+        0 0 0 6px rgba(78, 70, 180, 0.12),
+        0 0 0 2px #fff;
+}
+
+.disabled .arrowLink {
+    background: #649179;
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.breakLink {
+    width: 40px;
+    height: 40px;
+
+    color: #070721;
+    font-size: 20px;
+}
+
+@media (min-width: 768px) {
+    .wrapper {
+        margin: 48px 0;
+    }
+
+    .pagination {
+        gap: 12px;
+    }
+
+    .pageLink {
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+    }
+
+    .arrowLink {
+        width: 56px;
+        height: 56px;
+    }
+}
