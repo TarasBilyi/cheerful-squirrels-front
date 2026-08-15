@@ -3,7 +3,7 @@ import css from './LoginForm.module.css';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { login, LoginRequest } from '@/lib/api/clientApi';
-import { ApiError } from '@/app/api/api';
+import { ApiError } from '@/lib/api/api';
 import { useAuthStore } from '@/lib/store/authStore';
 import Link from 'next/link';
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from 'formik';
