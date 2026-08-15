@@ -10,8 +10,10 @@ interface ArticleItemProps {
   article: Article;
 }
 
-const getAuthorName = (ownerId: Article['ownerId']) =>
-  typeof ownerId === 'string' ? null : ownerId.name;
+const getAuthorName = (ownerId: Article['ownerId']) => {
+  const fullName = typeof ownerId === 'string' ? null : ownerId.name;
+  return fullName?.split(' ')[0] ?? null;
+};
 
 const ArticleItem = ({ article }: ArticleItemProps) => {
   const authorName = getAuthorName(article.ownerId);
