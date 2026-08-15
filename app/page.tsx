@@ -4,9 +4,9 @@ import PopularArticles from '@/components/PopularArticles/PopularArticles';
 
 export default function Home() {
   return (
-    <main>
+    <>
       <About />
       <PopularArticles />
-    </main>
+    </>
   );
 }
