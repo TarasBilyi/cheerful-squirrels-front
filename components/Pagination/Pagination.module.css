@@ -1,13 +1,13 @@
 .wrapper {
     display: flex;
     justify-content: center;
-    margin: 48px 0;
+    margin: 32px 0;
 }
 
 .pagination {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
 
     margin: 0;
     padding: 0;
@@ -27,22 +27,22 @@
     align-items: center;
     justify-content: center;
 
-    text-decoration: none;
     font-family: "Manrope", sans-serif;
     font-weight: 700;
+    text-decoration: none;
 
     transition: all 250ms ease;
     cursor: pointer;
 }
 
 .pageLink {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
 
     border-radius: 50%;
 
     color: #070721;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .pageLink:hover {
@@ -55,8 +55,12 @@
 }
 
 .arrowLink {
-    width: 56px;
-    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 48px;
+    height: 48px;
 
     border-radius: 50%;
 
@@ -64,16 +68,21 @@
     color: #f7fffb;
 }
 
+.arrowLink svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
 .arrowLink:hover {
     background: #374f42;
 }
 
 .arrowLink:active {
+    background: #649179;
     box-shadow:
         0 0 0 6px rgba(78, 70, 180, 0.12),
         0 0 0 2px #fff;
-
-    background: #649179;
 }
 
 .disabled .arrowLink {
@@ -91,36 +100,23 @@
     font-size: 20px;
 }
 
-@media (max-width: 767px) {
+@media (min-width: 768px) {
     .wrapper {
-        margin: 32px 0;
+        margin: 48px 0;
     }
 
     .pagination {
-        gap: 8px;
+        gap: 12px;
     }
 
     .pageLink {
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
     }
 
     .arrowLink {
-        width: 48px;
-        height: 48px;
+        width: 56px;
+        height: 56px;
     }
-}
-
-.arrowLink svg {
-    width: 20px;
-    height: 20px;
-    fill: currentColor;
-}
-
-.arrowLink {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #f5f7f4;
 }

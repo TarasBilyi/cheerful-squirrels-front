@@ -1,5 +1,5 @@
 
-import type { Article } from '@/lib/api/articles';
+import type { Article } from '@/types/article';
 
 import css from './ArticlesList.module.css';
 import ArticleItem from '@/components/ArticleItem/ArticleItem';

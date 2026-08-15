@@ -7,7 +7,9 @@ import Container from '@/components/Container/Container';
 import ArticlesList from '@/components/ArticlesList/ArticlesList';
 import Pagination from '@/components/Pagination/Pagination';
 
-import { getArticles, type Article } from '@/lib/api/articles';
+
+import { getArticles } from '@/lib/api/articles';
+import type { Article } from '@/types/article';
 
 import css from './ArticlesPage.module.css';
 
@@ -119,6 +121,7 @@ const ArticlesPage = () => {
             totalPages={totalPages}
             onPageChange={handlePageChange}
           />
+          
         </Container>
       </section>
     </main>

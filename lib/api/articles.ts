@@ -1,19 +1,9 @@
 import axios from 'axios';
+import type { Article } from '@/types/article';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export interface Article {
-  _id: string;
-  img: string;
-  title: string;
-  desc: string;
-  article: string;
-  rate: number;
-  ownerId: string;
-  date: string;
-  createdAt: string;
-  updatedAt: string;
-}
+
 
 export interface ArticlesResponse {
   articles: Article[];
