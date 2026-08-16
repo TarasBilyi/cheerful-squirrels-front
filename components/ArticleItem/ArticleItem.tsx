@@ -11,7 +11,7 @@ interface ArticleItemProps {
 }
 
 const getAuthorName = (ownerId: Article['ownerId']) => {
-  const fullName = typeof ownerId === 'string' ? null : ownerId.name;
+  const fullName = typeof ownerId === 'string' ? null : ownerId?.name;
   return fullName?.split(' ')[0] ?? null;
 };
 
