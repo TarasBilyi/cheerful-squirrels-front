@@ -26,7 +26,7 @@ export default function Hero() {
 
           <div className="imageWrapper">
             <Image
-              src="/public/images/hero/heroFoto1x.png"
+              src="/images/hero/heroFoto1x.png"
               alt="Girl and mountains"
               width={806}
               height={562}
