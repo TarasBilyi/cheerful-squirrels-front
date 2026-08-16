@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export type ModalType = 'error-save' | 'confirm-logout' | null;
+export type ModalType = 'error-save' | 'confirm-logout' | 'user-profile' | null;
 
 interface ModalState {
   activeModal: ModalType;
