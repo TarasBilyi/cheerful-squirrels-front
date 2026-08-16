@@ -21,11 +21,17 @@
   .card {
     max-width: 522px;
   }
+  .wrapper {
+    padding: 120px 0px;
+  }
 }
 
 @media (min-width: 1440px) {
   .card {
     max-width: 392px;
+  }
+  .wrapper {
+    padding: 50px 0px;
   }
 }
 

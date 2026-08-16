@@ -1,0 +1,8 @@
+/* 2 колонки на мобільному підтверджено скріном з Figma;
+   auto-fill сам додає колонки на ширших екранах — точних брейкпоінтів
+   для tablet/desktop у дизайні поки не перевіряли */
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 24px 16px;
+}
