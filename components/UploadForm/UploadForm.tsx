@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { register, updateAvatar } from '@/lib/api/clientApi';
-import { ApiError } from '@/lib/api/api';
+import { ApiError } from '@/app/api/api';
 import { useRegisterDraftStore } from '@/lib/store/registerDraftStore';
 import { useAuthStore } from '@/lib/store/authStore';
 import css from './UploadForm.module.css';

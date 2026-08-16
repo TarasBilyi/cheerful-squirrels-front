@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import ArticlesList from '@/components/ArticlesList/ArticlesList';
 import LoadMoreButton from '@/components/LoadMoreButton/LoadMoreButton';
 import Pagination from '@/components/Pagination/Pagination';
-import { ApiError } from '@/lib/api/api';
+import { ApiError } from '@/app/api/api';
 import { useLoaderStore } from '@/lib/store/loaderStore';
 import type { Article } from '@/types/article';
 import css from './PaginatedArticlesList.module.css';
@@ -80,10 +80,14 @@ const PaginatedArticlesList = ({
   };
 
   useEffect(() => {
-    if (initialPage === 0) {
-      load(1, 'replace');
-    }
-  }, []);
+    if (initialPage !== 0) return;
+
+    const timeoutId = setTimeout(() => {
+      void load(1, 'replace');
+    }, 0);
+
+    return () => clearTimeout(timeoutId);
+  }, [initialPage]);
 
   if (emptyState && page > 0 && articles.length === 0) {
     return emptyState;

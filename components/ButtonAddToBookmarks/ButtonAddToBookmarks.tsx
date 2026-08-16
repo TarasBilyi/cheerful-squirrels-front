@@ -3,7 +3,7 @@
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { addSavedArticle, removeSavedArticle } from '@/lib/api/clientApi';
-import { ApiError } from '@/lib/api/api';
+import { ApiError } from '@/app/api/api';
 import { useAuthStore } from '@/lib/store/authStore';
 import { useModalStore } from '@/lib/store/useModalStore';
 import styles from './ButtonAddToBookmarks.module.css';

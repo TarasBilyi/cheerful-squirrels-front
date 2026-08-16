@@ -4,7 +4,6 @@ import css from './page.module.css';
 import Container from '@/components/Container/Container';
 
 export default function Error({
-  error,
   reset,
 }: {
   error: Error & { digest?: string };

@@ -1,10 +1,10 @@
-import { api } from './api';
+import { nextServer } from './api';
 import type { ApiResponse } from '@/types/api';
 import type { Article } from '@/types/article';
 import type { Author } from '@/types/author';
 
 export const getAuthorById = async (authorId: string): Promise<Author> => {
-  const { data } = await api.get<ApiResponse<{ user: Author }>>(`/users/${authorId}`);
+  const { data } = await nextServer.get<ApiResponse<{ user: Author }>>(`/users/${authorId}`);
   return data.data.user;
 };
 
@@ -25,7 +25,7 @@ export const getArticlesByAuthor = async (
   page = 1,
   perPage = 12
 ): Promise<GetArticlesByAuthorResponseData> => {
-  const { data } = await api.get<ApiResponse<GetArticlesByAuthorResponseData>>(
+  const { data } = await nextServer.get<ApiResponse<GetArticlesByAuthorResponseData>>(
     `/users/${authorId}/articles`,
     { params: { page, perPage } }
   );

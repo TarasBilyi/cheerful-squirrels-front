@@ -1,4 +1,3 @@
-import styles from './page.module.css';
 import About from '@/components/About/About';
 import PopularArticles from '@/components/PopularArticles/PopularArticles';
 

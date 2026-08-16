@@ -8,7 +8,7 @@ import { UserProfileSchema } from './UserModal.schema';
 import { useAuthStore } from '@/lib/store/authStore';
 import { useModalStore } from '@/lib/store/useModalStore';
 import { updateAvatar, updateUserProfile } from '@/lib/api/clientApi';
-import type { ApiError } from '@/lib/api/api';
+import type { ApiError } from '@/app/api/api';
 import type { User } from '@/types/user';
 import Modal, { useModalClose } from '@/components/Modal/Modal';
 import css from './UserModal.module.css';
@@ -95,8 +95,7 @@ const UserModalContent = () => {
       close();
     } catch (error) {
       const status = (error as ApiError).response?.status;
-      const message =
-        (error as ApiError).response?.data?.error ?? (error as ApiError).message;
+      const message = (error as ApiError).response?.data?.error ?? (error as ApiError).message;
 
       if (status === 409) {
         // Email conflict is specific to that field — surface it inline

@@ -63,7 +63,7 @@ export const getSavedArticles = async (
   page = 1,
   perPage = 12
 ): Promise<GetSavedArticlesResponseData> => {
-  const { data } = await api.get<ApiEnvelope<GetSavedArticlesResponseData>>('/users/saved', {
+  const { data } = await nextServer.get<ApiEnvelope<GetSavedArticlesResponseData>>('/users/saved', {
     params: { page, perPage },
   });
   return data.data;
@@ -88,9 +88,7 @@ export const updateAvatar = async (avatar: File): Promise<{ avatarUrl: string }>
 
 export type UpdateUserProfileRequest = Partial<{ name: string; email: string }>;
 
-export const updateUserProfile = async (
-  payload: UpdateUserProfileRequest
-): Promise<User> => {
-  const { data } = await api.patch<ApiEnvelope<{ user: User }>>('/users/me', payload);
+export const updateUserProfile = async (payload: UpdateUserProfileRequest): Promise<User> => {
+  const { data } = await nextServer.patch<ApiEnvelope<{ user: User }>>('/users/me', payload);
   return data.data.user;
 };

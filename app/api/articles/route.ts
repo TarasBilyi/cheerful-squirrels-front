@@ -41,12 +41,11 @@ export async function POST(request: NextRequest) {
   try {
     const cookieStore = await cookies();
 
-    const body = await request.json();
+    const body = await request.formData();
 
     const res = await api.post('/articles', body, {
       headers: {
         Cookie: cookieStore.toString(),
-        'Content-Type': 'application/json',
       },
     });
 
@@ -54,12 +53,18 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     if (isAxiosError(error)) {
       logErrorResponse(error.response?.data);
+
       return NextResponse.json(
-        { error: error.message, response: error.response?.data },
-        { status: error.status }
+        {
+          error: error.message,
+          response: error.response?.data,
+        },
+        { status: error.status ?? 500 }
       );
     }
+
     logErrorResponse({ message: (error as Error).message });
+
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

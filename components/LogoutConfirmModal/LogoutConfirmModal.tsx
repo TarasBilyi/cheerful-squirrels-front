@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import { useModalStore } from '@/lib/store/useModalStore';
 import { useAuthStore } from '@/lib/store/authStore';
 import { logout } from '@/lib/api/clientApi';
-import type { ApiError } from '@/lib/api/api';
+import type { ApiError } from '@/app/api/api';
 import Modal, { useModalClose } from '@/components/Modal/Modal';
 import styles from './LogoutConfirmModal.module.css';
 
