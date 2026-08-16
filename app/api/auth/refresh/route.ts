@@ -16,7 +16,7 @@ export async function POST() {
     }
 
     if (refreshToken) {
-      const apiRes = await api.post('auth/refresh', undefined, {
+      const apiRes = await api.post('auth/refresh', null, {
         headers: {
           Cookie: cookieStore.toString(),
         },
@@ -35,6 +35,7 @@ export async function POST() {
             maxAge: Number(parsed['Max-Age']),
           };
 
+          if (parsed.sessionId) cookieStore.set('sessionId', parsed.sessionId, options);
           if (parsed.accessToken) cookieStore.set('accessToken', parsed.accessToken, options);
           if (parsed.refreshToken) cookieStore.set('refreshToken', parsed.refreshToken, options);
         }
