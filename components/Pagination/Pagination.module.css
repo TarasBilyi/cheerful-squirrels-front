@@ -27,11 +27,11 @@
     align-items: center;
     justify-content: center;
 
-    font-family: "Manrope", sans-serif;
+    font-family: var(--font-manrope);
     font-weight: 700;
     text-decoration: none;
 
-    transition: all 250ms ease;
+    transition: all var(--transition-hover);
     cursor: pointer;
 }
 

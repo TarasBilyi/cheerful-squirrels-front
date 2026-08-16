@@ -19,16 +19,16 @@
     background: var(--color-green);
     color: var(--color-white);
 
-    font-family: "Manrope", sans-serif;
+    font-family: var(--font-manrope);
     font-weight: 700;
     font-size: 18px;
     line-height: 1.55;
 
     cursor: pointer;
     transition:
-        background-color 250ms ease,
-        box-shadow 250ms ease,
-        opacity 250ms ease;
+        background-color var(--transition-hover),
+        box-shadow 250ms var(--transition-hover),
+        opacity 250ms var(--transition-hover);
 }
 
 .button:hover:not(:disabled) {
