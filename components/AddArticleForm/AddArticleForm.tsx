@@ -9,6 +9,7 @@ import css from './AddArticleForm.module.css';
 import toast from 'react-hot-toast';
 import { createArticle } from '@/services/article';
 import { useFormDraft, useFormDraftValue, clearFormDraft } from '@/hooks/useFormDraft';
+import Image from 'next/image';
 
 const DRAFT_KEY = 'draft:add-article';
 
@@ -89,13 +90,31 @@ export default function AddArticleForm() {
             <DraftAutosave values={values} />
 
             <div className={css.imgAdd}>
-              <label htmlFor="image">Add a photo</label>
+              <label htmlFor="image" className={css.imgLabel}>
+                  {image ? (
+                      <Image
+                          src={URL.createObjectURL(image)}
+                          alt="Preview"
+                          fill
+                          className={css.imgPreview}
+                      />
+                  ) : (
+                      <Image
+                        src="/images/articles/new/camera.jpg"
+                        alt="Placeholder"
+                        fill
+                        className={css.imgPreview}
+                        loading='lazy'
+                      />
+                  )}
+              </label>
               <input
                 id="image"
                 name="image"
                 type="file"
                 accept="image/*"
                 onChange={e => setImage(e.target.files?.[0] ?? null)}
+                className={css.imgInput}
               />
             </div>
             <ErrorMessage name="image" component="span" className={css.error} />
