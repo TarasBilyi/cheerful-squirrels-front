@@ -13,10 +13,57 @@
 }
 
 .imgAdd {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 223px;
     background-color: #9f9f9f;
     border-radius: 16px;
+    border: none;
+    padding: 0;
+    overflow: hidden;
+    cursor: pointer;
+    color: #f7fffb;
+    transition: opacity 0.2s ease;
+}
+
+.imgAdd:hover,
+.imgAdd:focus-visible {
+    opacity: 0.85;
+}
+
+.imgIcon {
+    color: #f7fffb;
+}
+
+.imgPreview {
+    object-fit: cover;
+}
+
+.fileInput {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.visuallyHidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
 .articleForm {

@@ -140,8 +140,8 @@ const UserModalContent = () => {
             aria-label="Change avatar"
           >
             {avatarSrc ? (
-              previewUrl ? (
-                <div className={css.avatarPreviewWrapper}>
+              <div className={css.avatarPreviewWrapper}>
+                {previewUrl ? (
                   <Image
                     src={avatarSrc}
                     alt="Avatar preview"
@@ -149,11 +149,16 @@ const UserModalContent = () => {
                     unoptimized
                     className={css.avatarPreview}
                   />
-                </div>
-              ) : (
-                // eslint-disable-next-line @next/next/no-img-element -- домен аватара динамічний (бек)
-                <img src={avatarSrc} alt="Avatar preview" className={css.avatarPreview} />
-              )
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element -- домен аватара динамічний (бек)
+                  <img src={avatarSrc} alt="Avatar preview" className={css.avatarPreview} />
+                )}
+                <span className={css.avatarOverlay} aria-hidden>
+                  <svg width={24} height={24}>
+                    <use href="/icons/sprite.svg#edit" />
+                  </svg>
+                </span>
+              </div>
             ) : (
               <svg width={64} height={58} aria-hidden>
                 <use href="/icons/sprite.svg#photo" />
