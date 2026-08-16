@@ -7,6 +7,7 @@ import BurgerButton from '../BurgerButton/BurgerButton';
 import NavLink from '../NavLink/NavLink';
 import CtaLink from '../CtaLink/CtaLink';
 import UserBar from '../UserBar/UserBar';
+import LogoutButton from '../LogoutButton/LogoutButton';
 import css from './MobileMenu.module.css';
 
 interface MobileMenuProps {
@@ -70,7 +71,10 @@ const MobileMenu = ({ isAuthenticated, isLoadingUser, user }: MobileMenuProps) =
               >
                 Create an article
               </CtaLink>
-              <UserBar user={user} isLoading={isLoadingUser} onBeforeLogoutClick={close} />
+              <div className={css.accountRow}>
+                <UserBar user={user} isLoading={isLoadingUser} onBeforeOpen={close} />
+                <LogoutButton onBeforeOpen={close} />
+              </div>
             </>
           ) : (
             <>

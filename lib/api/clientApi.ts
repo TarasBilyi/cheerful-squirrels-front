@@ -57,3 +57,12 @@ export const updateAvatar = async (avatar: File): Promise<{ avatarUrl: string }>
   );
   return data.data;
 };
+
+export type UpdateUserProfileRequest = Partial<{ name: string; email: string }>;
+
+export const updateUserProfile = async (
+  payload: UpdateUserProfileRequest
+): Promise<User> => {
+  const { data } = await api.patch<ApiEnvelope<{ user: User }>>('/users/me', payload);
+  return data.data.user;
+};
