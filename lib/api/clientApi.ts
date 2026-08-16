@@ -1,5 +1,6 @@
 import { api } from './api';
 import { User } from '@/types/user';
+import { Article } from '@/types/article';
 
 interface ApiEnvelope<T> {
   status: number;
@@ -37,6 +38,30 @@ export const addSavedArticle = async (articleId: string) => {
 export const removeSavedArticle = async (articleId: string) => {
   const { data } = await api.delete<ApiEnvelope<{ savedArticles: string[] }>>('/saved', {
     data: { articleId },
+  });
+  return data.data;
+};
+
+interface ArticlesPagination {
+  page: number;
+  perPage: number;
+  totalItems: number;
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+}
+
+export interface GetSavedArticlesResponseData {
+  articles: Article[];
+  pagination: ArticlesPagination;
+}
+
+export const getSavedArticles = async (
+  page = 1,
+  perPage = 12
+): Promise<GetSavedArticlesResponseData> => {
+  const { data } = await api.get<ApiEnvelope<GetSavedArticlesResponseData>>('/users/saved', {
+    params: { page, perPage },
   });
   return data.data;
 };
