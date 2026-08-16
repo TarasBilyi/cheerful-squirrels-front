@@ -1,6 +1,6 @@
-import Image from "next/image";
-import styles from "./About.module.css";
-import Container from "@/components/Container/Container";
+import Image from 'next/image';
+import styles from './About.module.css';
+import Container from '@/components/Container/Container';
 
 export default function About() {
   return (
@@ -10,12 +10,10 @@ export default function About() {
           <div className={styles.textCard}>
             <h2 className={styles.title}>About us</h2>
             <p className={styles.text}>
-              Harmoniq is a mindful publishing platform dedicated to mental
-              health and well-being. We bring together writers, thinkers, and
-              readers who believe that open, thoughtful stories can heal,
-              inspire, and connect. Whether you're here to share your journey or
-              learn from others — this is your space to slow down, reflect, and
-              grow.
+              Harmoniq is a mindful publishing platform dedicated to mental health and well-being.
+              We bring together writers, thinkers, and readers who believe that open, thoughtful
+              stories can heal, inspire, and connect. Whether youre here to share your journey or
+              learn from others — this is your space to slow down, reflect, and grow.
             </p>
           </div>
 

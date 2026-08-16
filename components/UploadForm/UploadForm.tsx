@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { register, updateAvatar } from '@/lib/api/clientApi';
-import { ApiError } from '@/app/api/api';
+import { ApiError } from '@/lib/api/api';
 import { useRegisterDraftStore } from '@/lib/store/registerDraftStore';
 import { useAuthStore } from '@/lib/store/authStore';
 import css from './UploadForm.module.css';
@@ -137,8 +137,14 @@ const UploadForm = () => {
           onChange={handleFileChange}
         />
 
-        <button type="submit" className={css.submitButton} disabled={!file || isSubmitting}>
-          Save
+        <button
+          type="submit"
+          className={css.submitButton}
+          disabled={!file || isSubmitting}
+          aria-busy={isSubmitting}
+        >
+          {isSubmitting && <span className={css.spinner} aria-hidden />}
+          {isSubmitting ? 'Saving…' : 'Save'}
         </button>
       </form>
     </div>

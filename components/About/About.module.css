@@ -58,6 +58,18 @@
   display: none;
 }
 
+.imageLotus,
+.imageFriends,
+.imageMeditation {
+  transition: transform var(--transition-hover);
+}
+
+.imageLotus:hover,
+.imageFriends:hover,
+.imageMeditation:hover {
+  transform: scale(1.02);
+}
+
 /* tablet 768px */
 @media screen and (min-width: 768px) {
   .wrapper {

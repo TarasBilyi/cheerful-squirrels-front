@@ -65,10 +65,14 @@
 }
 
 .submitButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   border-radius: 64px;
   padding-top: 8px;
   padding-bottom: 8px;
-  background: var(--color-green);
+  background-color: var(--color-green);
   width: 100%;
   cursor: pointer;
   border: none;
@@ -80,15 +84,24 @@
   margin-bottom: 20px;
 }
 
-.submitButton:hover {
-  background: var(--color-green-darker);
+.submitButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
-.submitButton:focus {
-  box-shadow:
-    0 0 0 6px rgba(78, 70, 180, 0.12),
-    0 0 0 2px #fff;
-  background: var(--color-green);
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: var(--color-white);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .haveAccount {
@@ -128,7 +141,6 @@
   border: none;
   background: transparent;
   padding: 0;
-  cursor: pointer;
 }
 
 .error {
@@ -136,4 +148,32 @@
   font-weight: 400;
   font-size: 12px;
   color: var(--color-error);
+}
+
+@media (min-width: 768px) {
+  .submitButton {
+    transition:
+      background-color var(--transition-hover),
+      box-shadow var(--transition-hover),
+      transform var(--transition-hover);
+  }
+
+  .loginBtn {
+    transition: color var(--transition-hover);
+  }
+
+  .loginBtn {
+    color: var(--color-green);
+  }
+
+  .submitButton:hover {
+    background-color: var(--color-green-darker);
+  }
+
+  .submitButton:active {
+    box-shadow:
+      0 0 0 6px rgba(78, 70, 180, 0.12),
+      0 0 0 2px #fff;
+    transform: scale(0.98);
+  }
 }

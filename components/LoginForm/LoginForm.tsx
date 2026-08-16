@@ -3,7 +3,7 @@ import css from './LoginForm.module.css';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { login, LoginRequest } from '@/lib/api/clientApi';
-import { ApiError } from '@/app/api/api';
+import { ApiError } from '@/lib/api/api';
 import { useAuthStore } from '@/lib/store/authStore';
 import Link from 'next/link';
 import { Formik, Form, Field, FormikHelpers, ErrorMessage } from 'formik';
@@ -45,6 +45,7 @@ const LoginPage = () => {
   return (
     <div className={css.mainContent}>
       <Formik initialValues={initialValues} validationSchema={LoginSchema} onSubmit={handleSubmit}>
+        {({ isSubmitting }) => (
         <Form className={css.form}>
           <legend className={css.formTitle}>Login</legend>
 
@@ -77,14 +78,20 @@ const LoginPage = () => {
               onClick={() => setShowPassword(prev => !prev)}
             >
               <svg width="24" height="24">
-                <use href={`/icons/sprite.svg#${showPassword ? 'eye-crossed' : 'eye'}`} />
+                <use href={`/icons/sprite.svg#${showPassword ? 'eye' : 'eye-crossed'}`} />
               </svg>
             </button>
           </div>
 
           <div className={css.loginBtn}>
-            <button type="submit" className={css.submitButton}>
-              Login
+            <button
+              type="submit"
+              className={css.submitButton}
+              disabled={isSubmitting}
+              aria-busy={isSubmitting}
+            >
+              {isSubmitting && <span className={css.spinner} aria-hidden />}
+              {isSubmitting ? 'Logging in…' : 'Login'}
             </button>
           </div>
 
@@ -97,6 +104,7 @@ const LoginPage = () => {
             </p>
           </div>
         </Form>
+        )}
       </Formik>
     </div>
   );

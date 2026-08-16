@@ -1,10 +1,14 @@
+import { cookies } from 'next/headers';
 import Link from 'next/link';
 import Container from '../Container/Container';
 import Logo from '../Logo/Logo';
 import HeaderActions from './HeaderActions/HeaderActions';
 import css from './Header.module.css';
 
-const Header = () => {
+const Header = async () => {
+  const cookieStore = await cookies();
+  const initialIsAuthenticated = cookieStore.get('hasSession')?.value === '1';
+
   return (
     <header className={css.header}>
       <Container className={css.topBar}>
@@ -12,7 +16,7 @@ const Header = () => {
           <Logo />
         </Link>
 
-        <HeaderActions />
+        <HeaderActions initialIsAuthenticated={initialIsAuthenticated} />
       </Container>
     </header>
   );

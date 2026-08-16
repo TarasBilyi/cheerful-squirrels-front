@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useModalStore } from '@/store/useModalStore';
+import { useModalStore } from '@/lib/store/useModalStore';
 import Modal, { useModalClose } from '@/components/Modal/Modal';
 import styles from './ErrorSaveModal.module.css';
 

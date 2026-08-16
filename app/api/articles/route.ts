@@ -7,14 +7,16 @@ import { logErrorResponse } from '../_utils/utils';
 export async function GET(request: NextRequest) {
   try {
     const cookieStore = await cookies();
-    const search = request.nextUrl.searchParams.get('search') ?? '';
-    const page = Number(request.nextUrl.searchParams.get('page') ?? 1);
 
-    const res = await api('/articles', {
+    const category = request.nextUrl.searchParams.get('category') ?? '';
+    const page = Number(request.nextUrl.searchParams.get('page') ?? 1);
+    const perPage = Number(request.nextUrl.searchParams.get('perPage') ?? 12);
+
+    const res = await api.get('/articles', {
       params: {
-        ...(search !== '' && { search }),
+        ...(category !== '' && { category }),
         page,
-        perPage: 12,
+        perPage,
       },
       headers: {
         Cookie: cookieStore.toString(),

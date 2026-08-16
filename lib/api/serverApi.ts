@@ -5,7 +5,7 @@ import { Article } from '@/types/article';
 
 export const checkSession = async () => {
   const cookieStore = await cookies();
-  const res = await nextServer.get('/auth/session', {
+  const res = await nextServer.post('/auth/refresh', {
     headers: {
       Cookie: cookieStore.toString(),
     },
@@ -29,13 +29,13 @@ interface FetchArticlesResponse {
 }
 
 export const fetchServerArticles = async (
-  search?: string,
+  category?: string,
   page?: number,
-  tag?: string
+  perPage?: number
 ): Promise<FetchArticlesResponse> => {
   const cookieStore = await cookies();
   const { data } = await nextServer.get('/articles', {
-    params: { search: String(search), page, tag },
+    params: { search: String(category), page, perPage },
     headers: {
       Cookie: cookieStore.toString(),
     },

@@ -1,13 +1,11 @@
-// components/ButtonAddToBookmarks/ButtonAddToBookmarks.tsx
-
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { addSavedArticle, removeSavedArticle } from '@/lib/api/clientApi';
-import { ApiError } from '@/app/api/api';
+import { ApiError } from '@/lib/api/api';
 import { useAuthStore } from '@/lib/store/authStore';
-import { useModalStore } from '@/store/useModalStore';
+import { useModalStore } from '@/lib/store/useModalStore';
 import styles from './ButtonAddToBookmarks.module.css';
 
 interface ButtonAddToBookmarksProps {
@@ -46,7 +44,7 @@ const ButtonAddToBookmarks = ({ articleId }: ButtonAddToBookmarksProps) => {
     mutation.mutate();
   };
 
-  const isBusy = (mutation as any).isPending ?? (mutation as any).isLoading;
+  const isBusy = mutation.isPending;
 
   return (
     <button
