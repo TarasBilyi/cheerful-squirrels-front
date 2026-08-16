@@ -1,4 +1,3 @@
-
 import type { Article } from '@/types/article';
 
 import css from './ArticlesList.module.css';
@@ -16,10 +15,7 @@ const ArticlesList = ({ articles }: ArticlesListProps) => {
   return (
     <ul className={css.list}>
       {articles.map(article => (
-        <ArticleItem
-          key={article._id}
-          article={article}
-        />
+        <ArticleItem key={article._id} article={article} />
       ))}
     </ul>
   );
