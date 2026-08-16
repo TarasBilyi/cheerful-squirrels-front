@@ -1,0 +1,37 @@
+.main {
+  padding-top: 46px;
+  padding-bottom: 46px;
+}
+
+.title {
+  font-family: var(--font-manrope);
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--color-black);
+  margin-bottom: 24px;
+}
+
+.tabs {
+  display: flex;
+  gap: 38px;
+  margin-bottom: 24px;
+}
+
+.tab,
+.tabActive {
+  font-family: var(--font-manrope);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--color-green-darker);
+  padding-bottom: 4px;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--transition-hover);
+}
+
+.tab:hover {
+  border-bottom-color: var(--color-green-darker);
+}
+
+.tabActive {
+  border-bottom-color: var(--color-green-darker);
+}
