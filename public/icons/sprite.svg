@@ -112,4 +112,7 @@
     fill="none"
   />
   </symbol>
+  <symbol id="notification" viewBox="0 0 32 32">
+    <path stroke-linejoin="miter" stroke-linecap="round" stroke-miterlimit="4" stroke-width="1.6" d="M16 22.755v1.69M16 7.555v10.134M31.2 16c0 8.394-6.806 15.2-15.2 15.2s-15.2-6.806-15.2-15.2 6.806-15.2 15.2-15.2 15.2 6.806 15.2 15.2z"></path>
+  </symbol>
 </svg>

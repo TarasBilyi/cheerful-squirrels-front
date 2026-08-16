@@ -1,0 +1,17 @@
+.loadMoreOnly {
+  display: block;
+}
+
+.paginationOnly {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .loadMoreOnly {
+    display: none;
+  }
+
+  .paginationOnly {
+    display: block;
+  }
+}
