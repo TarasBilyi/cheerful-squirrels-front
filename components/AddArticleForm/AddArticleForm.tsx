@@ -67,6 +67,7 @@ export default function AddArticleForm() {
         onSubmit={handleSubmit}
         validationSchema={NewArticleSchema}
       >
+        {({ isSubmitting }) => (
         <Form className={css.articleForm}>
           <div className={css.imgAdd}>
             <label htmlFor="image">Add a photo</label>
@@ -107,10 +108,17 @@ export default function AddArticleForm() {
             <ErrorMessage name="article" component="span" className={css.error} />
           </div>
 
-          <button type="submit" className={css.submitButton} disabled={false}>
-            Publish Article
+          <button
+            type="submit"
+            className={css.submitButton}
+            disabled={isSubmitting}
+            aria-busy={isSubmitting}
+          >
+            {isSubmitting && <span className={css.spinner} aria-hidden />}
+            {isSubmitting ? 'Publishing…' : 'Publish Article'}
           </button>
         </Form>
+        )}
       </Formik>
     </section>
   );
