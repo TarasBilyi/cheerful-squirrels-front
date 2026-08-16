@@ -24,10 +24,10 @@
 
 .count {
   margin: 0;
-  font-family: "Manrope", sans-serif;
+  font-family: var(--font-manrope);
   font-weight: 700;
   font-size: 18px;
-  color: #070721;
+  color: var(--color-black);
 }
 
 /* React Select */

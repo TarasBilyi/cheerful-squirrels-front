@@ -27,11 +27,11 @@
     align-items: center;
     justify-content: center;
 
-    font-family: "Manrope", sans-serif;
+    font-family: var(--font-manrope);
     font-weight: 700;
     text-decoration: none;
 
-    transition: all 250ms ease;
+    transition: all var(--transition-hover);
     cursor: pointer;
 }
 
@@ -41,17 +41,17 @@
 
     border-radius: 50%;
 
-    color: #070721;
+    color: var(--color-black);
     font-size: 18px;
 }
 
 .pageLink:hover {
-    color: #649179;
+    color: var(--color-green);
 }
 
 .active .pageLink {
-    background: #649179;
-    color: #f7fffb;
+    background: var(--color-green);
+    color: var(--color-white);
 }
 
 .arrowLink {
@@ -64,8 +64,8 @@
 
     border-radius: 50%;
 
-    background: #649179;
-    color: #f7fffb;
+    background: var(--color-green);
+    color: var(--color-white);
 }
 
 .arrowLink svg {
@@ -75,18 +75,18 @@
 }
 
 .arrowLink:hover {
-    background: #374f42;
+    background: var(--color-green-darker);
 }
 
 .arrowLink:active {
-    background: #649179;
+    background: var(--color-green);
     box-shadow:
         0 0 0 6px rgba(78, 70, 180, 0.12),
         0 0 0 2px #fff;
 }
 
 .disabled .arrowLink {
-    background: #649179;
+    background: var(--color-green);
     opacity: 0.3;
     cursor: not-allowed;
     pointer-events: none;
@@ -96,7 +96,7 @@
     width: 40px;
     height: 40px;
 
-    color: #070721;
+    color: var(--color-black);
     font-size: 20px;
 }
 
