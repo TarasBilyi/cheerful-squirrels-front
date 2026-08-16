@@ -40,10 +40,10 @@
   min-height: 33px;
   height: 33px;
 
-  border: 1px solid var(--color-light-gray);
+  border: 1px solid #9f9f9f;
   border-radius: 4px;
 
-  background: var(--color-white);
+  background: #fff;
   box-shadow: none;
 
   cursor: pointer;
@@ -51,11 +51,11 @@
 }
 
 .select :global(.reactSelect__control:hover) {
-  border-color: var(--color-gray);
+  border-color: #595d62;
 }
 
 .select :global(.reactSelect__control.reactSelect__control--is-focused) {
-  border-color: var(--color-gray);
+  border-color: #595d62;
   box-shadow: none;
 }
 
@@ -72,7 +72,7 @@
   font-weight: 400;
   line-height: 155%;
 
-  color: var(--color-gray);
+  color: #595d62;
 }
 
 .select :global(.reactSelect__input-container) {
@@ -86,11 +86,11 @@
 
 .select :global(.reactSelect__dropdown-indicator) {
   padding: 4px 10px;
-  color: var(--color-gray);
+  color: #595d62;
 }
 
 .select :global(.reactSelect__dropdown-indicator:hover) {
-  color: var(--color-gray);
+  color: #595d62;
 }
 
 .select :global(.reactSelect__dropdown-indicator svg) {
@@ -103,10 +103,10 @@
 
   margin-top: 6px;
 
-  border: 1px solid var(--color-light-gray);
+  border: 1px solid #d9d9d9;
   border-radius: 8px;
 
-  background: var(--color-white);
+  background: #fff;
   overflow: hidden;
 
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -125,24 +125,24 @@
   font-size: 16px;
   font-weight: 400;
 
-  color: var(--color-gray);
-  background: var(--color-white);
+  color: #595d62;
+  background: #fff;
 
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .select :global(.reactSelect__option:hover) {
-  background: var(--color-white);
+  background: #eef3f0;
 }
 
 .select :global(.reactSelect__option--is-focused) {
-  background: var(--color-white);
+  background: #eef3f0;
 }
 
 .select :global(.reactSelect__option--is-selected) {
-  background: var(--color-white);
-  color: var(--color-gray);
+  background: #dfe8e3;
+  color: #595d62;
 }
 
 .loading {
