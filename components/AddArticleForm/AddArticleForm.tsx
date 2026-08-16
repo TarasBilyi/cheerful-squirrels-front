@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState, type ChangeEvent } from 'react';
+import Image from 'next/image';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import * as Yup from 'yup';
@@ -28,7 +29,9 @@ export default function AddArticleForm() {
   const queryClient = useQueryClient();
   const router = useRouter();
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [image, setImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const draft = useFormDraftValue<ArticleFormValues>(DRAFT_KEY);
   const initialValues = draft ?? EMPTY_VALUES;
 
@@ -37,6 +40,25 @@ export default function AddArticleForm() {
       toast('Restored your unsaved draft', { icon: '📝', id: DRAFT_KEY });
     }
   }, [draft]);
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
+
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const selected = event.target.files?.[0] ?? null;
+
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+
+    setImage(selected);
+    setPreviewUrl(selected ? URL.createObjectURL(selected) : null);
+  };
 
   const NewArticleSchema = Yup.object().shape({
     title: Yup.string()
@@ -88,16 +110,38 @@ export default function AddArticleForm() {
           <Form className={css.articleForm}>
             <DraftAutosave values={values} />
 
-            <div className={css.imgAdd}>
-              <label htmlFor="image">Add a photo</label>
-              <input
-                id="image"
-                name="image"
-                type="file"
-                accept="image/*"
-                onChange={e => setImage(e.target.files?.[0] ?? null)}
-              />
-            </div>
+            <label htmlFor="image" className={css.visuallyHidden}>
+              Add a photo
+            </label>
+            <button
+              type="button"
+              className={css.imgAdd}
+              onClick={() => fileInputRef.current?.click()}
+              aria-label="Add a photo"
+            >
+              {previewUrl ? (
+                <Image
+                  src={previewUrl}
+                  alt="Selected photo preview"
+                  fill
+                  unoptimized
+                  className={css.imgPreview}
+                />
+              ) : (
+                <svg width={64} height={58} aria-hidden className={css.imgIcon}>
+                  <use href="/icons/sprite.svg#photo" />
+                </svg>
+              )}
+            </button>
+            <input
+              ref={fileInputRef}
+              id="image"
+              name="image"
+              type="file"
+              accept="image/*"
+              className={css.fileInput}
+              onChange={handleImageChange}
+            />
             <ErrorMessage name="image" component="span" className={css.error} />
 
             <div className={css.titleFieldContainer}>
