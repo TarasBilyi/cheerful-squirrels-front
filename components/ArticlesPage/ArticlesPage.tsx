@@ -14,7 +14,7 @@ import { useLoaderStore } from '@/lib/store/loaderStore';
 import type { Article } from '@/types/article';
 
 import SectionTitle from '@/components/SectionTitle/SectionTitle';
-import ArticlesEmpty from './ArticlesEmpty/ArticlesEmpty';
+import ArticlesEmpty from '../ArticlesEmpty/ArticlesEmpty';
 
 import css from './ArticlesPage.module.css';
 
@@ -125,9 +125,14 @@ const ArticlesPage = () => {
             articles.length > 0 ? (
               <ArticlesList articles={articles} />
             ) : (
-              <ArticlesEmpty />
+              <ArticlesEmpty
+                text="Be the first, who create an article"
+                buttonText="Create an article"
+                href="/articles/create"
+              />
             )
           )}
+
 
           <Pagination
             currentPage={page}
