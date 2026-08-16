@@ -1,5 +1,8 @@
 'use client';
 
+import css from './page.module.css';
+import Container from '@/components/Container/Container';
+
 export default function Error({
   error,
   reset,
@@ -8,9 +11,9 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <div>
-      <h2>Something went wrong</h2>
+    <Container className={css.wrapper}>
+      <h2 className={css.title}>Something went wrong</h2>
       <button onClick={() => reset()}>Try again</button>
-    </div>
+    </Container>
   );
 }
