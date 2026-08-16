@@ -1,9 +1,5 @@
-import axios from 'axios';
+import { api } from './api';
 import type { Article } from '@/types/article';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-
 
 export interface ArticlesResponse {
   articles: Article[];
@@ -20,9 +16,9 @@ export interface ArticlesResponse {
 export const getArticles = async (
   category: 'general' | 'popular',
   page = 1,
-  perPage = 10
+  perPage = 10,
 ): Promise<ArticlesResponse> => {
-  const response = await axios.get(`${API_URL}/articles`, {
+  const { data } = await api.get('/articles', {
     params: {
       category,
       page,
@@ -30,5 +26,5 @@ export const getArticles = async (
     },
   });
 
-  return response.data.data;
+  return data.data;
 };
