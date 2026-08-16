@@ -6,6 +6,7 @@ import Container from '@/components/Container/Container';
 import AuthorInfo from '@/components/AuthorPage/AuthorInfo';
 import ProfileTabs from '@/components/ProfilePage/ProfileTabs';
 import { useAuthStore } from '@/lib/store/authStore';
+import { useModalStore } from '@/lib/store/useModalStore';
 import css from '@/components/ProfilePage/ProfilePage.module.css';
 
 interface ProfileLayoutProps {
@@ -20,6 +21,7 @@ const ProfileLayout = ({ children, myArticles, savedArticles }: ProfileLayoutPro
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
   const isInitializing = useAuthStore(state => state.isInitializing);
   const user = useAuthStore(state => state.user);
+  const openModal = useModalStore(state => state.openModal);
 
   useEffect(() => {
     if (!isInitializing && !isAuthenticated) {
@@ -38,7 +40,11 @@ const ProfileLayout = ({ children, myArticles, savedArticles }: ProfileLayoutPro
     <main className={css.main}>
       <Container>
         <h1 className={css.title}>My Profile</h1>
-        <AuthorInfo author={{ ...user, articlesAmount }} headingLevel="h2" />
+        <AuthorInfo
+          author={{ ...user, articlesAmount }}
+          headingLevel="h2"
+          onEdit={() => openModal('user-profile')}
+        />
         <ProfileTabs />
         {children}
         {myArticles}

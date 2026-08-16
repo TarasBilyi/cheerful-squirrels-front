@@ -37,16 +37,25 @@ const UserBar = ({ user, isLoading, onBeforeOpen }: UserBarProps) => {
       disabled={isLoading}
       aria-label="Open profile"
     >
-      {isLoading ? (
-        <span className={css.avatarSkeleton} aria-hidden />
-      ) : avatarSrc ? (
-        // eslint-disable-next-line @next/next/no-img-element -- домен аватара динамічний (бек)
-        <img src={avatarSrc} alt={user?.name} className={css.avatar} />
-      ) : (
-        <span className={css.avatar} aria-hidden>
-          {initial}
-        </span>
-      )}
+      <span className={css.avatarWrapper}>
+        {isLoading ? (
+          <span className={css.avatarSkeleton} aria-hidden />
+        ) : avatarSrc ? (
+          // eslint-disable-next-line @next/next/no-img-element -- домен аватара динамічний (бек)
+          <img src={avatarSrc} alt={user?.name} className={css.avatar} />
+        ) : (
+          <span className={css.avatar} aria-hidden>
+            {initial}
+          </span>
+        )}
+        {!isLoading && (
+          <span className={css.avatarOverlay} aria-hidden>
+            <svg width={16} height={16}>
+              <use href="/icons/sprite.svg#edit" />
+            </svg>
+          </span>
+        )}
+      </span>
 
       {isLoading ? (
         <span className={css.nameSkeleton} aria-hidden />

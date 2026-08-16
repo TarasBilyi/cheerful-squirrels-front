@@ -81,6 +81,30 @@
   border-radius: 50%;
 }
 
+.avatarOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: var(--color-white);
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (min-width: 1440px) {
+  .avatarOverlay {
+    transition: opacity var(--transition-hover);
+  }
+
+  .avatarButton:hover .avatarOverlay,
+  .avatarButton:focus-visible .avatarOverlay {
+    opacity: 1;
+  }
+}
+
 .fileInput {
   display: none;
 }

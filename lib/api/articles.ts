@@ -16,7 +16,7 @@ export interface ArticlesResponse {
 export const getArticles = async (
   category: 'general' | 'popular',
   page = 1,
-  perPage = 12
+  perPage = 10
 ): Promise<ArticlesResponse> => {
   const response = await nextServer.get('/articles', {
     params: {

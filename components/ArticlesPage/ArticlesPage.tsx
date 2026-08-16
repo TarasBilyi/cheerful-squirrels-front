@@ -6,9 +6,15 @@ import Select, { components, DropdownIndicatorProps } from 'react-select';
 import Container from '@/components/Container/Container';
 import ArticlesList from '@/components/ArticlesList/ArticlesList';
 import Pagination from '@/components/Pagination/Pagination';
+import Loader from '@/components/Loader/Loader';
 
 import { getArticles } from '@/lib/api/articles';
+import { useLoaderStore } from '@/lib/store/loaderStore';
+
 import type { Article } from '@/types/article';
+
+import SectionTitle from '@/components/SectionTitle/SectionTitle';
+import ArticlesEmpty from '../ArticlesEmpty/ArticlesEmpty';
 
 import css from './ArticlesPage.module.css';
 
@@ -41,13 +47,15 @@ const ArticlesPage = () => {
 
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
+
+  const setLoading = useLoaderStore(state => state.setLoading);
 
   useEffect(() => {
     const fetchArticles = async () => {
-      try {
-        setLoading(true);
+      setLoading(true);
 
+      try {
         const data = await getArticles(category, page, 12);
 
         setArticles(data.articles);
@@ -57,11 +65,12 @@ const ArticlesPage = () => {
         console.error('Failed to fetch articles:', error);
       } finally {
         setLoading(false);
+        setIsFirstLoad(false);
       }
     };
 
     fetchArticles();
-  }, [category, page]);
+  }, [category, page, setLoading]);
 
   const handleCategoryChange = (newCategory: Category) => {
     if (newCategory === category) return;
@@ -72,6 +81,7 @@ const ArticlesPage = () => {
 
   const handlePageChange = (selectedPage: number) => {
     setPage(selectedPage);
+
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
@@ -80,10 +90,12 @@ const ArticlesPage = () => {
 
   return (
     <main className={css.main}>
+      <Loader />
+
       <section className={css.section}>
         <Container>
           <div className={css.header}>
-            <h1 className={css.title}>Articles</h1>
+            <SectionTitle>Articles</SectionTitle>
 
             <div className={css.controls}>
               <p className={css.count}>{totalItems} articles</p>
@@ -107,11 +119,16 @@ const ArticlesPage = () => {
             </div>
           </div>
 
-          {loading ? (
-            <p className={css.loading}>Loading...</p>
-          ) : (
-            <ArticlesList articles={articles} />
-          )}
+          {!isFirstLoad &&
+            (articles.length > 0 ? (
+              <ArticlesList articles={articles} />
+            ) : (
+              <ArticlesEmpty
+                text="Be the first, who create an article"
+                buttonText="Create an article"
+                href="/articles/create"
+              />
+            ))}
 
           <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
         </Container>

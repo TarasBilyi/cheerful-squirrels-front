@@ -5,9 +5,10 @@ import css from './AuthorInfo.module.css';
 interface AuthorInfoProps {
   author: Author;
   headingLevel?: 'h1' | 'h2';
+  onEdit?: () => void;
 }
 
-const AuthorInfo = ({ author, headingLevel = 'h1' }: AuthorInfoProps) => {
+const AuthorInfo = ({ author, headingLevel = 'h1', onEdit }: AuthorInfoProps) => {
   const firstName = author.name.split(' ')[0];
   const Heading = headingLevel;
 
@@ -29,6 +30,14 @@ const AuthorInfo = ({ author, headingLevel = 'h1' }: AuthorInfoProps) => {
         </div>
       )}
       <div className={css.info}>
+        {onEdit && (
+          <button type="button" className={css.editButton} onClick={onEdit}>
+            <svg width={16} height={16} aria-hidden>
+              <use href="/icons/sprite.svg#edit" />
+            </svg>
+            Edit
+          </button>
+        )}
         <Heading className={css.name}>{firstName}</Heading>
         <p className={css.count}>{author.articlesAmount ?? 0} articles</p>
       </div>
