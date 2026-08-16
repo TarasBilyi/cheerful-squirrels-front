@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   min-height: 100%;
+  padding: 128px 0px;
 }
 
 .card {
@@ -13,7 +14,7 @@
   width: 100%;
   max-width: 360px;
   margin-inline: auto;
-  padding: 48px 32px;
+  padding: 32px;
   border-radius: 32px;
   background-color: var(--color-light-green);
 }
@@ -22,11 +23,17 @@
   .card {
     max-width: 522px;
   }
+  .wrapper {
+    padding: 124px 0px;
+  }
 }
 
 @media (min-width: 1440px) {
   .card {
     max-width: 392px;
+  }
+  .wrapper {
+    padding: 178px 0px;
   }
 }
 
