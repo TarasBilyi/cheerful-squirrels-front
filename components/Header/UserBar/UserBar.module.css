@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid var(--color-green-darker);
+  border: none;
   border-radius: 999px;
   background: none;
   padding: 4px 16px 4px 4px;
@@ -14,6 +14,25 @@
 .userBar:disabled {
   cursor: default;
   opacity: 0.6;
+}
+
+.avatarWrapper {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+}
+
+.avatarOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: rgba(7, 7, 33, 0.55);
+  color: var(--color-white);
+  opacity: 0;
+  pointer-events: none;
 }
 
 .avatarSkeleton {
@@ -61,5 +80,16 @@
 
   .userBar:hover {
     opacity: 0.8;
+  }
+}
+
+@media (min-width: 1440px) {
+  .avatarOverlay {
+    transition: opacity var(--transition-hover);
+  }
+
+  .userBar:hover .avatarOverlay,
+  .userBar:focus-visible .avatarOverlay {
+    opacity: 1;
   }
 }

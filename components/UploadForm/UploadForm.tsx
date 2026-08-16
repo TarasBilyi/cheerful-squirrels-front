@@ -121,6 +121,11 @@ const UploadForm = () => {
                 unoptimized
                 className={css.avatarPreview}
               />
+              <span className={css.avatarOverlay} aria-hidden>
+                <svg width={24} height={24}>
+                  <use href="/icons/sprite.svg#edit" />
+                </svg>
+              </span>
             </div>
           ) : (
             <svg width={64} height={58}>
