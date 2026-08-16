@@ -10,6 +10,18 @@
   height: 492px;
   background-color: var(--color-light-green);
   list-style: none;
+
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
+  box-shadow: 0 4px 16px rgba(7, 7, 33, 0.04);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    rgba(0, 0, 0, 0.16) 0px 3px 6px,
+    rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
 .imageWrapper {

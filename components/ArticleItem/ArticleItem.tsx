@@ -1,5 +1,3 @@
-// components/ArticleItem/ArticleItem.tsx
-
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Article } from '@/types/article';
