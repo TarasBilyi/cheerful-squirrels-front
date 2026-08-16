@@ -18,6 +18,12 @@
   gap: 32px;
 }
 
+.accountGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 @media (min-width: 1440px) {
   .desktopNav {
     display: flex;

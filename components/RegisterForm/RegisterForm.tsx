@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useRouter } from 'next/navigation';
@@ -14,6 +14,25 @@ interface RegisterFormValues {
   password: string;
   repeatPassword: string;
 }
+
+const DraftAutosave = ({ values }: { values: RegisterFormValues }) => {
+  const setDraft = useRegisterDraftStore(state => state.setDraft);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+
+    timerRef.current = setTimeout(() => {
+      setDraft({ name: values.name, email: values.email, password: values.password });
+    }, 400);
+
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, [values.name, values.email, values.password, setDraft]);
+
+  return null;
+};
 
 const RegisterForm = () => {
   const router = useRouter();
@@ -43,11 +62,14 @@ const RegisterForm = () => {
 
         <Formik
           initialValues={initialValues}
+          enableReinitialize
           validationSchema={RegisterSchema}
           onSubmit={handleSubmit}
         >
-          {({ isSubmitting, errors, touched }) => (
+          {({ isSubmitting, errors, touched, values }) => (
             <Form className={css.form} noValidate>
+              <DraftAutosave values={values} />
+
               <div className={css.fields}>
                 <div className={css.formGroup}>
                   <label htmlFor="name" className={css.label}>

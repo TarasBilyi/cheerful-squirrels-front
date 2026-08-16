@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useAuthStore } from '@/lib/store/authStore';
 import CtaLink from '../CtaLink/CtaLink';
 import DesktopNav from '../DesktopNav/DesktopNav';
@@ -17,11 +18,16 @@ const HeaderActions = ({ initialIsAuthenticated }: HeaderActionsProps) => {
 
   const displayIsAuthenticated = isInitializing ? initialIsAuthenticated : isAuthenticated;
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const closeMenu = () => setIsMenuOpen(false);
+  const toggleMenu = () => setIsMenuOpen(prev => !prev);
+
   return (
     <div className={`${css.actions} ${displayIsAuthenticated ? css.actionsAuthenticated : ''}`}>
       <CtaLink
         href={displayIsAuthenticated ? '/articles/new' : '/register'}
         className={css.tabletOnly}
+        onClick={closeMenu}
       >
         {displayIsAuthenticated ? 'Create an article' : 'Join now'}
       </CtaLink>
@@ -35,6 +41,9 @@ const HeaderActions = ({ initialIsAuthenticated }: HeaderActionsProps) => {
         isAuthenticated={displayIsAuthenticated}
         isLoadingUser={isInitializing}
         user={user}
+        isOpen={isMenuOpen}
+        onToggle={toggleMenu}
+        onClose={closeMenu}
       />
     </div>
   );

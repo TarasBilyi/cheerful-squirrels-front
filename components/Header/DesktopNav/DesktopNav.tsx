@@ -3,6 +3,7 @@ import { NAV_LINKS } from '../Header.constants';
 import NavLink from '../NavLink/NavLink';
 import CtaLink from '../CtaLink/CtaLink';
 import UserBar from '../UserBar/UserBar';
+import LogoutButton from '../LogoutButton/LogoutButton';
 import css from './DesktopNav.module.css';
 
 interface DesktopNavProps {
@@ -30,7 +31,10 @@ const DesktopNav = ({ isAuthenticated, isLoadingUser, user }: DesktopNavProps) =
       {isAuthenticated ? (
         <div className={`${css.desktopAuth} ${css.desktopAuthAuthenticated}`}>
           <CtaLink href="/articles/new">Create an article</CtaLink>
-          <UserBar user={user} isLoading={isLoadingUser} />
+          <div className={css.accountGroup}>
+            <UserBar user={user} isLoading={isLoadingUser} />
+            <LogoutButton />
+          </div>
         </div>
       ) : (
         <div className={css.desktopAuth}>

@@ -1,5 +1,7 @@
+'use client';
+
 import type { User } from '@/types/user';
-import LogoutButton from '../LogoutButton/LogoutButton';
+import { useModalStore } from '@/lib/store/useModalStore';
 import css from './UserBar.module.css';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '') ?? '';
@@ -13,15 +15,28 @@ const resolveAvatarUrl = (avatarUrl?: string): string | null => {
 interface UserBarProps {
   user: User | null;
   isLoading?: boolean;
-  onBeforeLogoutClick?: () => void;
+  onBeforeOpen?: () => void;
 }
 
-const UserBar = ({ user, isLoading, onBeforeLogoutClick }: UserBarProps) => {
+const UserBar = ({ user, isLoading, onBeforeOpen }: UserBarProps) => {
+  const openModal = useModalStore(state => state.openModal);
+
   const avatarSrc = user ? resolveAvatarUrl(user.avatarUrl) : null;
   const initial = user?.name?.trim().charAt(0).toUpperCase() || '?';
 
+  const handleClick = () => {
+    onBeforeOpen?.();
+    openModal('user-profile');
+  };
+
   return (
-    <div className={css.userBar}>
+    <button
+      type="button"
+      className={css.userBar}
+      onClick={handleClick}
+      disabled={isLoading}
+      aria-label="Open profile"
+    >
       {isLoading ? (
         <span className={css.avatarSkeleton} aria-hidden />
       ) : avatarSrc ? (
@@ -38,10 +53,7 @@ const UserBar = ({ user, isLoading, onBeforeLogoutClick }: UserBarProps) => {
       ) : (
         <span className={css.userName}>{user?.name}</span>
       )}
-
-      <span className={css.divider} aria-hidden />
-      <LogoutButton onBeforeOpen={onBeforeLogoutClick} />
-    </div>
+    </button>
   );
 };
 
