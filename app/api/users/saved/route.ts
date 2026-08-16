@@ -2,7 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   try {
-    const response = await fetch(`${process.env.API_URL}/users/saved`, {
+    const { searchParams } = new URL(request.url);
+
+    const page = searchParams.get('page') ?? '1';
+    const perPage = searchParams.get('perPage') ?? '12';
+
+    const backendUrl = `${process.env.API_URL}/users/saved?page=${page}&perPage=${perPage}`;
+
+    const response = await fetch(backendUrl, {
       method: 'GET',
       headers: {
         Cookie: request.headers.get('cookie') ?? '',
@@ -11,8 +18,6 @@ export async function GET(request: NextRequest) {
     });
 
     const data = await response.json();
-
-    console.log('SAVED RESPONSE:', data);
 
     return NextResponse.json(data, {
       status: response.status,
