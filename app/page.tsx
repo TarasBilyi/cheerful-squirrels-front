@@ -1,14 +1,16 @@
 import styles from './page.module.css';
+import Hero from '@/components/Hero/Hero';
 import About from '@/components/About/About';
-import Creators from '@/components/Creators/Creators';
 import PopularArticles from '@/components/PopularArticles/PopularArticles';
+import Creators from '@/components/Creators/Creators';
 
 export default function Home() {
   return (
     <>
+      <Hero />
       <About />
       <PopularArticles />
-      <Creators/>
+      <Creators />
     </>
   );
 }

@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { AxiosError } from 'axios';
 import AuthorPage from '@/components/AuthorPage/AuthorPage';
 import { getAuthorById, getArticlesByAuthor } from '@/lib/api/authorsApi';
+import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from '@/lib/seo';
 
 interface AuthorRouteProps {
   params: Promise<{ authorId: string }>;
@@ -13,7 +14,7 @@ export const generateMetadata = async ({ params }: AuthorRouteProps): Promise<Me
 
   try {
     const author = await getAuthorById(authorId);
-    const title = `${author.name} | harmoniq`;
+    const title = author.name;
     const description = `${author.articlesAmount ?? 0} articles by ${author.name} on Harmoniq`;
 
     return {
@@ -22,11 +23,11 @@ export const generateMetadata = async ({ params }: AuthorRouteProps): Promise<Me
       openGraph: {
         title,
         description,
-        url: `https://harmoniq.com/authors/${authorId}`,
-        siteName: 'Harmoniq',
+        url: `${SITE_URL}/authors/${authorId}`,
+        siteName: SITE_NAME,
         images: [
           {
-            url: author.avatarUrl ?? 'https://ac.goit.global/fullstack/react/og-meta.jpg',
+            url: author.avatarUrl ?? DEFAULT_OG_IMAGE,
             width: 1200,
             height: 630,
             alt: author.name,
@@ -36,7 +37,7 @@ export const generateMetadata = async ({ params }: AuthorRouteProps): Promise<Me
       },
     };
   } catch {
-    return { title: 'Author | harmoniq' };
+    return { title: 'Author' };
   }
 };
 
@@ -54,14 +55,16 @@ const AuthorRoute = async ({ params }: AuthorRouteProps) => {
   }
 
   const { articles, pagination } = await getArticlesByAuthor(authorId, 1, 12);
+  const currentPage = pagination?.page ?? 1;
+  const totalPages = pagination?.totalPages ?? 1;
 
   return (
     <AuthorPage
       authorId={authorId}
       author={author}
       initialArticles={articles}
-      initialPage={pagination.page}
-      initialTotalPages={pagination.totalPages}
+      initialPage={currentPage}
+      initialTotalPages={totalPages}
     />
   );
 };
