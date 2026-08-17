@@ -6,6 +6,7 @@ import AuthorInfo from '@/components/AuthorPage/AuthorInfo';
 import ProfileTabs from '@/components/ProfilePage/ProfileTabs';
 import RequireAuth from '@/components/RequireAuth/RequireAuth';
 import { useAuthStore } from '@/lib/store/authStore';
+import { useModalStore } from '@/lib/store/useModalStore';
 import css from '@/components/ProfilePage/ProfilePage.module.css';
 
 interface ProfileLayoutProps {
@@ -17,6 +18,7 @@ interface ProfileLayoutProps {
 const ProfileLayout = ({ children, myArticles, savedArticles }: ProfileLayoutProps) => {
   const pathname = usePathname();
   const user = useAuthStore(state => state.user);
+  const openModal = useModalStore(state => state.openModal);
 
   return (
     <RequireAuth>
@@ -33,6 +35,7 @@ const ProfileLayout = ({ children, myArticles, savedArticles }: ProfileLayoutPro
                     : (user.articlesAmount ?? 0),
               }}
               headingLevel="h2"
+              onEdit={() => openModal('user-profile')}
             />
             <ProfileTabs />
             {children}
