@@ -10,3 +10,9 @@ export const clearAuthHintCookie = () => {
   if (typeof document === 'undefined') return;
   document.cookie = `${AUTH_HINT_COOKIE}=; path=/; max-age=0`;
 };
+
+export const hasAuthHint = () => {
+  if (typeof document === 'undefined') return false;
+
+  return document.cookie.split('; ').some(cookie => cookie.startsWith(`${AUTH_HINT_COOKIE}=1`));
+};

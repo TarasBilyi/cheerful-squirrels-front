@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import { getCurrentUser, refreshSession } from '@/lib/api/clientApi';
-import { setAuthHintCookie, clearAuthHintCookie } from '@/lib/utils/authHint';
+import { setAuthHintCookie, clearAuthHintCookie, hasAuthHint } from '@/lib/utils/authHint';
 import type { User } from '@/types/user';
 
 interface AuthStore {
@@ -41,19 +41,42 @@ export const useAuthStore = create<AuthStore>()(
       initializeAuth: async () => {
         set({ isAuthenticated: false });
 
+        if (!hasAuthHint()) {
+          set({
+            user: null,
+            isAuthenticated: false,
+            isInitializing: false,
+          });
+
+          return;
+        }
+
         try {
           const user = await getCurrentUser();
+
           setAuthHintCookie();
-          set({ user, isAuthenticated: true });
+          set({
+            user,
+            isAuthenticated: true,
+          });
         } catch {
           try {
             await refreshSession();
+
             const user = await getCurrentUser();
+
             setAuthHintCookie();
-            set({ user, isAuthenticated: true });
+            set({
+              user,
+              isAuthenticated: true,
+            });
           } catch {
             clearAuthHintCookie();
-            set({ user: null, isAuthenticated: false });
+
+            set({
+              user: null,
+              isAuthenticated: false,
+            });
           }
         } finally {
           set({ isInitializing: false });
