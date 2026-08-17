@@ -1,5 +1,6 @@
 import { api } from './api';
 import { User } from '@/types/user';
+import { Article } from '@/types/article';
 
 interface ApiEnvelope<T> {
   status: number;
@@ -41,6 +42,30 @@ export const removeSavedArticle = async (articleId: string) => {
   return data.data;
 };
 
+interface ArticlesPagination {
+  page: number;
+  perPage: number;
+  totalItems: number;
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+}
+
+export interface GetSavedArticlesResponseData {
+  articles: Article[];
+  pagination: ArticlesPagination;
+}
+
+export const getSavedArticles = async (
+  page = 1,
+  perPage = 12
+): Promise<GetSavedArticlesResponseData> => {
+  const { data } = await api.get<ApiEnvelope<GetSavedArticlesResponseData>>('/users/saved', {
+    params: { page, perPage },
+  });
+  return data.data;
+};
+
 export type RegisterRequest = { name: string; email: string; password: string };
 
 export const register = async (user: RegisterRequest): Promise<User> => {
@@ -56,4 +81,13 @@ export const updateAvatar = async (avatar: File): Promise<{ avatarUrl: string }>
     formData
   );
   return data.data;
+};
+
+export type UpdateUserProfileRequest = Partial<{ name: string; email: string }>;
+
+export const updateUserProfile = async (
+  payload: UpdateUserProfileRequest
+): Promise<User> => {
+  const { data } = await api.patch<ApiEnvelope<{ user: User }>>('/users/me', payload);
+  return data.data.user;
 };

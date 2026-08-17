@@ -121,6 +121,11 @@ const UploadForm = () => {
                 unoptimized
                 className={css.avatarPreview}
               />
+              <span className={css.avatarOverlay} aria-hidden>
+                <svg width={24} height={24}>
+                  <use href="/icons/sprite.svg#edit" />
+                </svg>
+              </span>
             </div>
           ) : (
             <svg width={64} height={58}>
@@ -137,8 +142,14 @@ const UploadForm = () => {
           onChange={handleFileChange}
         />
 
-        <button type="submit" className={css.submitButton} disabled={!file || isSubmitting}>
-          Save
+        <button
+          type="submit"
+          className={css.submitButton}
+          disabled={!file || isSubmitting}
+          aria-busy={isSubmitting}
+        >
+          {isSubmitting && <span className={css.spinner} aria-hidden />}
+          {isSubmitting ? 'Saving…' : 'Save'}
         </button>
       </form>
     </div>

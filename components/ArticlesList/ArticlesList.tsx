@@ -1,0 +1,24 @@
+import type { Article } from '@/types/article';
+
+import css from './ArticlesList.module.css';
+import ArticleItem from '@/components/ArticleItem/ArticleItem';
+
+interface ArticlesListProps {
+  articles: Article[];
+}
+
+const ArticlesList = ({ articles }: ArticlesListProps) => {
+  if (articles.length === 0) {
+    return <p>No articles found.</p>;
+  }
+
+  return (
+    <ul className={css.list}>
+      {articles.map(article => (
+        <ArticleItem key={article._id} article={article} />
+      ))}
+    </ul>
+  );
+};
+
+export default ArticlesList;

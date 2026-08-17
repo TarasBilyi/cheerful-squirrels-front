@@ -1,0 +1,8 @@
+.title {
+    margin-bottom: 16px;
+    padding: 0;
+    font-family: var(--font-manrope);
+    font-weight: 700;
+    font-size: 40px;
+    color: var(--color-black);
+}

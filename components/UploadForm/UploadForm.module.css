@@ -76,8 +76,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 136px;
-  height: 136px;
+  width: 160px;
+  height: 160px;
   border: none;
   border-radius: 50%;
   background-color: var(--color-green);
@@ -109,6 +109,19 @@
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.6);
   color: var(--color-white);
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (min-width: 1440px) {
+  .avatarOverlay {
+    transition: opacity var(--transition-hover);
+  }
+
+  .avatarButton:hover .avatarOverlay,
+  .avatarButton:focus-visible .avatarOverlay {
+    opacity: 1;
+  }
 }
 
 .fileInput {
@@ -116,6 +129,10 @@
 }
 
 .submitButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   width: 100%;
   padding: 8px;
   border: none;
@@ -130,6 +147,21 @@
     background-color 0.2s ease,
     box-shadow 0.2s ease,
     opacity 0.2s ease;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: var(--color-white);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .submitButton:hover {
