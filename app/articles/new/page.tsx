@@ -1,32 +1,40 @@
 import { Metadata } from 'next';
 import AddArticleForm from '@/components/AddArticleForm/AddArticleForm';
 import Container from '@/components/Container/Container';
+import RequireAuth from '@/components/RequireAuth/RequireAuth';
+import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: `Harmoniq - Create Article`,
-  description: 'Write a new public article on Harmoniq',
+  title: 'Create Article',
+  description: 'Write a new public article on Harmoniq.',
   openGraph: {
-    title: `Harmoniq`,
-    description: 'Create new article',
-    url: `https://harmoniq.com/articles/create`,
-    siteName: 'Harmoniq',
+    title: `Create Article | ${SITE_NAME}`,
+    description: 'Write a new public article on Harmoniq.',
+    url: `${SITE_URL}/articles/new`,
+    siteName: SITE_NAME,
     images: [
       {
-        url: 'https://ac.goit.global/fullstack/react/og-meta.jpg',
+        url: DEFAULT_OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: 'Harmoniq',
+        alt: SITE_NAME,
       },
     ],
     type: 'website',
   },
+  robots: {
+    index: false,
+    follow: true,
+  },
 };
 
-const CreateArticle = async () => {
+const CreateArticle = () => {
   return (
-    <Container>
-      <AddArticleForm />
-    </Container>
+    <RequireAuth>
+      <Container>
+        <AddArticleForm />
+      </Container>
+    </RequireAuth>
   );
 };
 

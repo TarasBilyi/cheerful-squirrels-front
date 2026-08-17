@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { AxiosError } from 'axios';
 import ArticlePage from '@/components/ArticlePage/ArticlePage';
 import { getArticleById, getRecommendedArticles } from '@/lib/api/articlesApi';
+import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from '@/lib/seo';
 
 interface ArticleRouteProps {
   params: Promise<{ articleId: string }>;
@@ -15,9 +16,36 @@ export const generateMetadata = async ({
 
   try {
     const article = await getArticleById(articleId);
-    return { title: `${article.title} | harmoniq` };
+    const title = article.title;
+    const description = article.desc;
+
+    return {
+      title,
+      description,
+      openGraph: {
+        title,
+        description,
+        url: `${SITE_URL}/articles/${articleId}`,
+        siteName: SITE_NAME,
+        type: 'article',
+        images: [
+          {
+            url: article.img || DEFAULT_OG_IMAGE,
+            width: 1200,
+            height: 630,
+            alt: article.title,
+          },
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+        images: [article.img || DEFAULT_OG_IMAGE],
+      },
+    };
   } catch {
-    return { title: 'Article | harmoniq' };
+    return { title: 'Article' };
   }
 };
 

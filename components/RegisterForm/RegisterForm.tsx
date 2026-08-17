@@ -36,15 +36,17 @@ const DraftAutosave = ({ values }: { values: RegisterFormValues }) => {
 
 const RegisterForm = () => {
   const router = useRouter();
-  const draft = useRegisterDraftStore(state => state.draft);
   const setDraft = useRegisterDraftStore(state => state.setDraft);
 
-  const initialValues: RegisterFormValues = {
-    name: draft?.name ?? '',
-    email: draft?.email ?? '',
-    password: draft?.password ?? '',
-    repeatPassword: '',
-  };
+  const [initialValues] = useState<RegisterFormValues>(() => {
+    const draft = useRegisterDraftStore.getState().draft;
+    return {
+      name: draft?.name ?? '',
+      email: draft?.email ?? '',
+      password: draft?.password ?? '',
+      repeatPassword: '',
+    };
+  });
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isRepeatPasswordVisible, setIsRepeatPasswordVisible] = useState(false);
@@ -62,14 +64,12 @@ const RegisterForm = () => {
 
         <Formik
           initialValues={initialValues}
-          enableReinitialize
           validationSchema={RegisterSchema}
           onSubmit={handleSubmit}
         >
           {({ isSubmitting, errors, touched, values }) => (
             <Form className={css.form} noValidate>
               <DraftAutosave values={values} />
-
               <div className={css.fields}>
                 <div className={css.formGroup}>
                   <label htmlFor="name" className={css.label}>
