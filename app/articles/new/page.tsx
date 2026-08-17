@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import AddArticleForm from '@/components/AddArticleForm/AddArticleForm';
 import Container from '@/components/Container/Container';
+import RequireAuth from '@/components/RequireAuth/RequireAuth';
 
 export const metadata: Metadata = {
   title: `Harmoniq - Create Article`,
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: `Harmoniq`,
     description: 'Create new article',
-    url: `https://harmoniq.com/articles/create`,
+    url: `https://harmoniq.com/articles/new`,
     siteName: 'Harmoniq',
     images: [
       {
@@ -22,11 +23,13 @@ export const metadata: Metadata = {
   },
 };
 
-const CreateArticle = async () => {
+const CreateArticle = () => {
   return (
-    <Container>
-      <AddArticleForm />
-    </Container>
+    <RequireAuth>
+      <Container>
+        <AddArticleForm />
+      </Container>
+    </RequireAuth>
   );
 };
 
