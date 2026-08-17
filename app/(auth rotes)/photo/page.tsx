@@ -1,11 +1,14 @@
 import UploadForm from '@/components/UploadForm/UploadForm';
 import Container from '@/components/Container/Container';
+import RequireGuest from '@/components/RequireGuest/RequireGuest';
 
 const UploadPhoto = () => {
   return (
-    <Container>
-      <UploadForm />
-    </Container>
+    <RequireGuest>
+      <Container>
+        <UploadForm />
+      </Container>
+    </RequireGuest>
   );
 };
 

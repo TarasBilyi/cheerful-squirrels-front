@@ -1,12 +1,15 @@
 import LoginForm from '@/components/LoginForm/LoginForm';
 import Container from '@/components/Container/Container';
+import RequireGuest from '@/components/RequireGuest/RequireGuest';
 
-const RegisterPage = () => {
+const LoginPage = () => {
   return (
-    <Container>
-      <LoginForm />
-    </Container>
+    <RequireGuest>
+      <Container>
+        <LoginForm />
+      </Container>
+    </RequireGuest>
   );
 };
 
-export default RegisterPage;
+export default LoginPage;
