@@ -1,22 +1,27 @@
 import type { Metadata } from 'next';
+import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'Saved Articles | harmoniq',
+  title: 'Saved Articles',
   description: 'Articles you have saved on Harmoniq.',
   openGraph: {
-    title: 'Saved Articles | harmoniq',
+    title: `Saved Articles | ${SITE_NAME}`,
     description: 'Articles you have saved on Harmoniq.',
-    url: 'https://harmoniq.com/profile/saved',
-    siteName: 'Harmoniq',
+    url: `${SITE_URL}/profile/saved`,
+    siteName: SITE_NAME,
     images: [
       {
-        url: 'https://ac.goit.global/fullstack/react/og-meta.jpg',
+        url: DEFAULT_OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: 'Harmoniq',
+        alt: SITE_NAME,
       },
     ],
     type: 'website',
+  },
+  robots: {
+    index: false,
+    follow: false,
   },
 };
 
