@@ -43,7 +43,7 @@ const RegisterForm = () => {
     name: draft?.name ?? '',
     email: draft?.email ?? '',
     password: draft?.password ?? '',
-    repeatPassword: draft?.password ?? '',
+    repeatPassword: '',
   };
 
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
