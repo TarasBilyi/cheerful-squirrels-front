@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, type ChangeEvent } from 'react';
-import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import * as Yup from 'yup';
@@ -10,6 +9,8 @@ import css from './AddArticleForm.module.css';
 import toast from 'react-hot-toast';
 import { createArticle } from '@/services/article';
 import { useFormDraft, useFormDraftValue, clearFormDraft } from '@/hooks/useFormDraft';
+import { useAuthStore } from '@/lib/store/authStore';
+import Image from 'next/image';
 
 const DRAFT_KEY = 'draft:add-article';
 
@@ -28,10 +29,13 @@ const DraftAutosave = ({ values }: { values: ArticleFormValues }) => {
 export default function AddArticleForm() {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const user = useAuthStore(state => state.user);
+  const setUser = useAuthStore(state => state.setUser);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [image, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
   const draft = useFormDraftValue<ArticleFormValues>(DRAFT_KEY);
   const initialValues = draft ?? EMPTY_VALUES;
 
@@ -41,15 +45,7 @@ export default function AddArticleForm() {
     }
   }, [draft]);
 
-  useEffect(() => {
-    return () => {
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
-      }
-    };
-  }, [previewUrl]);
-
-  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selected = event.target.files?.[0] ?? null;
 
     if (previewUrl) {
@@ -59,6 +55,14 @@ export default function AddArticleForm() {
     setImage(selected);
     setPreviewUrl(selected ? URL.createObjectURL(selected) : null);
   };
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
 
   const NewArticleSchema = Yup.object().shape({
     title: Yup.string()
@@ -87,6 +91,11 @@ export default function AddArticleForm() {
 
       const newArticle = await createArticle(formData);
       queryClient.invalidateQueries({ queryKey: ['articles'] });
+
+      if (user) {
+        setUser({ ...user, articlesAmount: (user.articlesAmount ?? 0) + 1 });
+      }
+
       clearFormDraft(DRAFT_KEY);
       toast.success('Article published successfully!');
       router.push(`/articles/${newArticle._id}`);
