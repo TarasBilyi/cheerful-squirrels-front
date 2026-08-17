@@ -30,6 +30,12 @@
   cursor: not-allowed;
 }
 
+.closeButton:focus-visible {
+  box-shadow:
+    0 0 0 6px rgba(78, 70, 180, 0.12),
+    0 0 0 2px var(--color-white);
+}
+
 .title {
   margin: 0;
   font-family: var(--font-manrope);
@@ -66,6 +72,12 @@
 .avatarButton:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.avatarButton:focus-visible {
+  box-shadow:
+    0 0 0 6px rgba(78, 70, 180, 0.12),
+    0 0 0 2px var(--color-white);
 }
 
 .avatarPreviewWrapper {
@@ -139,6 +151,12 @@
   background-color: var(--color-white);
 }
 
+.inputWrapper:has(.input:focus-visible) {
+  box-shadow:
+    0 0 0 6px rgba(78, 70, 180, 0.12),
+    0 0 0 2px var(--color-white);
+}
+
 .input {
   flex: 1 0 0;
   min-width: 0;
@@ -187,6 +205,13 @@
 .submitButton:disabled {
   opacity: 0.3;
   cursor: not-allowed;
+}
+
+.submitButton:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 6px rgba(78, 70, 180, 0.12),
+    0 0 0 2px var(--color-white);
 }
 
 .spinner {

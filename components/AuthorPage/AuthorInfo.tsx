@@ -20,6 +20,7 @@ const AuthorInfo = ({ author, headingLevel = 'h1', onEdit }: AuthorInfoProps) =>
           alt={author.name}
           width={137}
           height={137}
+          unoptimized
           className={css.avatar}
         />
       ) : (
