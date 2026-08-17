@@ -78,6 +78,7 @@ const MobileMenu = ({
               </CtaLink>
               <div className={css.accountRow}>
                 <UserBar user={user} isLoading={isLoadingUser} onBeforeOpen={onClose} />
+                <span className={css.divider} aria-hidden="true" />
                 <LogoutButton onBeforeOpen={onClose} />
               </div>
             </>

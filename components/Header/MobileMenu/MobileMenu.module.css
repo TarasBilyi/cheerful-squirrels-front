@@ -49,6 +49,14 @@
   gap: 8px;
 }
 
+.divider {
+  width: 1px;
+  height: 32px;
+  flex-shrink: 0;
+  background-color: var(--color-green-darker);
+  opacity: 0.3;
+}
+
 @media (min-width: 768px) {
   .nav {
     padding-inline: 32px;
