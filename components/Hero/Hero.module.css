@@ -115,6 +115,36 @@
     width: 249px;
     max-width: 249px;
   }
+
+  .articlesButton,
+  .registerButton {
+    transition:
+      background-color var(--transition-hover),
+      color var(--transition-hover),
+      box-shadow var(--transition-hover);
+  }
+  .articlesButton:hover,
+  .articlesButton:focus {
+    background-color: var(--color-green-darker);
+  }
+  .articlesButton:active {
+    background-color: var(--color-green);
+    box-shadow:
+      0 0 0 6px rgba(78, 70, 180, 0.12),
+      0 0 0 2px #fff;
+  }
+
+  .registerButton:hover,
+  .registerButton:focus {
+    background-color: var(--color-green-darker);
+    color: var(--color-white);
+  }
+  .registerButton:active {
+    box-shadow:
+      0 0 0 6px rgba(78, 70, 180, 0.12),
+      0 0 0 2px #fff;
+  }
+
   .articlesButton {
     width: 249px;
   }
@@ -159,33 +189,8 @@
   .articlesButton {
     width: 184px;
   }
-  .articlesButton,
-  .registerButton {
-    transition:
-      background-color var(--transition-hover),
-      box-shadow var(--transition-hover);
-  }
-  .articlesButton:hover,
-  .articlesButton:focus {
-    background-color: var(--color-green-darker);
-  }
-  .articlesButton:active {
-    background-color: var(--color-green);
-    box-shadow:
-      0 0 0 6px rgba(78, 70, 180, 0.12),
-      0 0 0 2px #fff;
-  }
 
   .registerButton {
     width: 184px;
-  }
-  .registerButton:hover,
-  .registerButton:focus {
-    color: var(--color-black);
-  }
-  .registerButton:active {
-    box-shadow:
-      0 0 0 6px rgba(78, 70, 180, 0.12),
-      0 0 0 2px #fff;
   }
 }

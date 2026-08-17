@@ -12,8 +12,10 @@ export default function Error({
 }) {
   return (
     <Container className={css.wrapper}>
-      <h2 className={css.title}>Something went wrong</h2>
-      <button onClick={() => reset()}>Try again</button>
+      <h1 className={css.title}>Something went wrong</h1>
+      <button className={css.errorBtn} onClick={() => reset()}>
+        Try again
+      </button>
     </Container>
   );
 }
