@@ -1,6 +1,7 @@
 import Container from '@/components/Container/Container';
 import AuthorInfo from './AuthorInfo';
 import AuthorArticles from './AuthorArticles';
+import SubscribeButton from '@/components/SubscribeButton/SubscribeButton';
 import type { Author } from '@/types/author';
 import type { Article } from '@/types/article';
 import css from './AuthorPage.module.css';
@@ -23,7 +24,7 @@ const AuthorPage = ({
   return (
     <main className={css.main}>
       <Container>
-        <AuthorInfo author={author} />
+        <AuthorInfo author={author} action={<SubscribeButton authorId={authorId} />} />
         <AuthorArticles
           authorId={authorId}
           initialArticles={initialArticles}

@@ -67,6 +67,18 @@
   color: var(--color-black);
 }
 
+.nameRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.nameRow .name {
+  text-align: left;
+}
+
 .count {
   font-family: var(--font-manrope);
   font-weight: 700;

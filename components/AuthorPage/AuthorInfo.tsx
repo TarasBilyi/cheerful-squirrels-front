@@ -6,9 +6,17 @@ interface AuthorInfoProps {
   author: Author;
   headingLevel?: 'h1' | 'h2';
   onEdit?: () => void;
+  action?: React.ReactNode;
+  countLabel?: string;
 }
 
-const AuthorInfo = ({ author, headingLevel = 'h1', onEdit }: AuthorInfoProps) => {
+const AuthorInfo = ({
+  author,
+  headingLevel = 'h1',
+  onEdit,
+  action,
+  countLabel = 'articles',
+}: AuthorInfoProps) => {
   const firstName = author.name.split(' ')[0];
   const Heading = headingLevel;
 
@@ -39,8 +47,19 @@ const AuthorInfo = ({ author, headingLevel = 'h1', onEdit }: AuthorInfoProps) =>
             Edit
           </button>
         )}
-        <Heading className={css.name}>{firstName}</Heading>
-        <p className={css.count}>{author.articlesAmount ?? 0} articles</p>
+
+        {action ? (
+          <div className={css.nameRow}>
+            <Heading className={css.name}>{firstName}</Heading>
+            {action}
+          </div>
+        ) : (
+          <Heading className={css.name}>{firstName}</Heading>
+        )}
+
+        <p className={css.count}>
+          {author.articlesAmount ?? 0} {countLabel}
+        </p>
       </div>
     </div>
   );
