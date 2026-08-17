@@ -1,12 +1,45 @@
-import { ApiResponse } from '@/types/api';
-import { Author } from '@/types/author';
 import { api } from './api';
+import type { ApiResponse } from '@/types/api';
+import type { Article } from '@/types/article';
+import type { Author } from '@/types/author';
+
+export const getAuthorById = async (authorId: string): Promise<Author> => {
+  const { data } = await api.get<ApiResponse<{ user: Author }>>(`/users/${authorId}`);
+  return data.data.user;
+};
+
+interface ArticlesPagination {
+  page: number;
+  perPage: number;
+  totalItems: number;
+  totalPages: number;
+}
+
+export interface GetArticlesByAuthorResponseData {
+  articles: Article[];
+  pagination: ArticlesPagination;
+}
+
+export const getArticlesByAuthor = async (
+  authorId: string,
+  page = 1,
+  perPage = 12
+): Promise<GetArticlesByAuthorResponseData> => {
+  const { data } = await api.get<ApiResponse<GetArticlesByAuthorResponseData>>(
+    `/users/${authorId}/articles`,
+    { params: { page, perPage } }
+  );
+  return data.data;
+};
+
 
 interface AuthorsPagination {
   page: number;
   perPage: number;
   totalItems: number;
   totalPages: number;
+  hasPreviousPage?: boolean;
+  hasNextPage?: boolean;
 }
 
 interface GetAuthorsResponseData {
@@ -14,13 +47,15 @@ interface GetAuthorsResponseData {
   pagination: AuthorsPagination;
 }
 
-export const getAuthors = async () => {
+export interface GetAuthorsResult {
+  authors: Author[];
+  pagination: AuthorsPagination;
+}
+
+export const getAuthors = async (page = 1, perPage = 20): Promise<GetAuthorsResult> => {
   const { data } = await api.get<ApiResponse<GetAuthorsResponseData>>('/users', {
-    params: {
-          page: 1,
-          perPage: 20,
-    },
+    params: { page, perPage },
   });
 
-  return data.data.users;
+  return { authors: data.data.users, pagination: data.data.pagination };
 };

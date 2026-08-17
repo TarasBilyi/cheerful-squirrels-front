@@ -1,3 +1,6 @@
-import type { User } from './user';
-
-export type Author = Pick<User, '_id' | 'name' | 'avatarUrl'>;
+export interface Author {
+  _id: string;
+  name: string;
+  avatarUrl?: string;
+  articlesAmount?: number;
+}

@@ -54,14 +54,16 @@ const AuthorRoute = async ({ params }: AuthorRouteProps) => {
   }
 
   const { articles, pagination } = await getArticlesByAuthor(authorId, 1, 12);
+  const currentPage = pagination?.page ?? 1;
+  const totalPages = pagination?.totalPages ?? 1;
 
   return (
     <AuthorPage
       authorId={authorId}
       author={author}
       initialArticles={articles}
-      initialPage={pagination.page}
-      initialTotalPages={pagination.totalPages}
+      initialPage={currentPage}
+      initialTotalPages={totalPages}
     />
   );
 };

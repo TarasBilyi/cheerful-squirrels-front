@@ -1,8 +1,17 @@
-import { getAuthors } from '@/lib/api/authorsApi';
-import css from './AuthorsList.module.css';
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
-import type { Author } from '@/types/author';
 import Image from 'next/image';
+import toast from 'react-hot-toast';
+import LoadMoreButton from '@/components/LoadMoreButton/LoadMoreButton';
+import { getAuthors } from '@/lib/api/authorsApi';
+import { useLoaderStore } from '@/lib/store/loaderStore';
+import type { ApiError } from '@/lib/api/api';
+import type { Author } from '@/types/author';
+import css from './AuthorsList.module.css';
+
+const PER_PAGE = 20;
 
 interface AuthorsItemProps {
   author: Author;
@@ -36,8 +45,38 @@ const AuthorsItem = ({ author }: AuthorsItemProps) => {
   );
 };
 
-const AuthorsList = async () => {
-  const authors = await getAuthors();
+interface AuthorsListProps {
+  initialAuthors: Author[];
+  initialPage: number;
+  initialTotalPages: number;
+}
+
+const AuthorsList = ({ initialAuthors, initialPage, initialTotalPages }: AuthorsListProps) => {
+  const [authors, setAuthors] = useState(initialAuthors);
+  const [page, setPage] = useState(initialPage);
+  const [totalPages, setTotalPages] = useState(initialTotalPages);
+  const [isLoading, setIsLoading] = useState(false);
+  const setLoading = useLoaderStore(state => state.setLoading);
+
+  const hasMore = page < totalPages;
+
+  const handleLoadMore = async () => {
+    try {
+      setIsLoading(true);
+      setLoading(true);
+
+      const next = await getAuthors(page + 1, PER_PAGE);
+
+      setAuthors(prev => [...prev, ...next.authors]);
+      setPage(next.pagination.page);
+      setTotalPages(next.pagination.totalPages);
+    } catch (error) {
+      toast.error((error as ApiError).response?.data?.error ?? 'Failed to load more authors');
+    } finally {
+      setIsLoading(false);
+      setLoading(false);
+    }
+  };
 
   return (
     <div className={css.wrapper}>
@@ -52,7 +91,10 @@ const AuthorsList = async () => {
           ))}
         </ul>
       )}
+
+      {hasMore && <LoadMoreButton onClick={handleLoadMore} disabled={isLoading} />}
     </div>
   );
 };
+
 export default AuthorsList;
