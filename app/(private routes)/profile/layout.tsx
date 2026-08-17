@@ -13,9 +13,15 @@ interface ProfileLayoutProps {
   children: React.ReactNode;
   myArticles: React.ReactNode;
   savedArticles: React.ReactNode;
+  subscriptions: React.ReactNode;
 }
 
-const ProfileLayout = ({ children, myArticles, savedArticles }: ProfileLayoutProps) => {
+const ProfileLayout = ({
+  children,
+  myArticles,
+  savedArticles,
+  subscriptions,
+}: ProfileLayoutProps) => {
   const pathname = usePathname();
   const user = useAuthStore(state => state.user);
   const openModal = useModalStore(state => state.openModal);
@@ -32,15 +38,19 @@ const ProfileLayout = ({ children, myArticles, savedArticles }: ProfileLayoutPro
                 articlesAmount:
                   pathname === '/profile/saved'
                     ? user.savedArticles.length
-                    : (user.articlesAmount ?? 0),
+                    : pathname === '/profile/subscriptions'
+                      ? (user.subscriptions?.length ?? 0)
+                      : (user.articlesAmount ?? 0),
               }}
               headingLevel="h2"
               onEdit={() => openModal('user-profile')}
+              countLabel={pathname === '/profile/subscriptions' ? 'authors' : 'articles'}
             />
             <ProfileTabs />
             {children}
             {myArticles}
             {savedArticles}
+            {subscriptions}
           </Container>
         </main>
       )}

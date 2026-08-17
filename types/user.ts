@@ -5,6 +5,7 @@ export interface User {
   avatarUrl?: string;
   articlesAmount?: number;
   savedArticles: string[];
+  subscriptions?: string[];
   createdAt?: string;
   updatedAt?: string;
 }
