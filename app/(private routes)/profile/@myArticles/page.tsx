@@ -15,6 +15,8 @@ const MyArticlesTab = () => {
   return (
     <PaginatedArticlesList
       fetchPage={(page, perPage) => getArticlesByAuthor(user._id, page, perPage)}
+      deletable
+      editable
       emptyState={
         <EmptyState
           description="Write your first article"

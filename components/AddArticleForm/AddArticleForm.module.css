@@ -78,7 +78,8 @@
     gap: 16px;
 }
 
-.titleFieldContainer>label {
+.titleFieldContainer>label,
+.descFieldContainer>label {
     display: block;
     font-weight: 400;
     font-size: 18px;
@@ -169,6 +170,7 @@
         grid-template-columns: 1fr 1fr;
         grid-template-areas:
             "image title"
+            "desc desc"
             "text text"
             "button button";
         gap: 16px;
@@ -182,6 +184,10 @@
 
     .titleField {
         grid-area: title;
+    }
+
+    .descFieldContainer {
+        grid-area: desc;
     }
 
     .articleFieldContainer {
@@ -198,6 +204,7 @@
         grid-template-columns: 1fr 300px;
         grid-template-areas:
             "title image"
+            "desc image"
             "text image"
             "button image";
     }
@@ -211,6 +218,10 @@
 
     .titleField {
         grid-area: title;
+    }
+
+    .descFieldContainer {
+        grid-area: desc;
     }
 
     .articleFieldContainer {
