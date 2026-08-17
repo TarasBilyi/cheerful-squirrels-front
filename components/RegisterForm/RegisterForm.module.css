@@ -93,6 +93,12 @@
   background-color: var(--color-white);
 }
 
+.inputWrapper:has(.input:focus-visible) {
+  box-shadow:
+    0 0 0 6px rgba(78, 70, 180, 0.12),
+    0 0 0 2px var(--color-white);
+}
+
 .input {
   flex: 1 0 0;
   min-width: 0;
@@ -134,6 +140,13 @@
   background: transparent;
   padding: 0;
   cursor: pointer;
+  border-radius: 50%;
+}
+
+.toggleVisibility:focus-visible {
+  box-shadow:
+    0 0 0 6px rgba(78, 70, 180, 0.12),
+    0 0 0 2px var(--color-white);
 }
 
 .error {
@@ -160,6 +173,9 @@
 
 .submitButton:focus-visible {
   outline: none;
+  box-shadow:
+    0 0 0 6px rgba(78, 70, 180, 0.12),
+    0 0 0 2px var(--color-white);
 }
 
 .submitButton:disabled {
