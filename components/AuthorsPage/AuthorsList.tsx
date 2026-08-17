@@ -39,7 +39,7 @@ export const AuthorsItem = ({ author }: AuthorsItemProps) => {
           </span>
         )}
 
-        <p className={css.name}>{author.name}</p>
+        <p className={css.name}>{author.name?.split(' ')[0]}</p>
       </Link>
     </li>
   );
