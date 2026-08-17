@@ -17,7 +17,7 @@ interface AuthorsItemProps {
   author: Author;
 }
 
-const AuthorsItem = ({ author }: AuthorsItemProps) => {
+export const AuthorsItem = ({ author }: AuthorsItemProps) => {
   const initial = author.name.trim().charAt(0).toUpperCase() || '?';
 
   return (
