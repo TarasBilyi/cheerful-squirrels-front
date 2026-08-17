@@ -1,122 +1,125 @@
 .wrapper {
-    display: flex;
-    justify-content: center;
-    margin: 32px 0;
+  display: flex;
+  justify-content: center;
+  margin: 32px 0;
+  max-width: 100%;
 }
 
 .pagination {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .page,
 .arrow,
 .break {
-    list-style: none;
+  list-style: none;
 }
 
 .pageLink,
 .arrowLink,
 .breakLink {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    font-family: var(--font-manrope);
-    font-weight: 700;
-    text-decoration: none;
+  font-family: var(--font-manrope);
+  font-weight: 700;
+  text-decoration: none;
 
-    transition: all var(--transition-hover);
-    cursor: pointer;
+  transition: all var(--transition-hover);
+  cursor: pointer;
 }
 
 .pageLink {
-    width: 40px;
-    height: 40px;
+  width: 40px;
+  height: 40px;
 
-    border-radius: 50%;
+  border-radius: 50%;
 
-    color: var(--color-black);
-    font-size: 18px;
+  color: var(--color-black);
+  font-size: 18px;
 }
 
 .pageLink:hover {
-    color: var(--color-green);
+  color: var(--color-green);
 }
 
 .active .pageLink {
-    background: var(--color-green);
-    color: var(--color-white);
+  background: var(--color-green);
+  color: var(--color-white);
 }
 
 .arrowLink {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    width: 48px;
-    height: 48px;
+  width: 48px;
+  height: 48px;
 
-    border-radius: 50%;
+  border-radius: 50%;
 
-    background: var(--color-green);
-    color: var(--color-white);
+  background: var(--color-green);
+  color: var(--color-white);
 }
 
 .arrowLink svg {
-    width: 20px;
-    height: 20px;
-    fill: currentColor;
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
 }
 
 .arrowLink:hover {
-    background: var(--color-green-darker);
+  background: var(--color-green-darker);
 }
 
 .arrowLink:active {
-    background: var(--color-green);
-    box-shadow:
-        0 0 0 6px rgba(78, 70, 180, 0.12),
-        0 0 0 2px #fff;
+  background: var(--color-green);
+  box-shadow:
+    0 0 0 6px rgba(78, 70, 180, 0.12),
+    0 0 0 2px #fff;
 }
 
 .disabled .arrowLink {
-    background: var(--color-green);
-    opacity: 0.3;
-    cursor: not-allowed;
-    pointer-events: none;
+  background: var(--color-green);
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .breakLink {
-    width: 40px;
-    height: 40px;
+  width: 40px;
+  height: 40px;
 
-    color: var(--color-black);
-    font-size: 20px;
+  color: var(--color-black);
+  font-size: 20px;
 }
 
 @media (min-width: 768px) {
-    .wrapper {
-        margin: 48px 0;
-    }
+  .wrapper {
+    margin: 48px 0;
+  }
 
-    .pagination {
-        gap: 12px;
-    }
+  .pagination {
+    gap: 12px;
+  }
 
-    .pageLink {
-        width: 48px;
-        height: 48px;
-        font-size: 20px;
-    }
+  .pageLink {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
 
-    .arrowLink {
-        width: 56px;
-        height: 56px;
-    }
+  .arrowLink {
+    width: 56px;
+    height: 56px;
+  }
 }

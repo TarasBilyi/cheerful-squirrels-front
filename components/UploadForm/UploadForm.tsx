@@ -8,6 +8,7 @@ import { register, updateAvatar } from '@/lib/api/clientApi';
 import { ApiError } from '@/lib/api/api';
 import { useRegisterDraftStore } from '@/lib/store/registerDraftStore';
 import { useAuthStore } from '@/lib/store/authStore';
+import { RegisterSchema } from '@/components/RegisterForm/RegisterForm.schema';
 import css from './UploadForm.module.css';
 
 const UploadForm = () => {
@@ -21,6 +22,14 @@ const UploadForm = () => {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (!draft || !RegisterSchema.isValidSync(draft)) {
+      toast.error('Please fill in the registration form first');
+      router.replace('/register');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selected = event.target.files?.[0] ?? null;
@@ -42,7 +51,7 @@ const UploadForm = () => {
   }, [previewUrl]);
 
   const submitRegistration = async () => {
-    if (!draft || isSubmitting) {
+    if (!draft || isSubmitting || !RegisterSchema.isValidSync(draft)) {
       return;
     }
 
