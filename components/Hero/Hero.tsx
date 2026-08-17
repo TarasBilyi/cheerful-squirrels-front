@@ -1,8 +1,14 @@
+'use client';
+
 import Link from 'next/link';
 import Container from '@/components/Container/Container';
+import { useAuthStore } from '@/lib/store/authStore';
 import styles from './Hero.module.css';
 
 export default function Hero() {
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+  const isInitializing = useAuthStore(state => state.isInitializing);
+
   return (
     <section className={styles.hero}>
       <Container>
@@ -19,9 +25,11 @@ export default function Hero() {
                 Go to Articles
               </Link>
 
-              <Link href="/register" className={styles.registerButton}>
-                Register
-              </Link>
+              {!isInitializing && !isAuthenticated && (
+                <Link href="/register" className={styles.registerButton}>
+                  Register
+                </Link>
+              )}
             </div>
           </div>
         </div>
