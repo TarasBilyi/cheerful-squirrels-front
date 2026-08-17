@@ -1,38 +1,28 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import Container from '@/components/Container/Container';
-import './Hero.css';
+import styles from './Hero.module.css';
 
 export default function Hero() {
   return (
-    <section className="hero">
+    <section className={styles.hero}>
       <Container>
-        <div className="wrapper">
-          <div className="content">
-            <h1 className="title">
+        <div className={styles.wrapper}>
+          <div className={styles.imageWrapper}></div>
+
+          <div className={styles.content}>
+            <h1 className={styles.title}>
               Find your <span>harmony</span> in community
             </h1>
 
-            <div className="buttons">
-              <Link href="/articles" className="articlesButton">
+            <div className={styles.buttons}>
+              <Link href="/articles" className={styles.articlesButton}>
                 Go to Articles
               </Link>
 
-              <Link href="/register" className="registerButton">
+              <Link href="/register" className={styles.registerButton}>
                 Register
               </Link>
             </div>
-          </div>
-
-          <div className="imageWrapper">
-            <Image
-              src="/images/hero/heroFoto1x.png"
-              alt="Girl and mountains"
-              width={806}
-              height={562}
-              className="image"
-              priority
-            />
           </div>
         </div>
       </Container>
