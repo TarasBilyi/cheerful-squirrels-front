@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Container from '../Container/Container';
 import Logo from '../Logo/Logo';
 import HeaderActions from './HeaderActions/HeaderActions';
+import ThemeToggle from '../ThemeToggle/ThemeToggle';
 import css from './Header.module.css';
 
 const Header = async () => {
@@ -16,7 +17,10 @@ const Header = async () => {
           <Logo />
         </Link>
 
-        <HeaderActions initialIsAuthenticated={initialIsAuthenticated} />
+        <div className={css.right}>
+          <ThemeToggle />
+          <HeaderActions initialIsAuthenticated={initialIsAuthenticated} />
+        </div>
       </Container>
     </header>
   );

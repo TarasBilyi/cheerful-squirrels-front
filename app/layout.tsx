@@ -9,6 +9,7 @@ import ModalRoot from '@/components/ModalRoot/ModalRoot';
 import { Toaster } from 'react-hot-toast';
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 import AuthProvider from '@/components/AuthProvider/AuthProvider';
+import ThemeProvider from '@/components/ThemeProvider/ThemeProvider';
 import Loader from '@/components/Loader/Loader';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, DEFAULT_OG_IMAGE } from '@/lib/seo';
 
@@ -63,34 +64,57 @@ export const viewport: Viewport = {
   themeColor: '#374f42',
 };
 
+// Sets data-theme on <html> before React hydrates, so the page never
+// paints with the wrong theme for a frame (no flash of light theme
+// for a returning dark-mode user).
+const themeInitScript = `
+(function () {
+  try {
+    var stored = localStorage.getItem('harmoniq-theme');
+    var theme =
+      stored === 'dark' || stored === 'light'
+        ? stored
+        : window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light';
+    document.documentElement.dataset.theme = theme;
+  } catch (e) {}
+})();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${manrope.variable} ${merienda.variable}`}>
+    <html lang="en" className={`${manrope.variable} ${merienda.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body>
-        <TanStackProvider>
-          <AuthProvider>
-            <Header />
-            <main className={css.main}>{children}</main>
-            <Footer />
-            <div id="modal-root"></div>
-            <ModalRoot />
-            <Toaster
-              position="top-right"
-              toastOptions={{
-                duration: 3000,
-                style: {
-                  background: '#374f42',
-                  color: '#fff',
-                },
-              }}
-            />
-            <Loader />
-          </AuthProvider>
-        </TanStackProvider>
+        <ThemeProvider>
+          <TanStackProvider>
+            <AuthProvider>
+              <Header />
+              <main className={css.main}>{children}</main>
+              <Footer />
+              <div id="modal-root"></div>
+              <ModalRoot />
+              <Toaster
+                position="top-right"
+                toastOptions={{
+                  duration: 3000,
+                  style: {
+                    background: '#374f42',
+                    color: '#fff',
+                  },
+                }}
+              />
+              <Loader />
+            </AuthProvider>
+          </TanStackProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

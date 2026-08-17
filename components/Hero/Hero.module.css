@@ -59,7 +59,7 @@
   font-family: var(--font-manrope);
   font-weight: 700;
   font-size: 18px;
-  color: var(--color-white);
+  color: var(--color-on-accent);
   text-align: center;
 }
 .registerButton {
@@ -173,7 +173,7 @@
     background-color: var(--color-green);
     box-shadow:
       0 0 0 6px rgba(78, 70, 180, 0.12),
-      0 0 0 2px #fff;
+      0 0 0 2px var(--color-on-accent);
   }
 
   .registerButton {
@@ -186,6 +186,6 @@
   .registerButton:active {
     box-shadow:
       0 0 0 6px rgba(78, 70, 180, 0.12),
-      0 0 0 2px #fff;
+      0 0 0 2px var(--color-white);
   }
 }
