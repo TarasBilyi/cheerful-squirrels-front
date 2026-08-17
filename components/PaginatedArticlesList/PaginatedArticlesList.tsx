@@ -22,6 +22,8 @@ interface PaginatedArticlesListProps {
   initialTotalPages?: number;
   perPage?: number;
   emptyState?: React.ReactNode;
+  deletable?: boolean;
+  editable?: boolean;
 }
 
 const PaginatedArticlesList = ({
@@ -31,6 +33,8 @@ const PaginatedArticlesList = ({
   initialTotalPages = 0,
   perPage = 12,
   emptyState,
+  deletable = false,
+  editable = false,
 }: PaginatedArticlesListProps) => {
   const [articles, setArticles] = useState(initialArticles);
   const [page, setPage] = useState(initialPage);
@@ -89,13 +93,21 @@ const PaginatedArticlesList = ({
     return () => clearTimeout(timeoutId);
   }, [initialPage]);
 
+  const handleArticleDeleted = (articleId: string) => {
+    setArticles(prev => prev.filter(article => article._id !== articleId));
+  };
+
   if (emptyState && page > 0 && articles.length === 0) {
     return emptyState;
   }
 
   return (
     <div>
-      <ArticlesList articles={articles} />
+      <ArticlesList
+        articles={articles}
+        onDeleted={deletable ? handleArticleDeleted : undefined}
+        editable={editable}
+      />
 
       {hasMore && (
         <div className={css.loadMoreOnly}>

@@ -4,6 +4,7 @@ import type { ApiResponse } from '@/types/api';
 export interface Article {
   _id: string;
   title: string;
+  desc: string;
   article: string;
   img: string;
   date: string;

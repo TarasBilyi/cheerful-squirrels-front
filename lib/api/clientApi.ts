@@ -2,6 +2,7 @@ import { clearAuthHintCookie, setAuthHintCookie } from '../utils/authHint';
 import { nextServer } from './api';
 import { User } from '@/types/user';
 import { Article } from '@/types/article';
+import { Author } from '@/types/author';
 
 interface ApiEnvelope<T> {
   status: number;
@@ -66,6 +67,47 @@ export const getSavedArticles = async (
   const { data } = await nextServer.get<ApiEnvelope<GetSavedArticlesResponseData>>('/users/saved', {
     params: { page, perPage },
   });
+  return data.data;
+};
+
+export const subscribeToAuthor = async (authorId: string) => {
+  const { data } = await api.post<ApiEnvelope<{ subscriptions: string[] }>>(
+    '/users/subscriptions',
+    { authorId }
+  );
+  return data.data;
+};
+
+export const unsubscribeFromAuthor = async (authorId: string) => {
+  const { data } = await api.delete<ApiEnvelope<{ subscriptions: string[] }>>(
+    '/users/subscriptions',
+    { data: { authorId } }
+  );
+  return data.data;
+};
+
+interface SubscriptionsPagination {
+  page: number;
+  perPage: number;
+  totalItems: number;
+  totalPages: number;
+  hasPreviousPage?: boolean;
+  hasNextPage?: boolean;
+}
+
+export interface GetSubscribedAuthorsResponseData {
+  authors: Author[];
+  pagination: SubscriptionsPagination;
+}
+
+export const getSubscribedAuthors = async (
+  page = 1,
+  perPage = 20
+): Promise<GetSubscribedAuthorsResponseData> => {
+  const { data } = await api.get<ApiEnvelope<GetSubscribedAuthorsResponseData>>(
+    '/users/subscriptions',
+    { params: { page, perPage } }
+  );
   return data.data;
 };
 

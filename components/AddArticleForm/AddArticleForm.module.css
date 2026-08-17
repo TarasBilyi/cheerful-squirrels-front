@@ -34,6 +34,12 @@
     opacity: 0.85;
 }
 
+.imgAdd:focus-visible {
+    box-shadow:
+        0 0 0 6px rgba(78, 70, 180, 0.12),
+        0 0 0 2px var(--color-white, #f7fffb);
+}
+
 .imgIcon {
     color: #f7fffb;
 }
@@ -72,7 +78,8 @@
     gap: 16px;
 }
 
-.titleFieldContainer>label {
+.titleFieldContainer>label,
+.descFieldContainer>label {
     display: block;
     font-weight: 400;
     font-size: 18px;
@@ -95,6 +102,13 @@
     height: 48px;
     background: none;
     resize: none;
+}
+
+.articleField:focus-visible {
+    outline: none;
+    box-shadow:
+        0 0 0 6px rgba(78, 70, 180, 0.12),
+        0 0 0 2px var(--color-white, #f7fffb);
 }
 
 .articleTextArea {
@@ -123,6 +137,13 @@
     cursor: not-allowed;
 }
 
+.submitButton:focus-visible {
+    outline: none;
+    box-shadow:
+        0 0 0 6px rgba(78, 70, 180, 0.12),
+        0 0 0 2px var(--color-white, #f7fffb);
+}
+
 .spinner {
     width: 16px;
     height: 16px;
@@ -149,6 +170,7 @@
         grid-template-columns: 1fr 1fr;
         grid-template-areas:
             "image title"
+            "desc desc"
             "text text"
             "button button";
         gap: 16px;
@@ -162,6 +184,10 @@
 
     .titleField {
         grid-area: title;
+    }
+
+    .descFieldContainer {
+        grid-area: desc;
     }
 
     .articleFieldContainer {
@@ -178,6 +204,7 @@
         grid-template-columns: 1fr 300px;
         grid-template-areas:
             "title image"
+            "desc image"
             "text image"
             "button image";
     }
@@ -191,6 +218,10 @@
 
     .titleField {
         grid-area: title;
+    }
+
+    .descFieldContainer {
+        grid-area: desc;
     }
 
     .articleFieldContainer {

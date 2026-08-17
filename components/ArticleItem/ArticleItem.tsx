@@ -1,13 +1,15 @@
-// components/ArticleItem/ArticleItem.tsx
-
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Article } from '@/types/article';
 import ButtonAddToBookmarks from '@/components/ButtonAddToBookmarks/ButtonAddToBookmarks';
+import DeleteArticleButton from '@/components/DeleteArticleButton/DeleteArticleButton';
+import EditArticleButton from '@/components/EditArticleButton/EditArticleButton';
 import styles from './ArticleItem.module.css';
 
 interface ArticleItemProps {
   article: Article;
+  onDeleted?: (articleId: string) => void;
+  editable?: boolean;
 }
 
 const getAuthorName = (ownerId: Article['ownerId']) => {
@@ -15,7 +17,7 @@ const getAuthorName = (ownerId: Article['ownerId']) => {
   return fullName?.split(' ')[0] ?? null;
 };
 
-const ArticleItem = ({ article }: ArticleItemProps) => {
+const ArticleItem = ({ article, onDeleted, editable }: ArticleItemProps) => {
   const authorName = getAuthorName(article.ownerId);
 
   return (
@@ -45,7 +47,13 @@ const ArticleItem = ({ article }: ArticleItemProps) => {
           Learn more
         </Link>
 
-        <ButtonAddToBookmarks articleId={article._id} />
+        {editable ? (
+          <EditArticleButton article={article} />
+        ) : (
+          <ButtonAddToBookmarks articleId={article._id} />
+        )}
+
+        {onDeleted && <DeleteArticleButton articleId={article._id} onDeleted={onDeleted} />}
       </div>
     </li>
   );

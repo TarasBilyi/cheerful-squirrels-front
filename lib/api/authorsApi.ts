@@ -31,3 +31,31 @@ export const getArticlesByAuthor = async (
   );
   return data.data;
 };
+
+
+interface AuthorsPagination {
+  page: number;
+  perPage: number;
+  totalItems: number;
+  totalPages: number;
+  hasPreviousPage?: boolean;
+  hasNextPage?: boolean;
+}
+
+interface GetAuthorsResponseData {
+  users: Author[];
+  pagination: AuthorsPagination;
+}
+
+export interface GetAuthorsResult {
+  authors: Author[];
+  pagination: AuthorsPagination;
+}
+
+export const getAuthors = async (page = 1, perPage = 20): Promise<GetAuthorsResult> => {
+  const { data } = await api.get<ApiResponse<GetAuthorsResponseData>>('/users', {
+    params: { page, perPage },
+  });
+
+  return { authors: data.data.users, pagination: data.data.pagination };
+};

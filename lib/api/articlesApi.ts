@@ -9,6 +9,35 @@ export const getArticleById = async (articleId: string) => {
   return data.data.article;
 };
 
+export const deleteArticle = async (articleId: string): Promise<void> => {
+  await api.delete<ApiResponse<{ article: Article }>>(`/articles/${articleId}`);
+};
+
+export interface UpdateArticlePayload {
+  title?: string;
+  desc?: string;
+  article?: string;
+  photo?: File;
+}
+
+export const updateArticle = async (
+  articleId: string,
+  payload: UpdateArticlePayload,
+): Promise<Article> => {
+  const formData = new FormData();
+
+  if (payload.title !== undefined) formData.append('title', payload.title);
+  if (payload.desc !== undefined) formData.append('desc', payload.desc);
+  if (payload.article !== undefined) formData.append('article', payload.article);
+  if (payload.photo) formData.append('photo', payload.photo);
+
+  const { data } = await api.patch<ApiResponse<{ article: Article }>>(
+    `/articles/${articleId}`,
+    formData,
+  );
+  return data.data.article;
+};
+
 interface ArticlesPagination {
   page: number;
   perPage: number;

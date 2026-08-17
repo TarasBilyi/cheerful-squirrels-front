@@ -1,4 +1,3 @@
-
 import type { Article } from '@/types/article';
 
 import css from './ArticlesList.module.css';
@@ -6,9 +5,11 @@ import ArticleItem from '@/components/ArticleItem/ArticleItem';
 
 interface ArticlesListProps {
   articles: Article[];
+  onDeleted?: (articleId: string) => void;
+  editable?: boolean;
 }
 
-const ArticlesList = ({ articles }: ArticlesListProps) => {
+const ArticlesList = ({ articles, onDeleted, editable }: ArticlesListProps) => {
   if (articles.length === 0) {
     return <p>No articles found.</p>;
   }
@@ -19,6 +20,8 @@ const ArticlesList = ({ articles }: ArticlesListProps) => {
         <ArticleItem
           key={article._id}
           article={article}
+          onDeleted={onDeleted}
+          editable={editable}
         />
       ))}
     </ul>
