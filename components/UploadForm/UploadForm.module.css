@@ -81,7 +81,7 @@
   border: none;
   border-radius: 50%;
   background-color: var(--color-green);
-  color: var(--color-black);
+  color: var(--color-on-accent);
   cursor: pointer;
   overflow: hidden;
   padding: 0;
