@@ -13,11 +13,17 @@
     background-color var(--transition-hover),
     border-color var(--transition-hover),
     color var(--transition-hover),
+    box-shadow var(--transition-hover),
+    transform var(--transition-hover),
     opacity var(--transition-hover);
 }
 
 .button:hover:not(:disabled) {
-  background-color: rgba(30, 47, 40, 0.06);
+  background-color: rgba(30, 47, 40, 0.3);
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.97);
 }
 
 .button:disabled {

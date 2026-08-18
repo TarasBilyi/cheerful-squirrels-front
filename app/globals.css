@@ -32,6 +32,12 @@
   color-scheme: dark;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html {
   height: 100%;
   scrollbar-gutter: stable;

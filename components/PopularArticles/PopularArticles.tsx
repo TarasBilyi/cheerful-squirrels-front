@@ -13,26 +13,17 @@ const PopularArticles = async () => {
         <div className={styles.header}>
           <h2 className={styles.title}>Popular Articles</h2>
 
-            <Link href="/articles" className={styles.link}>
+          <Link href="/articles" className={styles.link}>
             Go to all Articles
-
-            <svg
-                className={styles.icon}
-                width="15"
-                height="15"
-                aria-hidden="true"
-            >
-                <use href="/icons/sprite.svg#top-right" />
+            <svg className={styles.icon} width="15" height="15" aria-hidden="true">
+              <use href="/icons/sprite.svg#top-right" />
             </svg>
-            </Link>
+          </Link>
         </div>
 
         <ul className={styles.list}>
           {articles.map(article => (
-            <ArticleItem
-              key={article._id}
-              article={article}
-            />
+            <ArticleItem key={article._id} article={article} />
           ))}
         </ul>
       </Container>

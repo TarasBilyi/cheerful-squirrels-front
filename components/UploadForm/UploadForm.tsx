@@ -8,6 +8,7 @@ import { register, updateAvatar } from '@/lib/api/clientApi';
 import { ApiError } from '@/lib/api/api';
 import { useRegisterDraftStore } from '@/lib/store/registerDraftStore';
 import { useAuthStore } from '@/lib/store/authStore';
+import { RegisterDraftSchema } from '@/components/RegisterForm/RegisterForm.schema';
 import css from './UploadForm.module.css';
 
 const UploadForm = () => {
@@ -21,6 +22,14 @@ const UploadForm = () => {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (!draft || !RegisterDraftSchema.isValidSync(draft)) {
+      toast.error('Please fill in the registration form first');
+      router.replace('/register');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selected = event.target.files?.[0] ?? null;
@@ -42,14 +51,18 @@ const UploadForm = () => {
   }, [previewUrl]);
 
   const submitRegistration = async () => {
-    if (!draft || isSubmitting) {
+    if (!draft || isSubmitting || !RegisterDraftSchema.isValidSync(draft)) {
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      let user = await register(draft);
+      let user = await register({
+        name: draft.name,
+        email: draft.email,
+        password: draft.password,
+      });
 
       if (file) {
         try {
@@ -62,15 +75,18 @@ const UploadForm = () => {
 
       setUser(user);
       clearDraft();
+      toast.success('Registration successful!');
       router.push('/profile');
     } catch (error) {
-      const status = (error as ApiError).response?.status;
+      const err = error as ApiError;
+      const status = err.response?.status;
+      const message = err.response?.data?.error;
 
-      if (status === 400) {
-        toast.error('Please use another email');
+      if (status === 400 || status === 409) {
+        toast.error(message || 'This email is already registered');
         router.push('/register');
       } else {
-        toast.error((error as ApiError).response?.data?.error ?? 'Registration failed');
+        toast.error(message || 'Registration failed. Please try again.');
       }
     } finally {
       setIsSubmitting(false);
@@ -79,15 +95,10 @@ const UploadForm = () => {
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    if (!file) {
-      return;
-    }
-
     submitRegistration();
   };
 
-  const handleClose = () => {
+  const handleSkip = () => {
     submitRegistration();
   };
 
@@ -97,8 +108,9 @@ const UploadForm = () => {
         <button
           type="button"
           className={css.closeButton}
-          onClick={handleClose}
+          onClick={handleSkip}
           disabled={isSubmitting}
+          aria-label="Skip photo and register"
         >
           <svg width={24} height={24}>
             <use href="/icons/sprite.svg#close" />
@@ -111,6 +123,7 @@ const UploadForm = () => {
           type="button"
           className={css.avatarButton}
           onClick={() => fileInputRef.current?.click()}
+          disabled={isSubmitting}
         >
           {previewUrl ? (
             <div className={css.avatarPreviewWrapper}>
@@ -145,11 +158,11 @@ const UploadForm = () => {
         <button
           type="submit"
           className={css.submitButton}
-          disabled={!file || isSubmitting}
+          disabled={isSubmitting}
           aria-busy={isSubmitting}
         >
           {isSubmitting && <span className={css.spinner} aria-hidden />}
-          {isSubmitting ? 'Saving…' : 'Save'}
+          {isSubmitting ? 'Saving…' : file ? 'Save photo and register' : 'Continue without photo'}
         </button>
       </form>
     </div>
