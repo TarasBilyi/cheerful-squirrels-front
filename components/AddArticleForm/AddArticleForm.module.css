@@ -83,14 +83,14 @@
     display: block;
     font-weight: 400;
     font-size: 18px;
-    color: #070721;
+    color: var(--color-black);
     margin-bottom: 8px;
 }
 
 .articleField::placeholder {
     font-weight: 400;
     font-size: 18px;
-    color: var(--gray);
+    color: var(--color-gray);
 }
 
 .articleField {
@@ -161,7 +161,7 @@
 }
 
 .articleField + span {
-    color: #AD6A6C;
+    color: var(--color-error);
     font-size: 12px;
 }
 
