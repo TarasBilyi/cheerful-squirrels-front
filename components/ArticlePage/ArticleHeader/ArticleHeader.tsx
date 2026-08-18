@@ -18,6 +18,7 @@ const ArticleHeader = ({ title, img }: ArticleHeaderProps) => {
           fill
           sizes="(min-width: 1440px) 1224px, (min-width: 768px) 704px, 361px"
           className={css.image}
+          quality={90}
           priority
         />
       </div>

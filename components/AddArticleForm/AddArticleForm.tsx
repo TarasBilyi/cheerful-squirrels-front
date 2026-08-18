@@ -5,11 +5,12 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import type { AxiosError } from 'axios';
 import * as Yup from 'yup';
-import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik';
+import { ErrorMessage, Field, Form, Formik, FormikHelpers, useField } from 'formik';
 import css from './AddArticleForm.module.css';
 import toast from 'react-hot-toast';
 import { createArticle } from '@/services/article';
 import { updateArticle } from '@/lib/api/articlesApi';
+import { getCurrentUser } from '@/lib/api/clientApi';
 import { useFormDraft, useFormDraftValue, clearFormDraft } from '@/hooks/useFormDraft';
 import { useAuthStore } from '@/lib/store/authStore';
 import type { Article } from '@/types/article';
@@ -32,6 +33,44 @@ type SubmitError = AxiosError<{ message?: string; error?: string }>;
 const DraftAutosave = ({ values, enabled }: { values: ArticleFormValues; enabled: boolean }) => {
   useFormDraft({ key: DRAFT_KEY, values, enabled });
   return null;
+};
+
+// Plain-textarea auto-resize only fires on user input, so a textarea
+// pre-filled programmatically (e.g. an article's existing text when
+// editing) stays clamped to its CSS min-height until the user types a
+// character. Resizing on every value change (not just onInput) makes it
+// expand to fit the full text as soon as it's loaded.
+interface ArticleTextAreaProps {
+  className: string;
+  placeholder: string;
+}
+
+const ArticleTextArea = ({ className, placeholder }: ArticleTextAreaProps) => {
+  const [field] = useField('article');
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const resize = () => {
+    const el = textareaRef.current;
+    if (el) {
+      el.style.height = 'auto';
+      el.style.height = `${el.scrollHeight}px`;
+    }
+  };
+
+  useEffect(() => {
+    resize();
+  }, [field.value]);
+
+  return (
+    <textarea
+      {...field}
+      ref={textareaRef}
+      id="article"
+      className={className}
+      placeholder={placeholder}
+      onInput={resize}
+    />
+  );
 };
 
 interface AddArticleFormProps {
@@ -125,8 +164,16 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
       const newArticle = await createArticle(formData);
       queryClient.invalidateQueries({ queryKey: ['articles'] });
 
-      if (user) {
-        setUser({ ...user, articlesAmount: (user.articlesAmount ?? 0) + 1 });
+      // Re-fetch the current user so the "articles" count in My Profile
+      // reflects the new article immediately, without needing a page
+      // refresh. Falls back to a local increment if the refetch fails.
+      try {
+        const freshUser = await getCurrentUser();
+        setUser(freshUser);
+      } catch {
+        if (user) {
+          setUser({ ...user, articlesAmount: (user.articlesAmount ?? 0) + 1 });
+        }
       }
 
       clearFormDraft(DRAFT_KEY);
@@ -216,16 +263,9 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
             </div>
 
             <div className={css.articleFieldContainer}>
-              <Field
+              <ArticleTextArea
                 className={`${css.articleField} ${css.articleTextArea}`}
-                as="textarea"
-                id="article"
-                name="article"
                 placeholder="Enter a text"
-                onInput={(e: React.FormEvent<HTMLTextAreaElement>) => {
-                  e.currentTarget.style.height = 'auto';
-                  e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
-                }}
               />
               <ErrorMessage name="article" component="span" className={css.error} />
             </div>

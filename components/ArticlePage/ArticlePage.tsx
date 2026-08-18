@@ -13,13 +13,16 @@ interface ArticlePageProps {
 const ArticlePage = ({ article, recommended }: ArticlePageProps) => {
   return (
     <main className={css.page}>
-      <Container className={css.layout}>
-        <div className={css.main}>
-          <ArticleHeader title={article.title} img={article.img} />
-          <ArticleContent text={article.article} />
-        </div>
+      <Container className={css.contentWrapper}>
+        <ArticleHeader title={article.title} img={article.img} />
 
-        <ArticleSidebar article={article} recommended={recommended} />
+        <div className={css.layout}>
+          <div className={css.main}>
+            <ArticleContent text={article.article} />
+          </div>
+
+          <ArticleSidebar article={article} recommended={recommended} />
+        </div>
       </Container>
     </main>
   );
