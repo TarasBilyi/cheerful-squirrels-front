@@ -15,6 +15,13 @@
 .imageWrapper {
   position: relative;
   width: 100%;
+  /* Matches the Figma mockup, which specifies the desktop image box as
+     1226x624 (~1.9647:1). That's essentially the same ratio at every
+     breakpoint below (each tied to the container width at that
+     breakpoint, per the `sizes` attribute on the <Image>), so the box
+     shape itself already follows the design — a 16:9 box was tried
+     earlier but that was a mismatch with the actual spec and has been
+     reverted. */
   aspect-ratio: 361 / 184;
   border-radius: 16px;
   overflow: hidden;
@@ -46,7 +53,7 @@
   }
 
   .imageWrapper {
-    aspect-ratio: 1224 / 624;
+    aspect-ratio: 1226 / 624;
     border-radius: 24px;
   }
 }

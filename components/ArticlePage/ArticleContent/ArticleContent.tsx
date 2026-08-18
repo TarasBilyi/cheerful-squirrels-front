@@ -1,4 +1,3 @@
-import { Fragment } from 'react';
 import css from './ArticleContent.module.css';
 
 interface ArticleContentProps {
@@ -12,15 +11,14 @@ const splitIntoParagraphs = (text: string): string[] =>
     .filter(line => line.length > 0);
 
 const ArticleContent = ({ text }: ArticleContentProps) => {
-  const lines = splitIntoParagraphs(text);
+  const paragraphs = splitIntoParagraphs(text);
 
   return (
     <div className={css.content}>
-      {lines.map((line, index) => (
-        <Fragment key={index}>
-          {line}
-          {index < lines.length - 1 && <br />}
-        </Fragment>
+      {paragraphs.map((paragraph, index) => (
+        <p key={index} className={css.paragraph}>
+          {paragraph}
+        </p>
       ))}
     </div>
   );
