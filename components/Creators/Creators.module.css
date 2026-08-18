@@ -1,3 +1,6 @@
+.creators{
+    padding-bottom: 72px;
+}
 .header {
     display: flex;
     flex-direction: column;
