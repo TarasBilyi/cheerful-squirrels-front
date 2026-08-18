@@ -10,12 +10,13 @@
   border-radius: 32px;
   padding: 48px 32px;
   background-color: var(--color-light-green);
-  width: 266px;
+  width: 100%;
+  max-width: 330px;
 }
 
 @media screen and (min-width: 768px) {
   .form {
-    width: 458px;
+    max-width: 522px;
   }
   .mainContent {
     padding: 232px 0px;
@@ -24,10 +25,10 @@
 
 @media screen and (min-width: 1440px) {
   .form {
-    width: 458px;
+    max-width: 392px;
   }
   .mainContent {
-    padding: 172px 0px;
+    padding: 172px 0px 152px 0px;
   }
 }
 
