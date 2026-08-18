@@ -12,7 +12,8 @@
 
   transition:
     transform 0.4s ease,
-    box-shadow 0.4s ease;
+    box-shadow 0.4s ease,
+    background-color var(--transition-theme);
   box-shadow: 0 4px 16px rgba(7, 7, 33, 0.04);
 }
 

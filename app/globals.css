@@ -8,7 +8,28 @@
   --color-light-gray: #9f9f9f;
   --color-error: #ad6a6c;
 
+  /* Always-light text/ring color for use on saturated accent
+     backgrounds (filled green buttons). Intentionally NOT themed —
+     these controls must keep light text in both light and dark mode. */
+  --color-on-accent: #f7fffb;
+
   --transition-hover: 0.3s ease-in-out;
+  --transition-theme: 0.3s ease-in-out;
+
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --color-green: #7fae8f;
+  --color-green-darker: #a8c9b6;
+  --color-light-green: #1c2d24;
+  --color-white: #0f1a15;
+  --color-black: #eef5f0;
+  --color-gray: #b9bec2;
+  --color-light-gray: #7c8288;
+  --color-error: #e08a8c;
+
+  color-scheme: dark;
 }
 
 *,
@@ -33,6 +54,9 @@ body {
   color: var(--color-black);
   background-color: var(--color-white);
   font-family: var(--font-manrope);
+  transition:
+    background-color var(--transition-theme),
+    color var(--transition-theme);
 }
 
 h1,
