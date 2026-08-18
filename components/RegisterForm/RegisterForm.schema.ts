@@ -19,3 +19,13 @@ export const RegisterSchema = Yup.object({
     .oneOf([Yup.ref('password')], 'Passwords must match')
     .required('Please repeat your password'),
 });
+
+export const RegisterDraftSchema = Yup.object({
+  name: Yup.string()
+    .transform(value => value?.trim())
+    .min(2)
+    .max(32)
+    .required(),
+  email: Yup.string().matches(EMAIL_REGEX).max(64).required(),
+  password: Yup.string().min(8).max(64).required(),
+});
