@@ -113,7 +113,57 @@
 
 .articleTextArea {
     min-height: 393px;
-    overflow: hidden;
+    max-height: min(600px, 60vh);
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-bottom: 32px;
+}
+
+.textareaWrapper {
+    position: relative;
+    display: block;
+}
+
+.charCounter {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 3px 8px;
+    border: 1px solid #9f9f9f;
+    border-top-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    background-color: var(--color-white, #f7fffb);
+    font-size: 12px;
+    line-height: 1.2;
+    color: var(--color-gray);
+    pointer-events: none;
+    transition: color 0.15s ease;
+}
+
+.charCounterOver {
+    color: var(--color-error);
+    font-weight: 700;
+}
+
+@keyframes errorFlicker {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    25%,
+    75% {
+        opacity: 0.15;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+.flicker {
+    animation: errorFlicker 0.45s ease-in-out 2;
 }
 
 .submitButton {
@@ -160,7 +210,8 @@
     }
 }
 
-.articleField + span {
+.articleField + span:not(.charCounter),
+.textareaWrapper + span {
     color: var(--color-error);
     font-size: 12px;
 }

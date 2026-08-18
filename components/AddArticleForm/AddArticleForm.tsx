@@ -17,6 +17,7 @@ import type { Article } from '@/types/article';
 import Image from 'next/image';
 
 const DRAFT_KEY = 'draft:add-article';
+const ARTICLE_MAX_LENGTH = 4000;
 
 interface ArticleFormValues {
   title: string;
@@ -26,28 +27,24 @@ interface ArticleFormValues {
 
 const EMPTY_VALUES: ArticleFormValues = { title: '', desc: '', article: '' };
 
-// The shared `ApiError` type expects `{ error: string }`; the backend now
-// sends both `message` and `error` for the same text, read both defensively.
 type SubmitError = AxiosError<{ message?: string; error?: string }>;
 
 const DraftAutosave = ({ values, enabled }: { values: ArticleFormValues; enabled: boolean }) => {
   useFormDraft({ key: DRAFT_KEY, values, enabled });
   return null;
 };
-
-// Plain-textarea auto-resize only fires on user input, so a textarea
-// pre-filled programmatically (e.g. an article's existing text when
-// editing) stays clamped to its CSS min-height until the user types a
-// character. Resizing on every value change (not just onInput) makes it
-// expand to fit the full text as soon as it's loaded.
 interface ArticleTextAreaProps {
   className: string;
   placeholder: string;
+  flickerToken: number;
 }
 
-const ArticleTextArea = ({ className, placeholder }: ArticleTextAreaProps) => {
-  const [field] = useField('article');
+const ArticleTextArea = ({ className, placeholder, flickerToken }: ArticleTextAreaProps) => {
+  const [field, , helpers] = useField('article');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const length = field.value.length;
+  const isOverLimit = length > ARTICLE_MAX_LENGTH;
 
   const resize = () => {
     const el = textareaRef.current;
@@ -61,15 +58,39 @@ const ArticleTextArea = ({ className, placeholder }: ArticleTextAreaProps) => {
     resize();
   }, [field.value]);
 
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const nextValue = event.target.value;
+    const isGrowing = nextValue.length > field.value.length;
+    const alreadyAtLimit = field.value.length >= ARTICLE_MAX_LENGTH;
+
+    if (isGrowing && alreadyAtLimit) {
+      return;
+    }
+
+    helpers.setValue(nextValue);
+  };
+
   return (
-    <textarea
-      {...field}
-      ref={textareaRef}
-      id="article"
-      className={className}
-      placeholder={placeholder}
-      onInput={resize}
-    />
+    <>
+      <div className={css.textareaWrapper}>
+        <textarea
+          {...field}
+          onChange={handleChange}
+          ref={textareaRef}
+          id="article"
+          className={className}
+          placeholder={placeholder}
+          onInput={resize}
+        />
+        <span
+          className={`${css.charCounter} ${isOverLimit ? css.charCounterOver : ''}`}
+          aria-live="polite"
+        >
+          {length}/{ARTICLE_MAX_LENGTH}
+        </span>
+      </div>
+      <ErrorMessage key={flickerToken} name="article" component="span" className={css.flicker} />
+    </>
   );
 };
 
@@ -88,6 +109,7 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [image, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(article?.img ?? null);
+  const [flickerToken, setFlickerToken] = useState(0);
 
   const draft = useFormDraftValue<ArticleFormValues>(DRAFT_KEY);
   const initialValues: ArticleFormValues = isEditMode
@@ -131,7 +153,7 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
       .required('Description is required'),
     article: Yup.string()
       .min(100, 'Minimum 100 characters')
-      .max(4000, 'Maximum 4000 characters')
+      .max(ARTICLE_MAX_LENGTH, `Maximum ${ARTICLE_MAX_LENGTH} characters`)
       .required('Article body is required'),
   });
 
@@ -164,9 +186,6 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
       const newArticle = await createArticle(formData);
       queryClient.invalidateQueries({ queryKey: ['articles'] });
 
-      // Re-fetch the current user so the "articles" count in My Profile
-      // reflects the new article immediately, without needing a page
-      // refresh. Falls back to a local increment if the refetch fails.
       try {
         const freshUser = await getCurrentUser();
         setUser(freshUser);
@@ -236,7 +255,12 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
               className={css.fileInput}
               onChange={handleImageChange}
             />
-            <ErrorMessage name="image" component="span" className={css.error} />
+            <ErrorMessage
+              key={flickerToken}
+              name="image"
+              component="span"
+              className={css.flicker}
+            />
 
             <div className={css.titleFieldContainer}>
               <label htmlFor="title">Title</label>
@@ -247,7 +271,12 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
                 name="title"
                 placeholder="Enter the title"
               />
-              <ErrorMessage name="title" component="span" className={css.error} />
+              <ErrorMessage
+                key={flickerToken}
+                name="title"
+                component="span"
+                className={css.flicker}
+              />
             </div>
 
             <div className={css.descFieldContainer}>
@@ -259,15 +288,20 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
                 name="desc"
                 placeholder="Enter a short one-sentence description"
               />
-              <ErrorMessage name="desc" component="span" className={css.error} />
+              <ErrorMessage
+                key={flickerToken}
+                name="desc"
+                component="span"
+                className={css.flicker}
+              />
             </div>
 
             <div className={css.articleFieldContainer}>
               <ArticleTextArea
                 className={`${css.articleField} ${css.articleTextArea}`}
                 placeholder="Enter a text"
+                flickerToken={flickerToken}
               />
-              <ErrorMessage name="article" component="span" className={css.error} />
             </div>
 
             <button
@@ -275,6 +309,7 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
               className={css.submitButton}
               disabled={isSubmitting}
               aria-busy={isSubmitting}
+              onClick={() => setFlickerToken(token => token + 1)}
             >
               {isSubmitting && <span className={css.spinner} aria-hidden />}
               {isSubmitting
