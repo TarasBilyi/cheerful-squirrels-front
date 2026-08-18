@@ -46,64 +46,64 @@ const LoginPage = () => {
     <div className={css.mainContent}>
       <Formik initialValues={initialValues} validationSchema={LoginSchema} onSubmit={handleSubmit}>
         {({ isSubmitting }) => (
-        <Form className={css.form}>
-          <legend className={css.formTitle}>Login</legend>
+          <Form className={css.form}>
+            <h1 className={css.formTitle}>Login</h1>
 
-          <div className={`${css.formGroup} ${css.formEmail}`}>
-            <label htmlFor="email">Enter your email address</label>
-            <Field
-              id="email"
-              type="email"
-              name="email"
-              className={css.input}
-              placeholder="email@gmail.com"
-            />
-            <ErrorMessage name="email" component="span" className={css.error} />
-          </div>
+            <div className={`${css.formGroup} ${css.formEmail}`}>
+              <label htmlFor="email">Enter your email address</label>
+              <Field
+                id="email"
+                type="email"
+                name="email"
+                className={css.input}
+                placeholder="email@gmail.com"
+              />
+              <ErrorMessage name="email" component="span" className={css.error} />
+            </div>
 
-          <div className={`${css.formGroup} ${css.formPassword}`}>
-            <label htmlFor="password">Enter a password</label>
+            <div className={`${css.formGroup} ${css.formPassword}`}>
+              <label htmlFor="password">Enter a password</label>
 
-            <Field
-              id="password"
-              type={showPassword ? 'text' : 'password'}
-              name="password"
-              className={css.input}
-            />
-            <ErrorMessage name="password" component="span" className={css.error} />
+              <Field
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                name="password"
+                className={css.input}
+              />
+              <ErrorMessage name="password" component="span" className={css.error} />
 
-            <button
-              className={css.eyeButton}
-              type="button"
-              onClick={() => setShowPassword(prev => !prev)}
-            >
-              <svg width="24" height="24">
-                <use href={`/icons/sprite.svg#${showPassword ? 'eye' : 'eye-crossed'}`} />
-              </svg>
-            </button>
-          </div>
+              <button
+                className={css.eyeButton}
+                type="button"
+                onClick={() => setShowPassword(prev => !prev)}
+              >
+                <svg width="24" height="24">
+                  <use href={`/icons/sprite.svg#${showPassword ? 'eye' : 'eye-crossed'}`} />
+                </svg>
+              </button>
+            </div>
 
-          <div className={css.loginBtn}>
-            <button
-              type="submit"
-              className={css.submitButton}
-              disabled={isSubmitting}
-              aria-busy={isSubmitting}
-            >
-              {isSubmitting && <span className={css.spinner} aria-hidden />}
-              {isSubmitting ? 'Logging in…' : 'Login'}
-            </button>
-          </div>
+            <div className={css.loginBtn}>
+              <button
+                type="submit"
+                className={css.submitButton}
+                disabled={isSubmitting}
+                aria-busy={isSubmitting}
+              >
+                {isSubmitting && <span className={css.spinner} aria-hidden />}
+                {isSubmitting ? 'Logging in…' : 'Login'}
+              </button>
+            </div>
 
-          <div className={css.haveAccount}>
-            <p>
-              Don’t have an account?{' '}
-              <Link href="/register" prefetch={false}>
-                Register
-              </Link>
-            </p>
-          </div>
-        </Form>
+            <div className={css.haveAccount}>
+              <p>
+                Don’t have an account?{' '}
+                <Link href="/register" prefetch={false}>
+                  Register
+                </Link>
+              </p>
+            </div>
+          </Form>
         )}
       </Formik>
     </div>
