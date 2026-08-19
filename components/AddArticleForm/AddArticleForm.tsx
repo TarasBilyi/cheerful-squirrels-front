@@ -144,14 +144,17 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
 
   const ArticleFormSchema = Yup.object().shape({
     title: Yup.string()
+      .trim('Title cannot be just spaces')
       .min(3, 'Minimum 3 characters')
       .max(48, 'Maximum 48 characters')
       .required('Title is required'),
     desc: Yup.string()
+      .trim('Description cannot be just spaces')
       .min(10, 'Minimum 10 characters')
       .max(200, 'Maximum 200 characters')
       .required('Description is required'),
     article: Yup.string()
+      .trim('Article body cannot be just spaces')
       .min(100, 'Minimum 100 characters')
       .max(ARTICLE_MAX_LENGTH, `Maximum ${ARTICLE_MAX_LENGTH} characters`)
       .required('Article body is required'),
@@ -161,10 +164,16 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
     values: ArticleFormValues,
     { setSubmitting }: FormikHelpers<ArticleFormValues>
   ) {
+    const trimmedValues: ArticleFormValues = {
+      title: values.title.trim(),
+      desc: values.desc.trim(),
+      article: values.article.trim(),
+    };
+
     try {
       if (isEditMode) {
         const updated = await updateArticle(article!._id, {
-          ...values,
+          ...trimmedValues,
           photo: image ?? undefined,
         });
         queryClient.invalidateQueries({ queryKey: ['articles'] });
@@ -178,9 +187,9 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
         return;
       }
       const formData = new FormData();
-      formData.append('title', values.title);
-      formData.append('desc', values.desc);
-      formData.append('article', values.article);
+      formData.append('title', trimmedValues.title);
+      formData.append('desc', trimmedValues.desc);
+      formData.append('article', trimmedValues.article);
       formData.append('photo', image);
 
       const newArticle = await createArticle(formData);
