@@ -126,6 +126,7 @@
   .articlesButton:hover,
   .articlesButton:focus {
     background-color: var(--color-green-darker);
+    color: var(--color-white);
   }
   .articlesButton:active {
     background-color: var(--color-green);
@@ -209,10 +210,7 @@
   .registerButton {
     width: 184px;
   }
-  .registerButton:hover,
-  .registerButton:focus {
-    color: var(--color-black);
-  }
+
   .registerButton:active {
     box-shadow:
       0 0 0 6px rgba(78, 70, 180, 0.12),

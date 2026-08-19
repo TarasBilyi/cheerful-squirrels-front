@@ -4,6 +4,7 @@ import Container from '../Container/Container';
 import Logo from '../Logo/Logo';
 import HeaderActions from './HeaderActions/HeaderActions';
 import ThemeToggle from '../ThemeToggle/ThemeToggle';
+import HeaderScroll from './HeaderScroll/HeaderScroll';
 import css from './Header.module.css';
 
 const Header = async () => {
@@ -11,7 +12,7 @@ const Header = async () => {
   const initialIsAuthenticated = cookieStore.get('hasSession')?.value === '1';
 
   return (
-    <header className={css.header}>
+    <HeaderScroll>
       <Container className={css.topBar}>
         <Link href="/" className={css.logoLink}>
           <Logo />
@@ -22,7 +23,7 @@ const Header = async () => {
           <HeaderActions initialIsAuthenticated={initialIsAuthenticated} />
         </div>
       </Container>
-    </header>
+    </HeaderScroll>
   );
 };
 
