@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import type { User } from '@/types/user';
+import { useIsClient } from '@/hooks/useIsClient';
 import { NAV_LINKS } from '../Header.constants';
 import BurgerButton from '../BurgerButton/BurgerButton';
 import NavLink from '../NavLink/NavLink';
@@ -27,6 +29,8 @@ const MobileMenu = ({
   onToggle,
   onClose,
 }: MobileMenuProps) => {
+  const isClient = useIsClient();
+
   useEffect(() => {
     if (!isOpen) return;
 
@@ -43,12 +47,10 @@ const MobileMenu = ({
     };
   }, [isOpen, onClose]);
 
-  return (
-    <div className={css.wrapper}>
-      <BurgerButton isOpen={isOpen} onClick={onToggle} />
-
-      <div className={`${css.panel} ${isOpen ? css.panelOpen : ''}`} aria-hidden={!isOpen}>
-        <nav className={css.nav} aria-label="Mobile">
+  const panel = (
+    <div className={`${css.panel} ${isOpen ? css.panelOpen : ''}`} aria-hidden={!isOpen}>
+      <nav className={css.nav} aria-label="Mobile">
+        <div className={css.navInner}>
           <ul className={css.navList}>
             {NAV_LINKS.map(({ href, label }) => (
               <li key={href}>
@@ -78,7 +80,6 @@ const MobileMenu = ({
               </CtaLink>
               <div className={css.accountRow}>
                 <UserBar user={user} isLoading={isLoadingUser} onBeforeOpen={onClose} />
-                <span className={css.divider} aria-hidden="true" />
                 <LogoutButton onBeforeOpen={onClose} />
               </div>
             </>
@@ -97,8 +98,15 @@ const MobileMenu = ({
               </CtaLink>
             </>
           )}
-        </nav>
-      </div>
+        </div>
+      </nav>
+    </div>
+  );
+
+  return (
+    <div className={css.wrapper}>
+      <BurgerButton isOpen={isOpen} onClick={onToggle} />
+      {isClient && createPortal(panel, document.body)}
     </div>
   );
 };
