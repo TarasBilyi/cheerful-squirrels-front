@@ -1,3 +1,4 @@
+import DOMPurify from 'isomorphic-dompurify';
 import css from './ArticleContent.module.css';
 
 interface ArticleContentProps {
@@ -10,7 +11,15 @@ const splitIntoParagraphs = (text: string): string[] =>
     .map(line => line.trim())
     .filter(line => line.length > 0);
 
+const isHtml = (text: string) => /<[a-z][\s\S]*>/i.test(text);
+
 const ArticleContent = ({ text }: ArticleContentProps) => {
+  if (isHtml(text)) {
+    const safeHtml = DOMPurify.sanitize(text, { ADD_ATTR: ['target'] });
+
+    return <div className={css.content} dangerouslySetInnerHTML={{ __html: safeHtml }} />;
+  }
+
   const paragraphs = splitIntoParagraphs(text);
 
   return (

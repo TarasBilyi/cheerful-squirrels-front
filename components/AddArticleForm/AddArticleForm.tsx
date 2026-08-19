@@ -15,6 +15,7 @@ import { useFormDraft, useFormDraftValue, clearFormDraft } from '@/hooks/useForm
 import { useAuthStore } from '@/lib/store/authStore';
 import type { Article } from '@/types/article';
 import Image from 'next/image';
+import RichTextEditor from '@/components/RichTextEditor/RichTextEditor';
 
 const DRAFT_KEY = 'draft:add-article';
 const ARTICLE_MAX_LENGTH = 4000;
@@ -29,58 +30,62 @@ const EMPTY_VALUES: ArticleFormValues = { title: '', desc: '', article: '' };
 
 type SubmitError = AxiosError<{ message?: string; error?: string }>;
 
+const stripHtml = (html: string) =>
+  html
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+const toEditorHtml = (text: string) => {
+  if (/<[a-z][\s\S]*>/i.test(text)) {
+    return text;
+  }
+
+  const escapeHtml = (line: string) =>
+    line.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  return text
+    .split(/\n|\/n/)
+    .map(line => line.trim())
+    .filter(Boolean)
+    .map(line => `<p>${escapeHtml(line)}</p>`)
+    .join('');
+};
+
 const DraftAutosave = ({ values, enabled }: { values: ArticleFormValues; enabled: boolean }) => {
   useFormDraft({ key: DRAFT_KEY, values, enabled });
   return null;
 };
 interface ArticleTextAreaProps {
-  className: string;
   placeholder: string;
   flickerToken: number;
+  editorKey: string;
 }
 
-const ArticleTextArea = ({ className, placeholder, flickerToken }: ArticleTextAreaProps) => {
+const ArticleRichText = ({ placeholder, flickerToken, editorKey }: ArticleTextAreaProps) => {
   const [field, , helpers] = useField('article');
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const length = field.value.length;
+  const length = stripHtml(field.value).length;
   const isOverLimit = length > ARTICLE_MAX_LENGTH;
-
-  const resize = () => {
-    const el = textareaRef.current;
-    if (el) {
-      el.style.height = 'auto';
-      el.style.height = `${el.scrollHeight}px`;
-    }
-  };
-
-  useEffect(() => {
-    resize();
-  }, [field.value]);
-
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    helpers.setValue(event.target.value);
-  };
 
   return (
     <>
       <div className={css.textareaWrapper}>
-        <textarea
-          {...field}
-          onChange={handleChange}
-          ref={textareaRef}
-          id="article"
-          className={className}
+        <RichTextEditor
+          key={editorKey}
+          value={field.value}
+          onChange={html => helpers.setValue(html)}
+          onBlur={() => helpers.setTouched(true)}
           placeholder={placeholder}
-          maxLength={ARTICLE_MAX_LENGTH}
-          onInput={resize}
+          counter={
+            <span
+              className={`${css.charCounter} ${isOverLimit ? css.charCounterOver : ''}`}
+              aria-live="polite"
+            >
+              {length}/{ARTICLE_MAX_LENGTH}
+            </span>
+          }
         />
-        <span
-          className={`${css.charCounter} ${isOverLimit ? css.charCounterOver : ''}`}
-          aria-live="polite"
-        >
-          {length}/{ARTICLE_MAX_LENGTH}
-        </span>
       </div>
       <ErrorMessage key={flickerToken} name="article" component="span" className={css.flicker} />
     </>
@@ -106,8 +111,8 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
 
   const draft = useFormDraftValue<ArticleFormValues>(DRAFT_KEY);
   const initialValues: ArticleFormValues = isEditMode
-    ? { title: article!.title, desc: article!.desc, article: article!.article }
-    : draft ?? EMPTY_VALUES;
+    ? { title: article!.title, desc: article!.desc, article: toEditorHtml(article!.article) }
+    : (draft ?? EMPTY_VALUES);
 
   useEffect(() => {
     if (draft && !isEditMode) {
@@ -124,7 +129,7 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
     }
 
     setImage(selected);
-    setPreviewUrl(selected ? URL.createObjectURL(selected) : article?.img ?? null);
+    setPreviewUrl(selected ? URL.createObjectURL(selected) : (article?.img ?? null));
   };
 
   useEffect(() => {
@@ -137,17 +142,17 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
 
   const ArticleFormSchema = Yup.object().shape({
     title: Yup.string()
-      .transform((value) => value?.trim())
+      .transform(value => value?.trim())
       .min(3, 'Minimum 3 characters')
       .max(48, 'Maximum 48 characters')
       .required('Title is required'),
     desc: Yup.string()
-      .transform((value) => value?.trim())
+      .transform(value => value?.trim())
       .min(10, 'Minimum 10 characters')
       .max(200, 'Maximum 200 characters')
       .required('Description is required'),
     article: Yup.string()
-      .transform((value) => value?.trim())
+      .transform(value => stripHtml(value ?? ''))
       .min(100, 'Minimum 100 characters')
       .max(ARTICLE_MAX_LENGTH, `Maximum ${ARTICLE_MAX_LENGTH} characters`)
       .required('Article body is required'),
@@ -293,10 +298,10 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
             </div>
 
             <div className={css.articleFieldContainer}>
-              <ArticleTextArea
-                className={`${css.articleField} ${css.articleTextArea}`}
+              <ArticleRichText
                 placeholder="Enter a text"
                 flickerToken={flickerToken}
+                editorKey={isEditMode ? `edit-${article!._id}` : draft ? 'draft' : 'empty'}
               />
             </div>
 
