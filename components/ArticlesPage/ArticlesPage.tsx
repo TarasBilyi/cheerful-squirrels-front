@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Select, { components, DropdownIndicatorProps } from 'react-select';
-import { useMediaQuery } from 'react-responsive';
+
 
 import Container from '@/components/Container/Container';
 import ArticlesList from '@/components/ArticlesList/ArticlesList';
@@ -53,12 +53,12 @@ const ArticlesPage = () => {
   const [hasNextPage, setHasNextPage] = useState(false);
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
-  const isMobile = useMediaQuery({ maxWidth: 767 });
+  
 
   const loading = useLoaderStore((state) => state.isLoading);
   const setLoading = useLoaderStore((state) => state.setLoading);
 
-  const previousHeight = useRef(0);
+  
   const previousScroll = useRef(0);
 
   const loadArticles = async (
@@ -69,6 +69,15 @@ const ArticlesPage = () => {
 
     try {
       const data = await getArticles(category, pageToLoad, 12);
+
+      console.log('======================');
+    console.log('append:', append);
+    console.log('page:', pageToLoad);
+    console.log('articles:', data.articles);
+    console.log(
+      'ids:',
+      data.articles.map((article) => article._id)
+    );
 
       if (append) {
         setArticles((prev) => [...prev, ...data.articles]);
@@ -174,20 +183,23 @@ const ArticlesPage = () => {
               />
             ))}
 
-          {isMobile ? (
-            hasNextPage && (
-              <LoadMoreButton
-                onClick={handleLoadMore}
-                disabled={loading}
-              />
-            )
-          ) : (
+          <div className={css.desktopPagination}>
             <Pagination
               currentPage={page}
               totalPages={totalPages}
               onPageChange={handlePageChange}
             />
-          )}
+          </div>
+
+          <div className={css.mobilePagination}>
+            {hasNextPage && (
+              <LoadMoreButton
+                onClick={handleLoadMore}
+                disabled={loading}
+              />
+            )}
+          </div>
+        
         </Container>
       </section>
     </main>
