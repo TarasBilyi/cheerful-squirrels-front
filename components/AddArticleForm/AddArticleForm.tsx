@@ -59,15 +59,7 @@ const ArticleTextArea = ({ className, placeholder, flickerToken }: ArticleTextAr
   }, [field.value]);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const nextValue = event.target.value;
-    const isGrowing = nextValue.length > field.value.length;
-    const alreadyAtLimit = field.value.length >= ARTICLE_MAX_LENGTH;
-
-    if (isGrowing && alreadyAtLimit) {
-      return;
-    }
-
-    helpers.setValue(nextValue);
+    helpers.setValue(event.target.value);
   };
 
   return (
@@ -80,6 +72,7 @@ const ArticleTextArea = ({ className, placeholder, flickerToken }: ArticleTextAr
           id="article"
           className={className}
           placeholder={placeholder}
+          maxLength={ARTICLE_MAX_LENGTH}
           onInput={resize}
         />
         <span
@@ -114,7 +107,7 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
   const draft = useFormDraftValue<ArticleFormValues>(DRAFT_KEY);
   const initialValues: ArticleFormValues = isEditMode
     ? { title: article!.title, desc: article!.desc, article: article!.article }
-    : draft ?? EMPTY_VALUES;
+    : (draft ?? EMPTY_VALUES);
 
   useEffect(() => {
     if (draft && !isEditMode) {
@@ -131,7 +124,7 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
     }
 
     setImage(selected);
-    setPreviewUrl(selected ? URL.createObjectURL(selected) : article?.img ?? null);
+    setPreviewUrl(selected ? URL.createObjectURL(selected) : (article?.img ?? null));
   };
 
   useEffect(() => {
@@ -144,17 +137,17 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
 
   const ArticleFormSchema = Yup.object().shape({
     title: Yup.string()
-      .trim('Title cannot be just spaces')
+      .transform(value => value?.trim())
       .min(3, 'Minimum 3 characters')
       .max(48, 'Maximum 48 characters')
       .required('Title is required'),
     desc: Yup.string()
-      .trim('Description cannot be just spaces')
+      .transform(value => value?.trim())
       .min(10, 'Minimum 10 characters')
       .max(200, 'Maximum 200 characters')
       .required('Description is required'),
     article: Yup.string()
-      .trim('Article body cannot be just spaces')
+      .transform(value => value?.trim())
       .min(100, 'Minimum 100 characters')
       .max(ARTICLE_MAX_LENGTH, `Maximum ${ARTICLE_MAX_LENGTH} characters`)
       .required('Article body is required'),
@@ -187,9 +180,9 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
         return;
       }
       const formData = new FormData();
-      formData.append('title', trimmedValues.title);
-      formData.append('desc', trimmedValues.desc);
-      formData.append('article', trimmedValues.article);
+      formData.append('title', values.title.trim());
+      formData.append('desc', values.desc.trim());
+      formData.append('article', values.article.trim());
       formData.append('photo', image);
 
       const newArticle = await createArticle(formData);
@@ -295,7 +288,7 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
                 id="desc"
                 type="text"
                 name="desc"
-                placeholder="Enter a short one-sentence description"
+                placeholder="Enter a short description"
               />
               <ErrorMessage
                 key={flickerToken}
