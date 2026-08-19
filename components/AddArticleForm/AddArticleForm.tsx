@@ -137,14 +137,17 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
 
   const ArticleFormSchema = Yup.object().shape({
     title: Yup.string()
+      .transform((value) => value?.trim())
       .min(3, 'Minimum 3 characters')
       .max(48, 'Maximum 48 characters')
       .required('Title is required'),
     desc: Yup.string()
+      .transform((value) => value?.trim())
       .min(10, 'Minimum 10 characters')
       .max(200, 'Maximum 200 characters')
       .required('Description is required'),
     article: Yup.string()
+      .transform((value) => value?.trim())
       .min(100, 'Minimum 100 characters')
       .max(ARTICLE_MAX_LENGTH, `Maximum ${ARTICLE_MAX_LENGTH} characters`)
       .required('Article body is required'),
@@ -171,9 +174,9 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
         return;
       }
       const formData = new FormData();
-      formData.append('title', values.title);
-      formData.append('desc', values.desc);
-      formData.append('article', values.article);
+      formData.append('title', values.title.trim());
+      formData.append('desc', values.desc.trim());
+      formData.append('article', values.article.trim());
       formData.append('photo', image);
 
       const newArticle = await createArticle(formData);
