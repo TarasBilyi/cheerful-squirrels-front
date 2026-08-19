@@ -1,0 +1,178 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid #9f9f9f;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.wrapper:focus-within {
+  outline: none;
+  box-shadow:
+    0 0 0 6px rgba(78, 70, 180, 0.12),
+    0 0 0 2px var(--color-white, #f7fffb);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 8px;
+  border-top: 1px solid #9f9f9f;
+  background-color: var(--color-light-green);
+}
+
+.toolbarButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--color-black);
+  font-family: var(--font-manrope);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color var(--transition-hover);
+}
+
+.toolbarButton:hover {
+  background-color: var(--color-white, #f7fffb);
+}
+
+.toolbarButtonActive {
+  background-color: var(--color-green);
+  color: var(--color-white, #f7fffb);
+}
+
+.toolbarButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.toolbarButton:disabled:hover {
+  background-color: transparent;
+}
+
+.divider {
+  width: 1px;
+  margin: 4px 2px;
+  background-color: #9f9f9f;
+}
+
+.contentArea {
+  position: relative;
+}
+
+.content {
+  min-height: 393px;
+  max-height: min(600px, 60vh);
+  overflow-y: auto;
+  padding: 12px;
+  font-family: var(--font-manrope);
+  font-size: 18px;
+  color: var(--color-black);
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.content :global(p.is-editor-empty:first-child::before) {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  color: var(--color-gray);
+  pointer-events: none;
+}
+
+.content :global(ul),
+.content :global(ol) {
+  padding-left: 24px;
+}
+
+.content :global(blockquote) {
+  margin: 0;
+  padding-left: 12px;
+  border-left: 3px solid var(--color-green);
+  color: var(--color-gray);
+}
+
+.content :global(a) {
+  color: var(--color-green-darker);
+  text-decoration: underline;
+  background-color: var(--color-light-green);
+  padding: 0 3px;
+  border-radius: 4px;
+}
+
+.linkButtonWrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.linkPopover {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 260px;
+  padding: 12px;
+  border: 1px solid #9f9f9f;
+  border-radius: 8px;
+  background-color: var(--color-white, #f7fffb);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.linkPopoverField {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #9f9f9f;
+}
+
+.linkPopoverIcon {
+  flex-shrink: 0;
+  width: 16px;
+  font-size: 12px;
+  color: var(--color-gray);
+  text-align: center;
+}
+
+.linkPopoverInput {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-manrope);
+  font-size: 14px;
+  color: var(--color-black);
+}
+
+.linkPopoverApply {
+  align-self: flex-end;
+  padding: 6px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: var(--color-green);
+  color: var(--color-white, #f7fffb);
+  font-family: var(--font-manrope);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--transition-hover);
+}
+
+.linkPopoverApply:hover {
+  background-color: var(--color-green-darker);
+}
+
+.content:focus {
+  outline: none;
+}
