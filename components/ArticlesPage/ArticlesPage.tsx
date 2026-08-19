@@ -1,20 +1,21 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Select, { components, DropdownIndicatorProps } from 'react-select';
+
 
 import Container from '@/components/Container/Container';
 import ArticlesList from '@/components/ArticlesList/ArticlesList';
 import Pagination from '@/components/Pagination/Pagination';
+import LoadMoreButton from '@/components/LoadMoreButton/LoadMoreButton';
 import Loader from '@/components/Loader/Loader';
+import SectionTitle from '@/components/SectionTitle/SectionTitle';
+import ArticlesEmpty from '../ArticlesEmpty/ArticlesEmpty';
 
 import { getArticles } from '@/lib/api/articles';
 import { useLoaderStore } from '@/lib/store/loaderStore';
 
 import type { Article } from '@/types/article';
-
-import SectionTitle from '@/components/SectionTitle/SectionTitle';
-import ArticlesEmpty from '../ArticlesEmpty/ArticlesEmpty';
 
 import css from './ArticlesPage.module.css';
 
@@ -49,45 +50,84 @@ const ArticlesPage = () => {
 
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
+  const [hasNextPage, setHasNextPage] = useState(false);
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
+  
+
+  const loading = useLoaderStore((state) => state.isLoading);
   const setLoading = useLoaderStore((state) => state.setLoading);
 
-  useEffect(() => {
-    const fetchArticles = async () => {
-      setLoading(true);
+  
+  const previousScroll = useRef(0);
 
-      try {
-        const data = await getArticles(category, page, 12);
+  const loadArticles = async (
+    pageToLoad: number,
+    append = false,
+  ) => {
+    setLoading(true);
 
+    try {
+      const data = await getArticles(category, pageToLoad, 12);
+
+      if (append) {
+        setArticles((prev) => [...prev, ...data.articles]);
+      } else {
         setArticles(data.articles);
-        setTotalItems(data.pagination.totalItems);
-        setTotalPages(data.pagination.totalPages);
-      } catch (error) {
-        console.error('Failed to fetch articles:', error);
-      } finally {
-        setLoading(false);
-        setIsFirstLoad(false);
       }
-    };
 
-    fetchArticles();
-  }, [category, page, setLoading]);
-
-  const handleCategoryChange = (newCategory: Category) => {
-    if (newCategory === category) return;
-
-    setCategory(newCategory);
-    setPage(1);
+      setPage(pageToLoad);
+      setTotalItems(data.pagination.totalItems);
+      setTotalPages(data.pagination.totalPages);
+      setHasNextPage(data.pagination.hasNextPage);
+    } catch (error) {
+      console.error('Failed to fetch articles:', error);
+    } finally {
+      setLoading(false);
+      setIsFirstLoad(false);
+    }
   };
 
-  const handlePageChange = (selectedPage: number) => {
-    setPage(selectedPage);
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      void loadArticles(1);
+    }, 0);
 
+    return () => window.clearTimeout(timeoutId);
+  }, [category]);
+
+  useEffect(() => {
+  if (previousScroll.current) {
     window.scrollTo({
-      top: 0,
+      top: previousScroll.current + 500, 
       behavior: 'smooth',
     });
+
+    previousScroll.current = 0;
+  }
+}, [articles]);
+
+  const handleCategoryChange = (newCategory: Category) => {
+  if (newCategory === category) return;
+
+  setCategory(newCategory);
+};
+
+  const handlePageChange = async (selectedPage: number) => {
+  await loadArticles(selectedPage);
+
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+};
+
+  const handleLoadMore = async () => {
+    if (!hasNextPage || loading) return;
+
+    previousScroll.current = window.scrollY;
+
+    await loadArticles(page + 1, true);
   };
 
   return (
@@ -107,7 +147,9 @@ const ArticlesPage = () => {
                 className={css.select}
                 classNamePrefix="reactSelect"
                 options={options}
-                value={options.find((option) => option.value === category)}
+                value={options.find(
+                  (option) => option.value === category,
+                )}
                 isSearchable={false}
                 components={{
                   DropdownIndicator,
@@ -121,8 +163,8 @@ const ArticlesPage = () => {
             </div>
           </div>
 
-          {!isFirstLoad && (
-            articles.length > 0 ? (
+          {!isFirstLoad &&
+            (articles.length > 0 ? (
               <ArticlesList articles={articles} />
             ) : (
               <ArticlesEmpty
@@ -130,15 +172,25 @@ const ArticlesPage = () => {
                 buttonText="Create an article"
                 href="/articles/create"
               />
-            )
-          )}
+            ))}
 
+          <div className={css.desktopPagination}>
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
 
-          <Pagination
-            currentPage={page}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
+          <div className={css.mobilePagination}>
+            {hasNextPage && (
+              <LoadMoreButton
+                onClick={handleLoadMore}
+                disabled={loading}
+              />
+            )}
+          </div>
+        
         </Container>
       </section>
     </main>
