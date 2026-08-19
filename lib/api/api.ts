@@ -14,7 +14,7 @@ const isAuthRoute = (url?: string) =>
 
 let refreshPromise: Promise<void> | null = null;
 
-api.interceptors.response.use(
+nextServer.interceptors.response.use(
   response => response,
   async (error: AxiosError) => {
     const originalRequest = error.config as RetriableRequestConfig | undefined;
@@ -31,10 +31,10 @@ api.interceptors.response.use(
     originalRequest._retry = true;
 
     try {
-      refreshPromise ??= api.post('/auth/refresh').then(() => undefined);
+      refreshPromise ??= nextServer.post('/auth/refresh').then(() => undefined);
       await refreshPromise;
 
-      return api(originalRequest);
+      return nextServer(originalRequest);
     } catch (refreshError) {
       return Promise.reject(refreshError);
     } finally {

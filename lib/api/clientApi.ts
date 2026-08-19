@@ -71,7 +71,7 @@ export const getSavedArticles = async (
 };
 
 export const subscribeToAuthor = async (authorId: string) => {
-  const { data } = await api.post<ApiEnvelope<{ subscriptions: string[] }>>(
+  const { data } = await nextServer.post<ApiEnvelope<{ subscriptions: string[] }>>(
     '/users/subscriptions',
     { authorId }
   );
@@ -79,7 +79,7 @@ export const subscribeToAuthor = async (authorId: string) => {
 };
 
 export const unsubscribeFromAuthor = async (authorId: string) => {
-  const { data } = await api.delete<ApiEnvelope<{ subscriptions: string[] }>>(
+  const { data } = await nextServer.delete<ApiEnvelope<{ subscriptions: string[] }>>(
     '/users/subscriptions',
     { data: { authorId } }
   );
@@ -104,7 +104,7 @@ export const getSubscribedAuthors = async (
   page = 1,
   perPage = 20
 ): Promise<GetSubscribedAuthorsResponseData> => {
-  const { data } = await api.get<ApiEnvelope<GetSubscribedAuthorsResponseData>>(
+  const { data } = await nextServer.get<ApiEnvelope<GetSubscribedAuthorsResponseData>>(
     '/users/subscriptions',
     { params: { page, perPage } }
   );

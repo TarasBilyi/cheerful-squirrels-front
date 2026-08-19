@@ -1,67 +1,61 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { api } from '../api';
+import { isAxiosError } from 'axios';
+import { logErrorResponse } from '../_utils/utils';
+import { cookies } from 'next/headers';
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const cookieStore = await cookies();
+    const { articleId } = await request.json();
 
-    const response = await fetch(`${process.env.API_URL}/saved`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Cookie: request.headers.get('cookie') ?? '',
-      },
-      body: JSON.stringify(body),
-      cache: 'no-store',
-    });
-
-    const data = await response.json();
-
-    return NextResponse.json(data, {
-      status: response.status,
-    });
-  } catch (error) {
-    console.error('POST /api/saved error:', error);
-
-    return NextResponse.json(
+    const response = await api.post(
+      `/saved`,
+      { articleId },
       {
-        status: 500,
-        message: 'Failed to save article',
-        data: null,
-      },
-      { status: 500 }
+        headers: {
+          Cookie: cookieStore.toString(),
+        },
+      }
     );
+
+    return NextResponse.json(response.data, { status: response.status });
+  } catch (error) {
+    if (isAxiosError(error)) {
+      logErrorResponse(error.response?.data);
+      return NextResponse.json(
+        { error: error.message, response: error.response?.data },
+        { status: error.status }
+      );
+    }
+    logErrorResponse({ message: (error as Error).message });
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
-export async function DELETE(request: NextRequest) {
+export async function DELETE(request: Request) {
   try {
-    const body = await request.json();
+    const cookieStore = await cookies();
 
-    const response = await fetch(`${process.env.API_URL}/saved`, {
-      method: 'DELETE',
+    const { articleId } = await request.json();
+
+    const response = await api.delete(`/saved`, {
+      data: { articleId },
       headers: {
-        'Content-Type': 'application/json',
-        Cookie: request.headers.get('cookie') ?? '',
+        Cookie: cookieStore.toString(),
       },
-      body: JSON.stringify(body),
-      cache: 'no-store',
     });
 
-    const data = await response.json();
-
-    return NextResponse.json(data, {
-      status: response.status,
-    });
+    return NextResponse.json(response.data, { status: response.status });
   } catch (error) {
-    console.error('DELETE /api/saved error:', error);
-
-    return NextResponse.json(
-      {
-        status: 500,
-        message: 'Failed to remove saved article',
-        data: null,
-      },
-      { status: 500 }
-    );
+    if (isAxiosError(error)) {
+      logErrorResponse(error.response?.data);
+      return NextResponse.json(
+        { error: error.message, response: error.response?.data },
+        { status: error.status }
+      );
+    }
+    logErrorResponse({ message: (error as Error).message });
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

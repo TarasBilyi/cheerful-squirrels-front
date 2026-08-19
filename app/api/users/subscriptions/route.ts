@@ -1,23 +1,25 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { api } from '../../api';
 import { cookies } from 'next/headers';
 import { logErrorResponse } from '../../_utils/utils';
 import { isAxiosError } from 'axios';
 
-type Props = {
-  params: Promise<{ id: string }>;
-};
-
-export async function GET(request: Request, { params }: Props) {
+export async function POST(request: NextRequest) {
   try {
     const cookieStore = await cookies();
-    const { id } = await params;
-    const res = await api(`/articles/${id}`, {
-      headers: {
-        Cookie: cookieStore.toString(),
-      },
-    });
-    return NextResponse.json(res.data, { status: res.status });
+    const { authorId } = await request.json();
+
+    const response = await api.post(
+      `/users/subscriptions`,
+      { authorId },
+      {
+        headers: {
+          Cookie: cookieStore.toString(),
+        },
+      }
+    );
+
+    return NextResponse.json(response.data, { status: response.status });
   } catch (error) {
     if (isAxiosError(error)) {
       logErrorResponse(error.response?.data);
@@ -31,17 +33,20 @@ export async function GET(request: Request, { params }: Props) {
   }
 }
 
-export async function DELETE(request: Request, { params }: Props) {
+export async function DELETE(request: Request) {
   try {
     const cookieStore = await cookies();
-    const { id } = await params;
 
-    const res = await api.delete(`/articles/${id}`, {
+    const { authorId } = await request.json();
+
+    const response = await api.delete(`/users/subscriptions`, {
+      data: { authorId },
       headers: {
         Cookie: cookieStore.toString(),
       },
     });
-    return NextResponse.json(res.data, { status: res.status });
+
+    return NextResponse.json(response.data, { status: response.status });
   } catch (error) {
     if (isAxiosError(error)) {
       logErrorResponse(error.response?.data);
@@ -55,27 +60,46 @@ export async function DELETE(request: Request, { params }: Props) {
   }
 }
 
-export async function PATCH(request: Request, { params }: Props) {
+export async function GET(request: NextRequest) {
   try {
     const cookieStore = await cookies();
-    const { id } = await params;
-    const body = await request.json();
 
-    const res = await api.patch(`/articles/${id}`, body, {
+    const page = Number(request.nextUrl.searchParams.get('page') ?? 1);
+
+    const perPage = Number(request.nextUrl.searchParams.get('perPage') ?? 12);
+
+    const response = await api.get('/users/subscriptions', {
+      params: {
+        page,
+        perPage,
+      },
       headers: {
         Cookie: cookieStore.toString(),
       },
     });
-    return NextResponse.json(res.data, { status: res.status });
+
+    return NextResponse.json(response.data, {
+      status: response.status,
+    });
   } catch (error) {
     if (isAxiosError(error)) {
       logErrorResponse(error.response?.data);
+
       return NextResponse.json(
-        { error: error.message, response: error.response?.data },
-        { status: error.status }
+        {
+          error: error.message,
+          response: error.response?.data,
+        },
+        {
+          status: error.status ?? 500,
+        }
       );
     }
-    logErrorResponse({ message: (error as Error).message });
+
+    logErrorResponse({
+      message: (error as Error).message,
+    });
+
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

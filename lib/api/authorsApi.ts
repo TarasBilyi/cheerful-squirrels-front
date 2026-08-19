@@ -32,7 +32,6 @@ export const getArticlesByAuthor = async (
   return data.data;
 };
 
-
 interface AuthorsPagination {
   page: number;
   perPage: number;
@@ -53,7 +52,7 @@ export interface GetAuthorsResult {
 }
 
 export const getAuthors = async (page = 1, perPage = 20): Promise<GetAuthorsResult> => {
-  const { data } = await api.get<ApiResponse<GetAuthorsResponseData>>('/users', {
+  const { data } = await nextServer.get<ApiResponse<GetAuthorsResponseData>>('/users', {
     params: { page, perPage },
   });
 

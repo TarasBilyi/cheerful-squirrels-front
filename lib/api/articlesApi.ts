@@ -10,7 +10,7 @@ export const getArticleById = async (articleId: string) => {
 };
 
 export const deleteArticle = async (articleId: string): Promise<void> => {
-  await api.delete<ApiResponse<{ article: Article }>>(`/articles/${articleId}`);
+  await nextServer.delete<ApiResponse<{ article: Article }>>(`/articles/${articleId}`);
 };
 
 export interface UpdateArticlePayload {
@@ -22,7 +22,7 @@ export interface UpdateArticlePayload {
 
 export const updateArticle = async (
   articleId: string,
-  payload: UpdateArticlePayload,
+  payload: UpdateArticlePayload
 ): Promise<Article> => {
   const formData = new FormData();
 
@@ -31,9 +31,9 @@ export const updateArticle = async (
   if (payload.article !== undefined) formData.append('article', payload.article);
   if (payload.photo) formData.append('photo', payload.photo);
 
-  const { data } = await api.patch<ApiResponse<{ article: Article }>>(
+  const { data } = await nextServer.patch<ApiResponse<{ article: Article }>>(
     `/articles/${articleId}`,
-    formData,
+    formData
   );
   return data.data.article;
 };

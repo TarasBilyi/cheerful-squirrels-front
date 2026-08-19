@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { api } from '../../../api';
 import { isAxiosError } from 'axios';
+import { logErrorResponse } from '@/app/api/_utils/utils';
 
 export async function PATCH(request: Request) {
   try {
@@ -20,21 +21,14 @@ export async function PATCH(request: Request) {
     });
   } catch (error) {
     if (isAxiosError(error)) {
-      console.error('UPDATE AVATAR ERROR:', error.response?.data);
+      logErrorResponse(error.response?.data);
 
       return NextResponse.json(
-        {
-          error: error.message,
-          response: error.response?.data,
-        },
-        {
-          status: error.response?.status ?? 500,
-        }
+        { error: error.message, response: error.response?.data },
+        { status: error.status }
       );
     }
-
-    console.error('UPDATE AVATAR ERROR:', error);
-
+    logErrorResponse({ message: (error as Error).message });
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

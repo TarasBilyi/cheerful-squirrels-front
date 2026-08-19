@@ -1,21 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { api } from '@/app/api/api';
+import { api } from '../api';
 import { cookies } from 'next/headers';
 import { isAxiosError } from 'axios';
-import { logErrorResponse } from '../../_utils/utils';
+import { logErrorResponse } from '../_utils/utils';
 
 export async function GET(request: NextRequest) {
   try {
     const cookieStore = await cookies();
-
     const page = Number(request.nextUrl.searchParams.get('page') ?? 1);
+    const perPage = Number(request.nextUrl.searchParams.get('perPage'));
 
-    const backendUrl = `${process.env.API_URL}/users/saved`;
-
-    const response = await api(backendUrl, {
+    const response = await api('/users', {
       params: {
         page,
-        perPage: 10,
+        perPage,
       },
       headers: {
         Cookie: cookieStore.toString(),
