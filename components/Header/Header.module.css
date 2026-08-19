@@ -3,6 +3,11 @@
   top: 0;
   background-color: var(--color-light-green);
   z-index: 100;
+  transition: box-shadow 0.3s ease;
+}
+
+.headerScrolled {
+  box-shadow: 0 4px 16px rgba(7, 7, 33, 0.08);
 }
 
 .topBar {
