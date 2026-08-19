@@ -70,15 +70,6 @@ const ArticlesPage = () => {
     try {
       const data = await getArticles(category, pageToLoad, 12);
 
-      console.log('======================');
-    console.log('append:', append);
-    console.log('page:', pageToLoad);
-    console.log('articles:', data.articles);
-    console.log(
-      'ids:',
-      data.articles.map((article) => article._id)
-    );
-
       if (append) {
         setArticles((prev) => [...prev, ...data.articles]);
       } else {
