@@ -33,6 +33,7 @@ const DesktopNav = ({ isAuthenticated, isLoadingUser, user }: DesktopNavProps) =
           <CtaLink href="/articles/new">Create an article</CtaLink>
           <div className={css.accountGroup}>
             <UserBar user={user} isLoading={isLoadingUser} />
+            <span className={css.divider} aria-hidden="true" />
             <LogoutButton />
           </div>
         </div>

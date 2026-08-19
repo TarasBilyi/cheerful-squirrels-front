@@ -3,6 +3,15 @@
   flex: 1;
 }
 
+/* Wraps the full-width header (title + photo) and the layout row below it,
+   so the photo always spans the full content width instead of sharing a
+   row with the sidebar. */
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .layout {
   display: flex;
   flex-direction: column;
@@ -19,6 +28,10 @@
 @media (min-width: 768px) {
   .page {
     padding-block: 32px 56px;
+  }
+
+  .contentWrapper {
+    gap: 32px;
   }
 
   .layout {

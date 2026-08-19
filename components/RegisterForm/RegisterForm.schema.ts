@@ -1,13 +1,14 @@
 import * as Yup from 'yup';
-
+import { EMAIL_REGEX } from '@/lib/utils/validation';
 
 export const RegisterSchema = Yup.object({
   name: Yup.string()
+    .transform(value => value?.trim())
     .min(2, 'Name must be at least 2 characters')
     .max(32, 'Name must be at most 32 characters')
     .required('Name is required'),
   email: Yup.string()
-    .email('Enter a valid email')
+    .matches(EMAIL_REGEX, 'Enter a valid email')
     .max(64, 'Email must be at most 64 characters')
     .required('Email is required'),
   password: Yup.string()
@@ -17,4 +18,14 @@ export const RegisterSchema = Yup.object({
   repeatPassword: Yup.string()
     .oneOf([Yup.ref('password')], 'Passwords must match')
     .required('Please repeat your password'),
+});
+
+export const RegisterDraftSchema = Yup.object({
+  name: Yup.string()
+    .transform(value => value?.trim())
+    .min(2)
+    .max(32)
+    .required(),
+  email: Yup.string().matches(EMAIL_REGEX).max(64).required(),
+  password: Yup.string().min(8).max(64).required(),
 });

@@ -1,36 +1,190 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<h1 align="center">Harmoniq</h1>
 
-## Getting Started
+<p align="center">
+  <strong>Find your harmony in community.</strong>
+</p>
 
-First, run the development server:
+<p align="center">
+  Платформа для читання та публікації статей, побудована на Next.js — з авторами, підписками та особистим профілем.
+</p>
+
+<p align="center">
+  <a href="#-quick-start"><strong>Швидкий старт</strong></a> ·
+  <a href="#-features"><strong>Функціонал</strong></a> ·
+  <a href="#-project-structure"><strong>Структура</strong></a> ·
+  <a href="#-deployment"><strong>Деплой</strong></a>
+</p>
+
+---
+
+## ✨ Чому Harmoniq
+
+Більшість блог-платформ або:
+
+* перевантажені зайвим функціоналом,
+* не мають нормальної роботи з авторами й підписками,
+* погано працюють з кешуванням серверних даних.
+
+**Harmoniq вирішує це.**
+
+Поєднує:
+
+* ⚡ App Router Next.js 16 + React Compiler
+* 🔄 TanStack Query для кешування та синхронізації даних
+* 🧘 Чисті приватні маршрути профілю (паралельні роути)
+* 🌗 Світлу/темну тему без "блимання" при завантаженні
+
+---
+
+## ⚡ Quick Start
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Відкрити → [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧱 Requirements
 
-## Learn More
+* Node.js 18+
+* npm
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Автентифікація
 
-## Deploy on Vercel
+* Реєстрація, вхід, вихід
+* Оновлення сесії через `/auth/refresh`
+* Приватні та гостьові маршрути (`RequireAuth`, `RequireGuest`)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Статті
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+* Стрічка статей із пагінацією
+* Популярні та рекомендовані статті
+* Створення, редагування, видалення власних статей
+* Завантаження фото до статті
+
+### Автори та спільнота
+
+* Сторінки авторів зі списком їхніх статей
+* Підписка / відписка від авторів
+* Список підписок у профілі
+
+### Особистий кабінет
+
+* Мої статті / збережені статті / підписки (паралельні роути профілю)
+* Збереження статей у "закладки"
+* Завантаження та зміна аватара
+
+### UX
+
+* Перемикач світлої/темної теми (`localStorage`, без flash of wrong theme)
+* Toast-сповіщення, глобальний лоадер, модальні вікна
+
+---
+
+## 🔐 Environment Setup
+
+Створіть файл:
+
+```bash
+.env.local
+```
+
+### Шаблон
+
+```bash
+NEXT_PUBLIC_API_URL=https://your-backend-api-url
+```
+
+`NEXT_PUBLIC_API_URL` — базова адреса бекенд-API, до якої звертається клієнт (`lib/api/api.ts`, `withCredentials: true`).
+
+---
+
+## 🗂 Project Structure
+
+```
+app/                     маршрути Next.js App Router
+  (auth rotes)/          логін, реєстрація, фото
+  (private routes)/      приватні сторінки профілю (@myArticles, @savedArticles, @subscriptions)
+  articles/               список статей, сторінка статті, створення/редагування
+  authors/                список авторів та сторінка автора
+components/               UI-компоненти (кожен у власній папці з *.module.css)
+hooks/                    кастомні React-хуки
+lib/
+  api/                    звернення до бекенду (axios)
+  store/                  Zustand-стори
+  utils/                  допоміжні утиліти
+  seo.ts                  SEO-константи
+services/                 сервісний шар роботи зі статтями
+types/                    спільні TypeScript-типи (Article, Author, User, ApiResponse)
+public/                   статичні файли (іконки, зображення)
+```
+
+---
+
+## 🖼 Зображення
+
+Для оптимізації `next/image` дозволені такі зовнішні джерела (`next.config.ts`):
+
+* `res.cloudinary.com`
+* `ftp.goit.study`
+
+Якщо бекенд повертає зображення з іншого хосту — додайте його до `images.remotePatterns`.
+
+---
+
+## 🚢 Deployment
+
+```bash
+npm run build
+npm start
+```
+
+Проєкт розгорнутий на [Vercel](https://vercel.com). Не забудьте додати `NEXT_PUBLIC_API_URL` у змінні середовища проєкту на хостингу. Детальніше — у [документації Next.js щодо деплою](https://nextjs.org/docs/app/building-your-application/deploying).
+
+---
+
+## 🏗 Tech Stack
+
+| Layer      | Technology                  |
+| ---------- | ---------------------------- |
+| Framework  | Next.js 16 (App Router)      |
+| UI         | React 19, CSS Modules        |
+| Data       | TanStack Query, Axios        |
+| State      | Zustand                      |
+| Forms      | Formik + Yup                 |
+| Feedback   | React Hot Toast              |
+| Language   | TypeScript                   |
+
+---
+
+## 📦 Scripts
+
+```bash
+npm run dev      # старт дев-сервера
+npm run build    # продакшн-збірка
+npm run start    # запуск продакшн-збірки
+npm run lint     # ESLint
+```
+
+---
+
+## 🧭 Philosophy
+
+Harmoniq побудований навколо простої ідеї:
+
+> Читання та публікація статей мають бути легкими.
+
+Нічого зайвого. Просто спільнота й контент.
+
+---
+
+## 🤝 Contributing
+
+PR вітаються. Для суттєвих змін спочатку відкрийте issue.

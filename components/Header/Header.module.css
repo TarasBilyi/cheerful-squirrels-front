@@ -1,7 +1,13 @@
 .header {
-  position: relative;
+  position: sticky;
+  top: 0;
   background-color: var(--color-light-green);
   z-index: 100;
+  transition: box-shadow 0.3s ease;
+}
+
+.headerScrolled {
+  box-shadow: 0 4px 16px rgba(7, 7, 33, 0.08);
 }
 
 .topBar {
@@ -14,6 +20,18 @@
 .logoLink {
   display: inline-flex;
   flex-shrink: 0;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+@media (min-width: 1440px) {
+  .right {
+    gap: 32px;
+  }
 }
 
 .actions {

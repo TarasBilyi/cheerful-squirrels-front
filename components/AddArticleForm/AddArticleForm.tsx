@@ -5,17 +5,19 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import type { AxiosError } from 'axios';
 import * as Yup from 'yup';
-import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik';
+import { ErrorMessage, Field, Form, Formik, FormikHelpers, useField } from 'formik';
 import css from './AddArticleForm.module.css';
 import toast from 'react-hot-toast';
 import { createArticle } from '@/services/article';
 import { updateArticle } from '@/lib/api/articlesApi';
+import { getCurrentUser } from '@/lib/api/clientApi';
 import { useFormDraft, useFormDraftValue, clearFormDraft } from '@/hooks/useFormDraft';
 import { useAuthStore } from '@/lib/store/authStore';
 import type { Article } from '@/types/article';
 import Image from 'next/image';
 
 const DRAFT_KEY = 'draft:add-article';
+const ARTICLE_MAX_LENGTH = 4000;
 
 interface ArticleFormValues {
   title: string;
@@ -25,13 +27,64 @@ interface ArticleFormValues {
 
 const EMPTY_VALUES: ArticleFormValues = { title: '', desc: '', article: '' };
 
-// The shared `ApiError` type expects `{ error: string }`; the backend now
-// sends both `message` and `error` for the same text, read both defensively.
 type SubmitError = AxiosError<{ message?: string; error?: string }>;
 
 const DraftAutosave = ({ values, enabled }: { values: ArticleFormValues; enabled: boolean }) => {
   useFormDraft({ key: DRAFT_KEY, values, enabled });
   return null;
+};
+interface ArticleTextAreaProps {
+  className: string;
+  placeholder: string;
+  flickerToken: number;
+}
+
+const ArticleTextArea = ({ className, placeholder, flickerToken }: ArticleTextAreaProps) => {
+  const [field, , helpers] = useField('article');
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const length = field.value.length;
+  const isOverLimit = length > ARTICLE_MAX_LENGTH;
+
+  const resize = () => {
+    const el = textareaRef.current;
+    if (el) {
+      el.style.height = 'auto';
+      el.style.height = `${el.scrollHeight}px`;
+    }
+  };
+
+  useEffect(() => {
+    resize();
+  }, [field.value]);
+
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    helpers.setValue(event.target.value);
+  };
+
+  return (
+    <>
+      <div className={css.textareaWrapper}>
+        <textarea
+          {...field}
+          onChange={handleChange}
+          ref={textareaRef}
+          id="article"
+          className={className}
+          placeholder={placeholder}
+          maxLength={ARTICLE_MAX_LENGTH}
+          onInput={resize}
+        />
+        <span
+          className={`${css.charCounter} ${isOverLimit ? css.charCounterOver : ''}`}
+          aria-live="polite"
+        >
+          {length}/{ARTICLE_MAX_LENGTH}
+        </span>
+      </div>
+      <ErrorMessage key={flickerToken} name="article" component="span" className={css.flicker} />
+    </>
+  );
 };
 
 interface AddArticleFormProps {
@@ -49,6 +102,7 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [image, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(article?.img ?? null);
+  const [flickerToken, setFlickerToken] = useState(0);
 
   const draft = useFormDraftValue<ArticleFormValues>(DRAFT_KEY);
   const initialValues: ArticleFormValues = isEditMode
@@ -83,16 +137,19 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
 
   const ArticleFormSchema = Yup.object().shape({
     title: Yup.string()
+      .transform((value) => value?.trim())
       .min(3, 'Minimum 3 characters')
       .max(48, 'Maximum 48 characters')
       .required('Title is required'),
     desc: Yup.string()
+      .transform((value) => value?.trim())
       .min(10, 'Minimum 10 characters')
       .max(200, 'Maximum 200 characters')
       .required('Description is required'),
     article: Yup.string()
+      .transform((value) => value?.trim())
       .min(100, 'Minimum 100 characters')
-      .max(4000, 'Maximum 4000 characters')
+      .max(ARTICLE_MAX_LENGTH, `Maximum ${ARTICLE_MAX_LENGTH} characters`)
       .required('Article body is required'),
   });
 
@@ -117,16 +174,21 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
         return;
       }
       const formData = new FormData();
-      formData.append('title', values.title);
-      formData.append('desc', values.desc);
-      formData.append('article', values.article);
+      formData.append('title', values.title.trim());
+      formData.append('desc', values.desc.trim());
+      formData.append('article', values.article.trim());
       formData.append('photo', image);
 
       const newArticle = await createArticle(formData);
       queryClient.invalidateQueries({ queryKey: ['articles'] });
 
-      if (user) {
-        setUser({ ...user, articlesAmount: (user.articlesAmount ?? 0) + 1 });
+      try {
+        const freshUser = await getCurrentUser();
+        setUser(freshUser);
+      } catch {
+        if (user) {
+          setUser({ ...user, articlesAmount: (user.articlesAmount ?? 0) + 1 });
+        }
       }
 
       clearFormDraft(DRAFT_KEY);
@@ -189,7 +251,12 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
               className={css.fileInput}
               onChange={handleImageChange}
             />
-            <ErrorMessage name="image" component="span" className={css.error} />
+            <ErrorMessage
+              key={flickerToken}
+              name="image"
+              component="span"
+              className={css.flicker}
+            />
 
             <div className={css.titleFieldContainer}>
               <label htmlFor="title">Title</label>
@@ -200,7 +267,12 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
                 name="title"
                 placeholder="Enter the title"
               />
-              <ErrorMessage name="title" component="span" className={css.error} />
+              <ErrorMessage
+                key={flickerToken}
+                name="title"
+                component="span"
+                className={css.flicker}
+              />
             </div>
 
             <div className={css.descFieldContainer}>
@@ -210,24 +282,22 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
                 id="desc"
                 type="text"
                 name="desc"
-                placeholder="Enter a short one-sentence description"
+                placeholder="Enter a short description"
               />
-              <ErrorMessage name="desc" component="span" className={css.error} />
+              <ErrorMessage
+                key={flickerToken}
+                name="desc"
+                component="span"
+                className={css.flicker}
+              />
             </div>
 
             <div className={css.articleFieldContainer}>
-              <Field
+              <ArticleTextArea
                 className={`${css.articleField} ${css.articleTextArea}`}
-                as="textarea"
-                id="article"
-                name="article"
                 placeholder="Enter a text"
-                onInput={(e: React.FormEvent<HTMLTextAreaElement>) => {
-                  e.currentTarget.style.height = 'auto';
-                  e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`;
-                }}
+                flickerToken={flickerToken}
               />
-              <ErrorMessage name="article" component="span" className={css.error} />
             </div>
 
             <button
@@ -235,6 +305,7 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
               className={css.submitButton}
               disabled={isSubmitting}
               aria-busy={isSubmitting}
+              onClick={() => setFlickerToken(token => token + 1)}
             >
               {isSubmitting && <span className={css.spinner} aria-hidden />}
               {isSubmitting

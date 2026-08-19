@@ -43,7 +43,8 @@
 
 .actions {
   display: flex;
-  gap: 27px;
+  flex-direction: column;
+  gap: 12px;
   width: 100%;
 }
 
@@ -79,6 +80,11 @@
 }
 
 @media (min-width: 768px) {
+  .actions {
+    flex-direction: row;
+    gap: 27px;
+  }
+
   .cancel:hover {
     background-color: var(--color-white);
     border-color: var(--color-white);

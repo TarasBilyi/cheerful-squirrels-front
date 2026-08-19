@@ -2,7 +2,14 @@
   font-size: 16px;
   line-height: 1.6;
   color: var(--color-black);
-  white-space: pre-line;
+}
+
+.paragraph {
+  margin-bottom: 24px;
+}
+
+.paragraph:last-child {
+  margin-bottom: 0;
 }
 
 @media (min-width: 768px) {

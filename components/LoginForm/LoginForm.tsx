@@ -47,7 +47,7 @@ const LoginPage = () => {
       <Formik initialValues={initialValues} validationSchema={LoginSchema} onSubmit={handleSubmit}>
         {({ isSubmitting }) => (
           <Form className={css.form}>
-            <legend className={css.formTitle}>Login</legend>
+            <h1 className={css.formTitle}>Login</h1>
 
             <div className={`${css.formGroup} ${css.formEmail}`}>
               <label htmlFor="email">Enter your email address</label>

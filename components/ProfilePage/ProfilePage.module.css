@@ -13,7 +13,9 @@
 
 .tabs {
   display: flex;
-  gap: 38px;
+  flex-wrap: wrap;
+  row-gap: 12px;
+  column-gap: 24px;
   margin-bottom: 24px;
 }
 
@@ -34,4 +36,10 @@
 
 .tabActive {
   border-bottom-color: var(--color-green-darker);
+}
+
+@media (min-width: 768px) {
+  .tabs {
+    column-gap: 38px;
+  }
 }

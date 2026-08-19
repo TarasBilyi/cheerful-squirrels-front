@@ -30,7 +30,7 @@
   justify-content: center;
   border-radius: 50%;
   background-color: rgba(7, 7, 33, 0.55);
-  color: var(--color-white);
+  color: var(--color-on-accent);
   opacity: 0;
   pointer-events: none;
 }

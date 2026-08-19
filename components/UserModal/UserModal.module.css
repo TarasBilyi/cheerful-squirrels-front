@@ -62,7 +62,7 @@
   border: none;
   border-radius: 50%;
   background-color: var(--color-green);
-  color: var(--color-black);
+  color: var(--color-on-accent);
   cursor: pointer;
   overflow: hidden;
   padding: 0;
@@ -101,7 +101,7 @@
   justify-content: center;
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.6);
-  color: var(--color-white);
+  color: var(--color-on-accent);
   opacity: 0;
   pointer-events: none;
 }

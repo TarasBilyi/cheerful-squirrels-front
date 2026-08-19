@@ -156,3 +156,22 @@
   stroke: currentColor;
   fill: none;
 }
+
+
+.desktopPagination {
+  display: block;
+}
+
+.mobilePagination {
+  display: none;
+}
+
+@media screen and (max-width: 767px) {
+  .desktopPagination {
+    display: none;
+  }
+
+  .mobilePagination {
+    display: block;
+  }
+}

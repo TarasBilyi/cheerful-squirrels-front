@@ -1,9 +1,35 @@
 'use client';
 
 import Link from 'next/link';
+import { motion, type Variants } from 'motion/react';
 import Container from '@/components/Container/Container';
 import { useAuthStore } from '@/lib/store/authStore';
 import styles from './Hero.module.css';
+
+const container: Variants = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.15, delayChildren: 0.1 },
+  },
+};
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 24 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+const imageReveal: Variants = {
+  hidden: { opacity: 0, scale: 0.92 },
+  show: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.2 },
+  },
+};
 
 export default function Hero() {
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
@@ -13,14 +39,24 @@ export default function Hero() {
     <section className={styles.hero}>
       <Container>
         <div className={styles.wrapper}>
-          <div className={styles.imageWrapper}></div>
+          <motion.div
+            className={styles.imageWrapper}
+            initial="hidden"
+            animate="show"
+            variants={imageReveal}
+          />
 
-          <div className={styles.content}>
-            <h1 className={styles.title}>
+          <motion.div
+            className={styles.content}
+            initial="hidden"
+            animate="show"
+            variants={container}
+          >
+            <motion.h1 className={styles.title} variants={fadeUp}>
               Find your <span>harmony</span> in community
-            </h1>
+            </motion.h1>
 
-            <div className={styles.buttons}>
+            <motion.div className={styles.buttons} variants={fadeUp}>
               <Link href="/articles" className={styles.articlesButton}>
                 Go to Articles
               </Link>
@@ -30,8 +66,8 @@ export default function Hero() {
                   Register
                 </Link>
               )}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </Container>
     </section>
