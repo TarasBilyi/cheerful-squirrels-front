@@ -59,15 +59,7 @@ const ArticleTextArea = ({ className, placeholder, flickerToken }: ArticleTextAr
   }, [field.value]);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const nextValue = event.target.value;
-    const isGrowing = nextValue.length > field.value.length;
-    const alreadyAtLimit = field.value.length >= ARTICLE_MAX_LENGTH;
-
-    if (isGrowing && alreadyAtLimit) {
-      return;
-    }
-
-    helpers.setValue(nextValue);
+    helpers.setValue(event.target.value);
   };
 
   return (
@@ -80,6 +72,7 @@ const ArticleTextArea = ({ className, placeholder, flickerToken }: ArticleTextAr
           id="article"
           className={className}
           placeholder={placeholder}
+          maxLength={ARTICLE_MAX_LENGTH}
           onInput={resize}
         />
         <span
@@ -286,7 +279,7 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
                 id="desc"
                 type="text"
                 name="desc"
-                placeholder="Enter a short one-sentence description"
+                placeholder="Enter a short description"
               />
               <ErrorMessage
                 key={flickerToken}
