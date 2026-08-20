@@ -1,11 +1,12 @@
 'use client';
 
+import { Suspense } from 'react';
 import PaginatedArticlesList from '@/components/PaginatedArticlesList/PaginatedArticlesList';
 import EmptyState from '@/components/EmptyState/EmptyState';
 import { getArticlesByAuthor } from '@/lib/api/authorsApi';
 import { useAuthStore } from '@/lib/store/authStore';
 
-const MyArticlesTab = () => {
+const MyArticlesTabContent = () => {
   const user = useAuthStore(state => state.user);
 
   if (!user) {
@@ -27,5 +28,11 @@ const MyArticlesTab = () => {
     />
   );
 };
+
+const MyArticlesTab = () => (
+  <Suspense fallback={null}>
+    <MyArticlesTabContent />
+  </Suspense>
+);
 
 export default MyArticlesTab;

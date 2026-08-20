@@ -38,16 +38,9 @@
     list-style: none;
 }
 
-.list> :nth-child(4) {
-      display: block;
-}
-
 @media (min-width: 768px) {
     .list {
         grid-template-columns: repeat(2, 1fr);
-    }
-    .list> :nth-child(4) {
-        display: block;
     }
   .header {
       flex-direction: row;

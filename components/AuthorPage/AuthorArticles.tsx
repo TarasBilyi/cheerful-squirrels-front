@@ -22,6 +22,7 @@ const AuthorArticles = ({
     initialPage={initialPage}
     initialTotalPages={initialTotalPages}
     fetchPage={(page, perPage) => getArticlesByAuthor(authorId, page, perPage)}
+    pageParam="page"
   />
 );
 

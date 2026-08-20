@@ -6,7 +6,7 @@
   border-radius: 32px;
   max-width: 361px;
   width: 100%;
-  height: 492px;
+  min-height: 492px;
   background-color: var(--color-light-green);
   list-style: none;
 

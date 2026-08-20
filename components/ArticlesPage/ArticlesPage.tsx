@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Select, { components, DropdownIndicatorProps } from 'react-select';
 
 
@@ -31,6 +32,9 @@ const options: Option[] = [
   { value: 'popular', label: 'Popular' },
 ];
 
+const isCategory = (value: string | null): value is Category =>
+  value === 'general' || value === 'popular';
+
 const DropdownIndicator = (props: DropdownIndicatorProps<Option>) => (
   <components.DropdownIndicator {...props}>
     <svg width="16" height="16">
@@ -44,9 +48,22 @@ const DropdownIndicator = (props: DropdownIndicatorProps<Option>) => (
 );
 
 const ArticlesPage = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // The URL (?category=&page=) is the source of truth for which page/category
+  // the user is looking at, so that navigating to an article and pressing
+  // the browser "back" button restores the exact same listing instead of
+  // resetting to page 1.
+  const categoryFromUrl: Category = isCategory(searchParams.get('category'))
+    ? (searchParams.get('category') as Category)
+    : 'general';
+  const pageFromUrl = Number(searchParams.get('page')) || 1;
+
   const [articles, setArticles] = useState<Article[]>([]);
-  const [category, setCategory] = useState<Category>('general');
-  const [page, setPage] = useState(1);
+  const [category, setCategory] = useState<Category>(categoryFromUrl);
+  const [page, setPage] = useState(pageFromUrl);
 
   const [totalPages, setTotalPages] = useState(1);
   const [totalItems, setTotalItems] = useState(0);
@@ -60,15 +77,30 @@ const ArticlesPage = () => {
 
   
   const previousScroll = useRef(0);
+  // Avoids re-fetching when *we* are the ones who just wrote to the URL.
+  const skipNextUrlSync = useRef(false);
+
+  const updateUrl = useCallback(
+    (nextCategory: Category, nextPage: number) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('category', nextCategory);
+      params.set('page', String(nextPage));
+
+      skipNextUrlSync.current = true;
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    },
+    [pathname, router, searchParams]
+  );
 
   const loadArticles = async (
+    categoryToLoad: Category,
     pageToLoad: number,
     append = false,
   ) => {
     setLoading(true);
 
     try {
-      const data = await getArticles(category, pageToLoad, 12);
+      const data = await getArticles(categoryToLoad, pageToLoad, 12);
 
       if (append) {
         setArticles((prev) => [...prev, ...data.articles]);
@@ -88,13 +120,23 @@ const ArticlesPage = () => {
     }
   };
 
+  // Refetch whenever the URL's category/page changes - this covers the
+  // initial load, user-driven changes (via updateUrl above), and the browser
+  // back/forward navigation, which only changes the URL and does not
+  // remount this component.
   useEffect(() => {
+    if (skipNextUrlSync.current) {
+      skipNextUrlSync.current = false;
+      return;
+    }
+
     const timeoutId = window.setTimeout(() => {
-      void loadArticles(1);
+      void loadArticles(categoryFromUrl, pageFromUrl);
     }, 0);
 
     return () => window.clearTimeout(timeoutId);
-  }, [category]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categoryFromUrl, pageFromUrl]);
 
   useEffect(() => {
   if (previousScroll.current) {
@@ -111,10 +153,13 @@ const ArticlesPage = () => {
   if (newCategory === category) return;
 
   setCategory(newCategory);
+  updateUrl(newCategory, 1);
+  void loadArticles(newCategory, 1);
 };
 
   const handlePageChange = async (selectedPage: number) => {
-  await loadArticles(selectedPage);
+  updateUrl(category, selectedPage);
+  await loadArticles(category, selectedPage);
 
   window.scrollTo({
     top: 0,
@@ -127,7 +172,9 @@ const ArticlesPage = () => {
 
     previousScroll.current = window.scrollY;
 
-    await loadArticles(page + 1, true);
+    const nextPage = page + 1;
+    updateUrl(category, nextPage);
+    await loadArticles(category, nextPage, true);
   };
 
   return (
