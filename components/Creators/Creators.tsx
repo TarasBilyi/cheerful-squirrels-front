@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Container from "../Container/Container";
 import { AuthorsItem } from "../AuthorsPage/AuthorsList";
-import { getAuthors } from "@/lib/api/authorsApi"; 
+import { getAuthors } from "@/lib/api/serverApi"; 
 import type { Author } from "@/types/author"; 
 import styles from "./Creators.module.css";
 

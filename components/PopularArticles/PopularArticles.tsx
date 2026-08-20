@@ -1,14 +1,14 @@
 import Link from 'next/link';
 import Container from '@/components/Container/Container';
 import ArticleItem from '@/components/ArticleItem/ArticleItem';
-import { getPopularArticles } from '@/lib/api/articlesApi';
+import { getPopularArticles } from '@/lib/api/serverApi';
 import styles from './PopularArticles.module.css';
 
 const PopularArticles = async () => {
   const articles = await getPopularArticles();
 
   return (
-    <section id="popularArticles" className={styles.section}>
+    <section className={styles.section}>
       <Container>
         <div className={styles.header}>
           <h2 className={styles.title}>Popular Articles</h2>
