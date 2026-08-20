@@ -200,6 +200,11 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
       .required('Description is required'),
     article: Yup.string()
       .transform(value => stripHtml(value ?? ''))
+      .test(
+        'not-blank',
+        'Article body is required',
+        value => typeof value === 'string' && /\S/.test(value)
+      )
       .min(100, 'Minimum 100 characters')
       .max(ARTICLE_MAX_LENGTH, `Maximum ${ARTICLE_MAX_LENGTH} characters`)
       .required('Article body is required'),
