@@ -48,18 +48,15 @@ const AuthorInfo = ({
           </button>
         )}
 
-        {action ? (
-          <div className={css.nameRow}>
+        <div className={css.headerRow}>
+          <div className={css.textBlock}>
             <Heading className={css.name}>{firstName}</Heading>
-            {action}
+            <p className={css.count}>
+              {author.articlesAmount ?? 0} {countLabel}
+            </p>
           </div>
-        ) : (
-          <Heading className={css.name}>{firstName}</Heading>
-        )}
-
-        <p className={css.count}>
-          {author.articlesAmount ?? 0} {countLabel}
-        </p>
+          {action}
+        </div>
       </div>
     </div>
   );
