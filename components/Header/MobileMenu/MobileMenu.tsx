@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import type { User } from '@/types/user';
 import { useIsClient } from '@/hooks/useIsClient';
@@ -30,12 +30,16 @@ const MobileMenu = ({
   onClose,
 }: MobileMenuProps) => {
   const isClient = useIsClient();
+  const burgerRef = useRef<HTMLButtonElement>(null);
+  const wasOpen = useRef(false);
 
   useEffect(() => {
     if (!isOpen) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
+      if (event.key === 'Escape') {
+        onClose();
+      }
     };
 
     document.addEventListener('keydown', handleKeyDown);
@@ -47,8 +51,23 @@ const MobileMenu = ({
     };
   }, [isOpen, onClose]);
 
+  useEffect(() => {
+    if (wasOpen.current && !isOpen) {
+      requestAnimationFrame(() => {
+        burgerRef.current?.focus();
+      });
+    }
+    wasOpen.current = isOpen;
+  }, [isOpen]);
+
   const panel = (
-    <div className={`${css.panel} ${isOpen ? css.panelOpen : ''}`} aria-hidden={!isOpen}>
+    <div
+      id="mobile-menu"
+      className={`${css.panel} ${isOpen ? css.panelOpen : ''}`}
+      aria-hidden={!isOpen}
+
+      {...(!isOpen ? { inert: true } : {})}
+    >
       <nav className={css.nav} aria-label="Mobile">
         <div className={css.navInner}>
           <ul className={css.navList}>
@@ -59,6 +78,7 @@ const MobileMenu = ({
                 </NavLink>
               </li>
             ))}
+
             {isAuthenticated && (
               <li>
                 <NavLink href="/profile" onClick={onClose} tabIndex={isOpen ? undefined : -1}>
@@ -78,6 +98,7 @@ const MobileMenu = ({
               >
                 Create an article
               </CtaLink>
+
               <div className={css.accountRow}>
                 <UserBar user={user} isLoading={isLoadingUser} onBeforeOpen={onClose} />
                 <LogoutButton onBeforeOpen={onClose} />
@@ -88,6 +109,7 @@ const MobileMenu = ({
               <NavLink href="/login" onClick={onClose} tabIndex={isOpen ? undefined : -1}>
                 Log in
               </NavLink>
+
               <CtaLink
                 href="/register"
                 className={css.mobileOnly}
@@ -105,7 +127,7 @@ const MobileMenu = ({
 
   return (
     <div className={css.wrapper}>
-      <BurgerButton isOpen={isOpen} onClick={onToggle} />
+      <BurgerButton ref={burgerRef} isOpen={isOpen} onClick={onToggle} />
       {isClient && createPortal(panel, document.body)}
     </div>
   );
