@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Container from '@/components/Container/Container';
 import ArticleItem from '@/components/ArticleItem/ArticleItem';
-import { getPopularArticles } from '@/lib/api/articlesApi';
+import { getPopularArticles } from '@/lib/api/serverApi';
 import styles from './PopularArticles.module.css';
 
 const PopularArticles = async () => {

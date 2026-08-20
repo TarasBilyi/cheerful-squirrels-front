@@ -15,7 +15,7 @@
   display: flex;
   flex-wrap: wrap;
   row-gap: 12px;
-  column-gap: 24px;
+  column-gap: 12px;
   margin-bottom: 24px;
 }
 
@@ -23,7 +23,8 @@
 .tabActive {
   font-family: var(--font-manrope);
   font-weight: 700;
-  font-size: 16px;
+  font-size: 13px;
+  white-space: nowrap;
   color: var(--color-green-darker);
   padding-bottom: 4px;
   border-bottom: 1px solid transparent;
@@ -41,5 +42,10 @@
 @media (min-width: 768px) {
   .tabs {
     column-gap: 38px;
+  }
+
+  .tab,
+  .tabActive {
+    font-size: 16px;
   }
 }
