@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useEditor, useEditorState, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import TextAlign from '@tiptap/extension-text-align';
+import { AllSelection, TextSelection } from '@tiptap/pm/state';
 import css from './RichTextEditor.module.css';
 
 const normalizeUrl = (url: string) => {
@@ -78,6 +79,22 @@ const RichTextEditor = ({
         const upper = text.toUpperCase();
         if (upper === text) return false;
         view.dispatch(view.state.tr.insertText(upper, from, to));
+        return true;
+      },
+      handleKeyDown: (view, event) => {
+        if (event.key !== 'Enter') return false;
+        if (event.shiftKey || event.ctrlKey || event.metaKey || event.altKey) return false;
+
+        const { state } = view;
+        if (!(state.selection instanceof AllSelection)) return false;
+
+        const paragraphType = state.schema.nodes.paragraph;
+        if (!paragraphType) return false;
+
+        const tr = state.tr.replaceWith(0, state.doc.content.size, paragraphType.create());
+        tr.setSelection(TextSelection.near(tr.doc.resolve(1)));
+        tr.scrollIntoView();
+        view.dispatch(tr);
         return true;
       },
     },
