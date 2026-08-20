@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { AxiosError } from 'axios';
@@ -59,13 +60,15 @@ const AuthorRoute = async ({ params }: AuthorRouteProps) => {
   const totalPages = pagination?.totalPages ?? 1;
 
   return (
-    <AuthorPage
-      authorId={authorId}
-      author={author}
-      initialArticles={articles}
-      initialPage={currentPage}
-      initialTotalPages={totalPages}
-    />
+    <Suspense fallback={null}>
+      <AuthorPage
+        authorId={authorId}
+        author={author}
+        initialArticles={articles}
+        initialPage={currentPage}
+        initialTotalPages={totalPages}
+      />
+    </Suspense>
   );
 };
 

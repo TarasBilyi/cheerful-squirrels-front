@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import ArticlesList from '@/components/ArticlesList/ArticlesList';
 import LoadMoreButton from '@/components/LoadMoreButton/LoadMoreButton';
@@ -12,7 +13,7 @@ import css from './PaginatedArticlesList.module.css';
 
 interface ArticlesPage {
   articles: Article[];
-  pagination: { page: number; totalPages: number };
+  pagination: { page: number; totalPages: number; totalItems?: number };
 }
 
 interface PaginatedArticlesListProps {
@@ -24,6 +25,15 @@ interface PaginatedArticlesListProps {
   emptyState?: React.ReactNode;
   deletable?: boolean;
   editable?: boolean;
+  /**
+   * When set, the current page number is kept in sync with this URL query
+   * parameter. This makes it possible for the browser "back" button to
+   * restore the exact page the user was on (instead of resetting to page 1)
+   * after they open an article and navigate back. Omit it when several
+   * instances of this list can be mounted at the same time (e.g. parallel
+   * routes/tabs) to avoid them fighting over the same query param.
+   */
+  pageParam?: string;
 }
 
 const PaginatedArticlesList = ({
@@ -35,7 +45,14 @@ const PaginatedArticlesList = ({
   emptyState,
   deletable = false,
   editable = false,
+  pageParam,
 }: PaginatedArticlesListProps) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const pageFromUrl = pageParam ? Number(searchParams.get(pageParam)) || 0 : 0;
+
   const [articles, setArticles] = useState(initialArticles);
   const [page, setPage] = useState(initialPage);
   const [totalPages, setTotalPages] = useState(initialTotalPages);
@@ -44,8 +61,17 @@ const PaginatedArticlesList = ({
   const setLoading = useLoaderStore(state => state.setLoading);
 
   const requestIdRef = useRef(0);
+  const didInitRef = useRef(false);
 
   const hasMore = page < totalPages;
+
+  const syncUrl = (targetPage: number) => {
+    if (!pageParam) return;
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set(pageParam, String(targetPage));
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  };
 
   const load = async (targetPage: number, mode: 'append' | 'replace') => {
     const requestId = ++requestIdRef.current;
@@ -84,9 +110,49 @@ const PaginatedArticlesList = ({
   };
 
   useEffect(() => {
+    if (didInitRef.current) return;
+    didInitRef.current = true;
+
     if (initialPage === 0) {
       load(1, 'replace');
+      return;
     }
+
+    // If the URL points at a later page than what was server-rendered
+    // (e.g. the user came back via the browser "back" button after loading
+    // several pages), restore the full accumulated list up to that page.
+    if (pageParam && pageFromUrl > initialPage) {
+      void (async () => {
+        const requestId = ++requestIdRef.current;
+        try {
+          setIsLoading(true);
+          setLoading(true);
+
+          const data = await fetchPage(1, perPage * pageFromUrl);
+
+          if (requestIdRef.current !== requestId) return;
+
+          setArticles(data.articles);
+          setPage(pageFromUrl);
+          // The request above used a larger perPage to fetch several pages
+          // at once, so totalPages must be recalculated in terms of the
+          // normal page size rather than taken from the response as-is.
+          setTotalPages(
+            typeof data.pagination.totalItems === 'number'
+              ? Math.ceil(data.pagination.totalItems / perPage)
+              : data.pagination.totalPages
+          );
+        } catch {
+          // Keep the server-rendered first page on failure.
+        } finally {
+          if (requestIdRef.current === requestId) {
+            setIsLoading(false);
+            setLoading(false);
+          }
+        }
+      })();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleArticleDeleted = (articleId: string) => {
@@ -107,7 +173,14 @@ const PaginatedArticlesList = ({
 
       {hasMore && (
         <div className={css.loadMoreOnly}>
-          <LoadMoreButton onClick={() => load(page + 1, 'append')} disabled={isLoading} />
+          <LoadMoreButton
+            onClick={() => {
+              const nextPage = page + 1;
+              syncUrl(nextPage);
+              load(nextPage, 'append');
+            }}
+            disabled={isLoading}
+          />
         </div>
       )}
 
@@ -116,7 +189,10 @@ const PaginatedArticlesList = ({
           <Pagination
             currentPage={page}
             totalPages={totalPages}
-            onPageChange={selectedPage => load(selectedPage, 'replace')}
+            onPageChange={selectedPage => {
+              syncUrl(selectedPage);
+              load(selectedPage, 'replace');
+            }}
           />
         </div>
       )}
