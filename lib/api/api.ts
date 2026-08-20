@@ -2,8 +2,14 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 export type ApiError = AxiosError<{ error: string }>;
 
+// Every request goes through this app's own /api/* Route Handlers (see
+// app/api/**/route.ts), which forward it to the real backend server-side.
+// This makes every cookie the backend sets first-party for the frontend's
+// own domain, which fixes logins being lost on reload on browsers that
+// block third-party cookies (iOS Safari does this by default, unlike most
+// desktop browsers - hence the mobile-only symptom).
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: '/api',
   withCredentials: true,
 });
 
