@@ -7,10 +7,6 @@
   --color-gray: #595d62;
   --color-light-gray: #9f9f9f;
   --color-error: #ad6a6c;
-
-  /* Always-light text/ring color for use on saturated accent
-     backgrounds (filled green buttons). Intentionally NOT themed —
-     these controls must keep light text in both light and dark mode. */
   --color-on-accent: #f7fffb;
 
   --transition-hover: 0.3s ease-in-out;
@@ -41,7 +37,6 @@
 html {
   height: 100%;
   scrollbar-gutter: stable;
-  scroll-behavior: smooth;
 }
 
 body {

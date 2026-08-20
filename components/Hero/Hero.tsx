@@ -57,7 +57,16 @@ export default function Hero() {
             </motion.h1>
 
             <motion.div className={styles.buttons} variants={fadeUp}>
-              <a href="#popularArticles" className={styles.articlesButton}>
+              <a
+                href="#popularArticles"
+                className={styles.articlesButton}
+                onClick={event => {
+                  event.preventDefault();
+                  document
+                    .getElementById('popularArticles')
+                    ?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
                 Go to Articles
               </a>
 
