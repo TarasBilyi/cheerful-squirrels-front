@@ -348,11 +348,11 @@ const RichTextEditor = ({
 
   return (
     <div className={`${css.wrapper} ${className ?? ''}`}>
+      {toolbar}
       <div className={css.contentArea}>
         <EditorContent editor={editor} />
         {counter}
       </div>
-      {toolbar}
     </div>
   );
 };
