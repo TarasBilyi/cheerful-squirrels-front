@@ -85,7 +85,15 @@
   }
 
   .headerRow {
+    flex-wrap: nowrap;
     justify-content: flex-start;
+    gap: 24px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .headerRow {
+    gap: 16px;
   }
 }
 
@@ -94,6 +102,12 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
+}
+
+@media screen and (max-width: 767px) {
+  .textBlock {
+    align-items: center;
+  }
 }
 
 .count {
@@ -112,11 +126,5 @@
 
   .textBlock {
     gap: 4px;
-  }
-}
-
-@media screen and (min-width: 320px) {
-  .textBlock {
-    align-items: center;
   }
 }
