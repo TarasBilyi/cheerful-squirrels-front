@@ -154,6 +154,8 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(article?.img ?? null);
   const [flickerToken, setFlickerToken] = useState(0);
 
+  const isSubmittingRef = useRef(false);
+
   const draft = useFormDraftValue<ArticleFormValues>(DRAFT_KEY);
   const initialValues: ArticleFormValues = isEditMode
     ? { title: article!.title, desc: article!.desc, article: toEditorHtml(article!.article) }
@@ -207,6 +209,9 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
     values: ArticleFormValues,
     { setSubmitting }: FormikHelpers<ArticleFormValues>
   ) {
+    if (isSubmittingRef.current) return;
+    isSubmittingRef.current = true;
+
     try {
       if (isEditMode) {
         const updated = await updateArticle(article!._id, {
@@ -252,6 +257,7 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
           'Something went wrong. Please try again.'
       );
     } finally {
+      isSubmittingRef.current = false;
       setSubmitting(false);
     }
   }
