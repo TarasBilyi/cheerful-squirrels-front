@@ -8,7 +8,7 @@ const PopularArticles = async () => {
   const articles = await getPopularArticles();
 
   return (
-    <section className={styles.section}>
+    <section id="popularArticles" className={styles.section}>
       <Container>
         <div className={styles.header}>
           <h2 className={styles.title}>Popular Articles</h2>
