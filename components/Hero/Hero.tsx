@@ -57,7 +57,7 @@ export default function Hero() {
             </motion.h1>
 
             <motion.div className={styles.buttons} variants={fadeUp}>
-              <Link href="/articles" className={styles.articlesButton}>
+              <Link href="#popularArticles" className={styles.articlesButton}>
                 Go to Articles
               </Link>
 
