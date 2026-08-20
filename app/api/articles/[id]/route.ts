@@ -59,9 +59,9 @@ export async function PATCH(request: Request, { params }: Props) {
   try {
     const cookieStore = await cookies();
     const { id } = await params;
-    const body = await request.json();
+    const formData = await request.formData();
 
-    const res = await api.patch(`/articles/${id}`, body, {
+    const res = await api.patch(`/articles/${id}`, formData, {
       headers: {
         Cookie: cookieStore.toString(),
       },

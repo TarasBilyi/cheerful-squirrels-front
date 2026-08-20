@@ -7,17 +7,13 @@ import { isAxiosError } from 'axios';
 export async function POST(request: NextRequest) {
   try {
     const cookieStore = await cookies();
-    const { authorId } = await request.json();
+    const body = await request.json();
 
-    const response = await api.post(
-      `/users/subscriptions`,
-      { authorId },
-      {
-        headers: {
-          Cookie: cookieStore.toString(),
-        },
-      }
-    );
+    const response = await api.post(`/users/subscriptions`, body, {
+      headers: {
+        Cookie: cookieStore.toString(),
+      },
+    });
 
     return NextResponse.json(response.data, { status: response.status });
   } catch (error) {

@@ -9,13 +9,14 @@ export async function GET(request: NextRequest) {
     const cookieStore = await cookies();
 
     const page = Number(request.nextUrl.searchParams.get('page') ?? 1);
+    const perPage = Number(request.nextUrl.searchParams.get('perPage') ?? 10);
 
     const backendUrl = `${process.env.API_URL}/users/saved`;
 
     const response = await api(backendUrl, {
       params: {
         page,
-        perPage: 10,
+        perPage,
       },
       headers: {
         Cookie: cookieStore.toString(),

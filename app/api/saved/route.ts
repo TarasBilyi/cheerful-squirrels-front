@@ -7,17 +7,13 @@ import { cookies } from 'next/headers';
 export async function POST(request: NextRequest) {
   try {
     const cookieStore = await cookies();
-    const { articleId } = await request.json();
+    const body = await request.json();
 
-    const response = await api.post(
-      `/saved`,
-      { articleId },
-      {
-        headers: {
-          Cookie: cookieStore.toString(),
-        },
-      }
-    );
+    const response = await api.post(`/saved`, body, {
+      headers: {
+        Cookie: cookieStore.toString(),
+      },
+    });
 
     return NextResponse.json(response.data, { status: response.status });
   } catch (error) {
