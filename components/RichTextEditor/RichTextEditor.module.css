@@ -19,7 +19,7 @@
   flex-wrap: wrap;
   gap: 4px;
   padding: 8px;
-  border-top: 1px solid #9f9f9f;
+  border-bottom: 1px solid #9f9f9f;
   background-color: var(--color-light-green);
 }
 
@@ -115,7 +115,7 @@
 
 .linkPopover {
   position: absolute;
-  bottom: calc(100% + 8px);
+  top: calc(100% + 8px);
   left: 0;
   z-index: 10;
   display: flex;
