@@ -108,6 +108,13 @@ export const getSubscribedAuthors = async (
   return data.data;
 };
 
+export const checkEmailAvailability = async (email: string): Promise<boolean> => {
+  const { data } = await api.get<ApiEnvelope<{ available: boolean }>>('/auth/check-email', {
+    params: { email },
+  });
+  return data.data.available;
+};
+
 export type RegisterRequest = { name: string; email: string; password: string };
 
 export const register = async (user: RegisterRequest): Promise<User> => {

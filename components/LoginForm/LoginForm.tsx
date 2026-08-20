@@ -32,11 +32,14 @@ const LoginPage = () => {
         toast.error('Invalid email or password');
       }
     } catch (error) {
-      toast.error(
-        (error as ApiError).response?.data?.error ??
-          (error as ApiError).message ??
-          'Oops... some error'
-      );
+      const err = error as ApiError;
+      const status = err.response?.status;
+
+      if (status === 401 || status === 404) {
+        toast.error('Email or password is wrong');
+      } else {
+        toast.error(err.response?.data?.error ?? err.message ?? 'Oops... some error');
+      }
     } finally {
       actions.setSubmitting(false);
     }
