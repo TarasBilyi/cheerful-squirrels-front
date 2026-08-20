@@ -61,7 +61,7 @@ const SubscribeButton = ({ authorId }: SubscribeButtonProps) => {
       aria-pressed={isSubscribed}
       aria-busy={isBusy}
     >
-      {isSubscribed ? 'Subscribed' : 'Subscribe'}
+      {isSubscribed ? 'Unsubscribe' : 'Subscribe'}
     </button>
   );
 };

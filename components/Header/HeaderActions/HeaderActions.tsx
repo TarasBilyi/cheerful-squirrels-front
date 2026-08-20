@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import { useAuthStore } from '@/lib/store/authStore';
 import CtaLink from '../CtaLink/CtaLink';
 import DesktopNav from '../DesktopNav/DesktopNav';
@@ -21,6 +22,16 @@ const HeaderActions = ({ initialIsAuthenticated }: HeaderActionsProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const closeMenu = () => setIsMenuOpen(false);
   const toggleMenu = () => setIsMenuOpen(prev => !prev);
+
+  const pathname = usePathname();
+  const prevPathnameRef = useRef(pathname);
+
+  useEffect(() => {
+    if (prevPathnameRef.current !== pathname) {
+      setIsMenuOpen(false);
+      prevPathnameRef.current = pathname;
+    }
+  }, [pathname]);
 
   return (
     <div className={`${css.actions} ${displayIsAuthenticated ? css.actionsAuthenticated : ''}`}>

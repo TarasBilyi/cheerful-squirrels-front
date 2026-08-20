@@ -10,7 +10,13 @@ const splitIntoParagraphs = (text: string): string[] =>
     .map(line => line.trim())
     .filter(line => line.length > 0);
 
+const isHtml = (text: string) => /<[a-z][\s\S]*>/i.test(text);
+
 const ArticleContent = ({ text }: ArticleContentProps) => {
+  if (isHtml(text)) {
+    return <div className={css.content} dangerouslySetInnerHTML={{ __html: text }} />;
+  }
+
   const paragraphs = splitIntoParagraphs(text);
 
   return (

@@ -6,6 +6,7 @@
 .list {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 16px;
   padding: 8px 0px;
 }
@@ -64,5 +65,12 @@
 
   .list {
     gap: 24px;
+  }
+}
+
+/* desktop 1440px */
+@media screen and (min-width: 1440px) {
+  .list {
+    justify-content: flex-start;
   }
 }
