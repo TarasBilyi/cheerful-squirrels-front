@@ -2,10 +2,13 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, FormikHelpers, ErrorMessage } from 'formik';
 import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 import { RegisterSchema } from './RegisterForm.schema';
 import { useRegisterDraftStore } from '@/lib/store/registerDraftStore';
+import { checkEmailAvailability } from '@/lib/api/clientApi';
+import { ApiError } from '@/lib/api/api';
 import css from './RegisterForm.module.css';
 
 interface RegisterFormValues {
@@ -51,9 +54,33 @@ const RegisterForm = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isRepeatPasswordVisible, setIsRepeatPasswordVisible] = useState(false);
 
-  const handleSubmit = (values: RegisterFormValues) => {
-    setDraft({ name: values.name, email: values.email, password: values.password });
-    router.push('/photo');
+  const handleSubmit = async (
+    values: RegisterFormValues,
+    actions: FormikHelpers<RegisterFormValues>
+  ) => {
+    try {
+      const available = await checkEmailAvailability(values.email);
+
+      if (!available) {
+        toast.error('Email in use');
+        return;
+      }
+
+      setDraft({ name: values.name, email: values.email, password: values.password });
+      router.push('/photo');
+    } catch (error) {
+      const err = error as ApiError;
+      const status = err.response?.status;
+      const message = err.response?.data?.error;
+
+      if (status === 409) {
+        toast.error(message || 'Email in use');
+      } else {
+        toast.error(message || 'Something went wrong. Please try again.');
+      }
+    } finally {
+      actions.setSubmitting(false);
+    }
   };
 
   return (
