@@ -215,7 +215,7 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
     try {
       if (isEditMode) {
         const updated = await updateArticle(article!._id, {
-          ...trimmedValues,
+          ...values,
           photo: image ?? undefined,
         });
         queryClient.invalidateQueries({ queryKey: ['articles'] });
