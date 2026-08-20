@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { AxiosError } from 'axios';
 import ArticlePage from '@/components/ArticlePage/ArticlePage';
-import { getArticleById, getRecommendedArticles } from '@/lib/api/articlesApi';
+import { getArticleById, getRecommendedArticles } from '@/lib/api/serverApi';
 import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from '@/lib/seo';
 
 interface ArticleRouteProps {

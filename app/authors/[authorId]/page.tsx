@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { AxiosError } from 'axios';
 import AuthorPage from '@/components/AuthorPage/AuthorPage';
-import { getAuthorById, getArticlesByAuthor } from '@/lib/api/authorsApi';
+import { getAuthorById, getArticlesByAuthor } from '@/lib/api/serverApi';
 import { SITE_URL, SITE_NAME, DEFAULT_OG_IMAGE } from '@/lib/seo';
 
 interface AuthorRouteProps {
