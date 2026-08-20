@@ -35,6 +35,13 @@ export default function Hero() {
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
   const isInitializing = useAuthStore(state => state.isInitializing);
 
+  const handleArticlesClick = () => {
+    document.getElementById('popularArticles')?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  };
+
   return (
     <section className={styles.hero}>
       <Container>
@@ -57,7 +64,11 @@ export default function Hero() {
             </motion.h1>
 
             <motion.div className={styles.buttons} variants={fadeUp}>
-              <Link href="#popularArticles" className={styles.articlesButton}>
+              <Link
+                href="#popularArticles"
+                className={styles.articlesButton}
+                onClick={handleArticlesClick}
+              >
                 Go to Articles
               </Link>
 
