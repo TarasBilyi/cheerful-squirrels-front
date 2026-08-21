@@ -1,6 +1,8 @@
 .container {
   width: 100%;
-  min-width: 320px;
+  /* min-width: 320px; — прибрано: на Windows/Chrome scrollbar-gutter
+     забирає реальну ширину сторінки, і жорсткий поріг у 320px змушував
+     контейнер бути ширшим за фактично доступний простір -> боковий скрол */
   margin-inline: auto;
   padding-inline: 16px;
   flex: 1;
