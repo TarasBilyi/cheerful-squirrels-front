@@ -3,6 +3,24 @@
   flex-direction: column;
 }
 
+.loadMoreOnly {
+  display: block;
+}
+
+.paginationOnly {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .loadMoreOnly {
+    display: none;
+  }
+
+  .paginationOnly {
+    display: block;
+  }
+}
+
 .list {
   display: flex;
   flex-wrap: wrap;
@@ -68,7 +86,6 @@
   }
 }
 
-/* desktop 1440px */
 @media screen and (min-width: 1440px) {
   .list {
     justify-content: flex-start;

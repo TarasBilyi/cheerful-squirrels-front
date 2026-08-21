@@ -62,8 +62,16 @@ const PaginatedArticlesList = ({
 
   const requestIdRef = useRef(0);
   const didInitRef = useRef(false);
+  const previousScrollRef = useRef(0);
 
   const hasMore = page < totalPages;
+
+  useEffect(() => {
+    if (previousScrollRef.current) {
+      window.scrollTo({ top: previousScrollRef.current });
+      previousScrollRef.current = 0;
+    }
+  }, [articles]);
 
   const syncUrl = (targetPage: number) => {
     if (!pageParam) return;
@@ -90,7 +98,9 @@ const PaginatedArticlesList = ({
       setPage(data.pagination.page);
       setTotalPages(data.pagination.totalPages);
 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (mode === 'replace') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     } catch (error) {
       if (requestIdRef.current !== requestId) {
         return;
@@ -113,45 +123,42 @@ const PaginatedArticlesList = ({
     if (didInitRef.current) return;
     didInitRef.current = true;
 
-    if (initialPage === 0) {
-      load(1, 'replace');
-      return;
-    }
+    const timeoutId = window.setTimeout(() => {
+      if (initialPage === 0) {
+        void load(1, 'replace');
+        return;
+      }
 
-    // If the URL points at a later page than what was server-rendered
-    // (e.g. the user came back via the browser "back" button after loading
-    // several pages), restore the full accumulated list up to that page.
-    if (pageParam && pageFromUrl > initialPage) {
-      void (async () => {
-        const requestId = ++requestIdRef.current;
-        try {
-          setIsLoading(true);
-          setLoading(true);
+      if (pageParam && pageFromUrl > initialPage) {
+        void (async () => {
+          const requestId = ++requestIdRef.current;
+          try {
+            setIsLoading(true);
+            setLoading(true);
 
-          const data = await fetchPage(1, perPage * pageFromUrl);
+            const data = await fetchPage(1, perPage * pageFromUrl);
 
-          if (requestIdRef.current !== requestId) return;
+            if (requestIdRef.current !== requestId) return;
 
-          setArticles(data.articles);
-          setPage(pageFromUrl);
-          // The request above used a larger perPage to fetch several pages
-          // at once, so totalPages must be recalculated in terms of the
-          // normal page size rather than taken from the response as-is.
-          setTotalPages(
-            typeof data.pagination.totalItems === 'number'
-              ? Math.ceil(data.pagination.totalItems / perPage)
-              : data.pagination.totalPages
-          );
-        } catch {
-          // Keep the server-rendered first page on failure.
-        } finally {
-          if (requestIdRef.current === requestId) {
-            setIsLoading(false);
-            setLoading(false);
+            setArticles(data.articles);
+            setPage(pageFromUrl);
+            setTotalPages(
+              typeof data.pagination.totalItems === 'number'
+                ? Math.ceil(data.pagination.totalItems / perPage)
+                : data.pagination.totalPages
+            );
+          } catch {
+          } finally {
+            if (requestIdRef.current === requestId) {
+              setIsLoading(false);
+              setLoading(false);
+            }
           }
-        }
-      })();
-    }
+        })();
+      }
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -175,6 +182,7 @@ const PaginatedArticlesList = ({
         <div className={css.loadMoreOnly}>
           <LoadMoreButton
             onClick={() => {
+              previousScrollRef.current = window.scrollY;
               const nextPage = page + 1;
               syncUrl(nextPage);
               load(nextPage, 'append');
