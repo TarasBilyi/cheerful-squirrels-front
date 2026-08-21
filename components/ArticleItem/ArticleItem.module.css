@@ -124,14 +124,19 @@
 /* tablet 768px */
 @media screen and (min-width: 768px) {
   .card {
-    width: 340px;
+    /* width: 340px; — замінено на 100%: батьківський <li> у ArticlesList
+       рахує свою ширину через calc(100% - gap), тобто гумово. Жорсткі
+       340px не зменшувались разом з ним, коли реально доступного місця
+       ставало трохи менше (scrollbar-gutter на Windows) -> вилазило за межі */
+    width: 100%;
   }
 }
 
 /* desktop 1440px */
 @media screen and (min-width: 1440px) {
   .card {
-    width: 392px;
+    /* width: 392px; — та сама причина, що й на 768px */
+    width: 100%;
     max-width: 392px;
   }
 }
