@@ -1,6 +1,24 @@
 .wrapper {
   padding: 48px 0px;
 }
+
+.loadMoreOnly {
+  display: block;
+}
+
+.paginationOnly {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .loadMoreOnly {
+    display: none;
+  }
+
+  .paginationOnly {
+    display: block;
+  }
+}
 .title {
   font-family: var(--font-manrope);
   font-weight: 700;

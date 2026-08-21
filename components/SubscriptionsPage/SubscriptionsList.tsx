@@ -6,6 +6,7 @@ import Image from 'next/image';
 import toast from 'react-hot-toast';
 import EmptyState from '@/components/EmptyState/EmptyState';
 import LoadMoreButton from '@/components/LoadMoreButton/LoadMoreButton';
+import Pagination from '@/components/Pagination/Pagination';
 import { getSubscribedAuthors } from '@/lib/api/clientApi';
 import { useAuthStore } from '@/lib/store/authStore';
 import { useLoaderStore } from '@/lib/store/loaderStore';
@@ -115,6 +116,26 @@ const SubscriptionsList = () => {
     }
   };
 
+  const handlePageChange = async (selectedPage: number) => {
+    try {
+      setIsLoading(true);
+      setLoading(true);
+
+      const { authors: fetched, pagination } = await getSubscribedAuthors(selectedPage, PER_PAGE);
+
+      setAuthors(fetched);
+      setPage(pagination.page);
+      setTotalPages(pagination.totalPages);
+    } catch (error) {
+      toast.error(
+        (error as ApiError).response?.data?.error ?? 'Failed to load subscriptions'
+      );
+    } finally {
+      setIsLoading(false);
+      setLoading(false);
+    }
+  };
+
   if (!hasLoaded) {
     return null;
   }
@@ -139,7 +160,17 @@ const SubscriptionsList = () => {
         ))}
       </ul>
 
-      {hasMore && <LoadMoreButton onClick={handleLoadMore} disabled={isLoading} />}
+      {hasMore && (
+        <div className={css.loadMoreOnly}>
+          <LoadMoreButton onClick={handleLoadMore} disabled={isLoading} />
+        </div>
+      )}
+
+      {totalPages > 1 && (
+        <div className={css.paginationOnly}>
+          <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
+        </div>
+      )}
     </div>
   );
 };

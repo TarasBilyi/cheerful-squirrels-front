@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import toast from 'react-hot-toast';
 import LoadMoreButton from '@/components/LoadMoreButton/LoadMoreButton';
+import Pagination from '@/components/Pagination/Pagination';
 import { getAuthors } from '@/lib/api/authorsApi';
 import { useLoaderStore } from '@/lib/store/loaderStore';
 import type { ApiError } from '@/lib/api/api';
@@ -57,10 +58,6 @@ const AuthorsList = ({ initialAuthors, initialPage, initialTotalPages }: Authors
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  // How many pages had been loaded (via "Load More") the last time the user
-  // was on this listing is kept in the URL, so that pressing the browser
-  // "back" button after opening an author restores the same amount of
-  // authors instead of resetting back to page 1.
   const pageFromUrl = Number(searchParams.get('page')) || initialPage;
 
   const [authors, setAuthors] = useState(initialAuthors);
@@ -71,13 +68,18 @@ const AuthorsList = ({ initialAuthors, initialPage, initialTotalPages }: Authors
 
   const requestIdRef = useRef(0);
   const didRestoreRef = useRef(false);
+  const previousScrollRef = useRef(0);
 
   const hasMore = page < totalPages;
 
   useEffect(() => {
-    // On mount, if the URL says the user had already loaded further pages
-    // (e.g. they came back from an author's page), fetch and rebuild the
-    // full accumulated list up to that page instead of showing only page 1.
+    if (previousScrollRef.current) {
+      window.scrollTo({ top: previousScrollRef.current });
+      previousScrollRef.current = 0;
+    }
+  }, [authors]);
+
+  useEffect(() => {
     if (didRestoreRef.current) return;
     didRestoreRef.current = true;
 
@@ -96,12 +98,8 @@ const AuthorsList = ({ initialAuthors, initialPage, initialTotalPages }: Authors
 
         setAuthors(data.authors);
         setPage(pageFromUrl);
-        // The request above used a larger perPage to fetch several pages at
-        // once, so totalPages must be recalculated in terms of the normal
-        // PER_PAGE page size rather than taken from the response as-is.
         setTotalPages(Math.ceil(data.pagination.totalItems / PER_PAGE));
       } catch {
-        // Silently fall back to the initial page 1 list already shown.
       } finally {
         if (requestIdRef.current === requestId) {
           setIsLoading(false);
@@ -116,6 +114,7 @@ const AuthorsList = ({ initialAuthors, initialPage, initialTotalPages }: Authors
 
   const handleLoadMore = async () => {
     try {
+      previousScrollRef.current = window.scrollY;
       setIsLoading(true);
       setLoading(true);
 
@@ -136,6 +135,30 @@ const AuthorsList = ({ initialAuthors, initialPage, initialTotalPages }: Authors
     }
   };
 
+  const handlePageChange = async (selectedPage: number) => {
+    try {
+      setIsLoading(true);
+      setLoading(true);
+
+      const data = await getAuthors(selectedPage, PER_PAGE);
+
+      setAuthors(data.authors);
+      setPage(data.pagination.page);
+      setTotalPages(data.pagination.totalPages);
+
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('page', String(data.pagination.page));
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (error) {
+      toast.error((error as ApiError).response?.data?.error ?? 'Failed to load authors');
+    } finally {
+      setIsLoading(false);
+      setLoading(false);
+    }
+  };
+
   return (
     <div className={css.wrapper}>
       <h1 className={css.title}>Authors</h1>
@@ -150,7 +173,17 @@ const AuthorsList = ({ initialAuthors, initialPage, initialTotalPages }: Authors
         </ul>
       )}
 
-      {hasMore && <LoadMoreButton onClick={handleLoadMore} disabled={isLoading} />}
+      {hasMore && (
+        <div className={css.loadMoreOnly}>
+          <LoadMoreButton onClick={handleLoadMore} disabled={isLoading} />
+        </div>
+      )}
+
+      {totalPages > 1 && (
+        <div className={css.paginationOnly}>
+          <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
+        </div>
+      )}
     </div>
   );
 };
