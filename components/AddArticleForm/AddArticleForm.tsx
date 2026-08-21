@@ -30,32 +30,16 @@ const EMPTY_VALUES: ArticleFormValues = { title: '', desc: '', article: '' };
 
 type SubmitError = AxiosError<{ message?: string; error?: string }>;
 
-// Tags whose own text becomes exactly one "line" in the plain-text version
-// (their content is taken as-is, including any internal line breaks already
-// converted from <br>, without recursing into them further).
 const LINE_TAGS = new Set(['P', 'LI', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6']);
-// Tags that just group other blocks (lists, quotes, generic divs) and don't
-// contribute a line break of their own — we recurse into their children.
 const PASSTHROUGH_TAGS = new Set(['BLOCKQUOTE', 'UL', 'OL', 'DIV']);
 
-// Converts the editor's HTML into plain text for length-counting purposes,
-// preserving every space and line break the user actually typed instead of
-// collapsing them. Naively stripping tags and collapsing `\s+` (the old
-// approach) silently discarded all newlines and repeated spaces, so the
-// counter and the min/max validation both under-counted real content.
 const stripHtml = (html: string): string => {
   if (typeof window === 'undefined' || typeof DOMParser === 'undefined') {
-    // Non-browser fallback (e.g. SSR): best effort, tags only.
     return html.replace(/<[^>]*>/g, '');
   }
 
   const doc = new DOMParser().parseFromString(html, 'text/html');
 
-  // Real line breaks (Shift+Enter) become a literal "\n". TipTap also
-  // renders a `<br class="ProseMirror-trailingBreak">` inside otherwise
-  // empty paragraphs purely so they stay visible/clickable — that one
-  // isn't content the user typed, so it contributes nothing on its own;
-  // the empty paragraph still counts as one blank line via the join below.
   doc.querySelectorAll('br').forEach(br => {
     const isTrailingBreak = br.classList.contains('ProseMirror-trailingBreak');
     br.replaceWith(doc.createTextNode(isTrailingBreak ? '' : '\n'));
@@ -154,6 +138,7 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(article?.img ?? null);
   const [flickerToken, setFlickerToken] = useState(0);
 
+  const [isLocked, setIsLocked] = useState(false);
   const isSubmittingRef = useRef(false);
 
   const draft = useFormDraftValue<ArticleFormValues>(DRAFT_KEY);
@@ -216,6 +201,7 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
   ) {
     if (isSubmittingRef.current) return;
     isSubmittingRef.current = true;
+    setIsLocked(true);
 
     try {
       if (isEditMode) {
@@ -231,6 +217,7 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
 
       if (!image) {
         toast.error('Please add a photo');
+        setIsLocked(false);
         return;
       }
       const formData = new FormData();
@@ -261,6 +248,7 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
           axiosError.response?.data?.error ??
           'Something went wrong. Please try again.'
       );
+      setIsLocked(false);
     } finally {
       isSubmittingRef.current = false;
       setSubmitting(false);
@@ -364,8 +352,8 @@ export default function AddArticleForm({ article }: AddArticleFormProps) {
             <button
               type="submit"
               className={css.submitButton}
-              disabled={isSubmitting}
-              aria-busy={isSubmitting}
+              disabled={isLocked || isSubmitting}
+              aria-busy={isLocked || isSubmitting}
               onClick={() => setFlickerToken(token => token + 1)}
             >
               {isSubmitting && <span className={css.spinner} aria-hidden />}
